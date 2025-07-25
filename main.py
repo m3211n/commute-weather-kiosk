@@ -4,9 +4,9 @@ import struct
 
 WIDTH = 1920
 HEIGHT = 1200
-TEXT = "Hello from Pi Zero 2W"
+TEXT = "FUCK OFF HAHAHA!!!"
 
-img = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 255))
+img = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
 draw = ImageDraw.Draw(img)
 
 try:
@@ -18,7 +18,7 @@ bbox = draw.textbbox((0, 0), TEXT, font=font)
 text_width = bbox[2] - bbox[0]
 text_height = bbox[3] - bbox[1]
 text_pos = ((WIDTH - text_width) // 2, (HEIGHT - text_height) // 2)
-draw.text(text_pos, TEXT, font=font, fill=(255, 255, 255))
+draw.text(text_pos, TEXT, font=font, fill=(255, 0, 0))
 
 def rgb888_to_rgb565(r, g, b):
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
