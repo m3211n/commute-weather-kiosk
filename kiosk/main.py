@@ -4,7 +4,7 @@ import struct
 
 WIDTH = 1920
 HEIGHT = 1200
-TEXT = "Hello Pi"
+TEXT = "Hello from Pi Zero 2W"
 
 img = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 255))
 draw = ImageDraw.Draw(img)
