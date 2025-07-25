@@ -1,4 +1,3 @@
-import subprocess
 from PIL import Image, ImageDraw, ImageFont
 import struct
 
@@ -9,10 +8,7 @@ TEXT = "FUCK OFF HAHAHA!!!"
 img = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
 draw = ImageDraw.Draw(img)
 
-try:
-    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 64)
-except:
-    font = ImageFont.load_default()
+font = ImageFont.load_default()
 
 bbox = draw.textbbox((0, 0), TEXT, font=font)
 text_width = bbox[2] - bbox[0]
