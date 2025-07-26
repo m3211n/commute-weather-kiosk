@@ -9,11 +9,13 @@ HEIGHT = 1200
 
 def draw_to_framebuffer(image: Image.Image):
     arr = np.array(image.convert("RGB"))
-    r = arr[:, :, 0] >> 3
+    b = arr[:, :, 0] >> 3  # red becomes blue
     g = arr[:, :, 1] >> 2
-    b = arr[:, :, 2] >> 3
-    rgb565 = (r << 11) | (g << 5) | b
-    buffer = rgb565.astype('<u2').tobytes()  # Little-endian, RGB565
+    r = arr[:, :, 2] >> 3  # blue becomes red
+
+    rgb565 = (b << 11) | (g << 5) | r  # BGR565
+    buffer = rgb565.astype('>u2').tobytes()  # big-endian byte order
+
     with open("/dev/fb0", "wb") as f:
         f.write(buffer)
 
