@@ -66,7 +66,7 @@ def draw_to_framebuffer(image: Image.Image):
 def fetch_cat_image():
     try:
         response = requests.get("https://cataas.com/cat", timeout=10)
-        return Image.open(io.BytesIO(response.content)).convert("RGB")
+        return Image.open(io.BytesIO(response.content))
     except Exception as e:
         print("Failed to fetch cat:", e)
         return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))  # fallback
