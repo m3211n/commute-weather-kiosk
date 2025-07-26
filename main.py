@@ -71,7 +71,6 @@ async def update_loop():
             draw.text((50, 100 + i * 60), line, font=font, fill=COLOR_TEXT)
 
         draw_to_framebuffer(img)
-        await asyncio.sleep(1)
 
 if __name__ == "__main__":
     asyncio.run(update_loop())
