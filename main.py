@@ -28,7 +28,7 @@ async def main():
         # Compose and output
         screen.compose([section_top, section_main])
         await screen.output()
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
 
 if __name__ == "__main__":
     asyncio.run(main())
