@@ -5,7 +5,7 @@ from PIL import Image
 import struct
 import asyncio
 
-WIDTH, HEIGHT = 1920, 1080
+WIDTH, HEIGHT = 1920, 1200
 
 def rgb888_to_rgb565(r, g, b):
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
