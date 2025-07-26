@@ -20,7 +20,7 @@ def draw_to_framebuffer(image: Image.Image):
             r, g, b = pixels[y, x]
             # Swap R and B for BGR565
             rgb565 = rgb888_to_rgb565(r, g, b)
-            buffer += rgb565.to_bytes(2, byteorder='big')  # write as big-endian
+            buffer += int(rgb565).to_bytes(2, byteorder='big')  # write as big-endian
 
     with open("/dev/fb0", "wb") as f:
         f.write(buffer)
