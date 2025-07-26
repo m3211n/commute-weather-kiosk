@@ -57,9 +57,28 @@ def fetch_cat_image():
         print("Failed to fetch cat:", e)
         return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))  # fallback
 
+def debug_color_conversion(image: Image.Image):
+    """Save what the image looks like after our color conversion"""
+    img = image.convert("RGB").resize((WIDTH, HEIGHT))
+    pixels = np.array(img)
+    
+    # Apply our GRB conversion in reverse to see what we're actually displaying
+    converted_pixels = np.zeros_like(pixels)
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            r, g, b = pixels[y, x]
+            # Our conversion: G→R, R→G, B→B
+            # So to see what we display: G→R, R→G, B→B
+            converted_pixels[y, x] = [g, r, b]  # GRB -> RGB for display
+    
+    converted_img = Image.fromarray(converted_pixels.astype(np.uint8))
+    converted_img.save("converted_cat.png")
+
 async def update_loop():
     while True:
         cat = fetch_cat_image()
+        cat.save("original_cat.png")
+        debug_color_conversion(cat)
         draw_to_framebuffer(cat)
         await asyncio.sleep(5)
 
