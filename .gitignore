@@ -1,2 +1,5 @@
 deploy.log
 __*
+venv/
+__pycache__/
+*.pyc
