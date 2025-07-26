@@ -1,98 +1,32 @@
 import asyncio
-import requests
-from PIL import Image, ImageDraw, ImageFont
-import io
-import struct
-import datetime
+from screen import Screen
+from section import Section
+from widgets.clock import ClockWidget
+from widgets.quote import QuoteWidget
 
-WIDTH = 1920
-HEIGHT = 1200
+async def main():
+    sections = [
+        Section(x=0, y=0, width=1920, height=200, widgets=[ClockWidget()]),
+        Section(x=0, y=200, width=1920, height=880, widgets=[QuoteWidget()]),
+    ]
 
-def rgb888_to_rgb565(r, g, b):
-    return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
+    screen = Screen()
 
-def draw_test_colors():
-    buffer = bytearray()
-    
-    for y in range(HEIGHT):
-        for x in range(WIDTH):
-            if x < WIDTH // 6:
-                r, g, b = 255, 0, 0
-            elif x < WIDTH // 3:
-                r, g, b = 0, 0, 255
-            elif x < WIDTH // 2:
-                r, g, b = 0, 255, 0
-            elif x < 2 * WIDTH // 3:
-                r, g, b = 0, 255, 255
-            elif x < 5 * WIDTH // 6:
-                r, g, b = 255, 0, 255
-            else:
-                r, g, b = 255, 255, 0
-            
-            rgb565 = ((g & 0xF8) << 8) | ((r & 0xFC) << 3) | ((b & 0xF8) >> 3)
-            buffer += struct.pack("<H", rgb565)
-
-    with open("/dev/fb0", "wb") as f:
-        f.write(buffer)
-
-def draw_to_framebuffer(image: Image.Image):
-    img = image.convert("RGB").resize((WIDTH, HEIGHT))
-    
-    # Add timestamp text
-    draw = ImageDraw.Draw(img)
-    try:
-        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 48)
-    except:
-        font = ImageFont.load_default()
-    
-    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
-    draw.text((50, 50), f"Updated: {timestamp}", font=font, fill=(255, 255, 255))
-    
-    pixels = img.load()
-    
-    buffer = bytearray()
-    for y in range(HEIGHT):
-        for x in range(WIDTH):
-            r, g, b = pixels[x, y]  # Should always be RGB after convert()
-            rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3)
-            buffer += struct.pack("<H", rgb565)
-
-    with open("/dev/fb0", "wb") as f:  
-        f.write(buffer)
-
-def fetch_cat_image():
-    try:
-        response = requests.get("https://cataas.com/cat", timeout=10)
-        return Image.open(io.BytesIO(response.content)).convert("RGB")
-    except Exception as e:
-        print("Failed to fetch cat:", e)
-        return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))  # fallback
-
-def debug_color_conversion(image: Image.Image):
-    """Save what the image looks like after our color conversion"""
-    img = image.convert("RGB").resize((WIDTH, HEIGHT))
-    pixels = img.load()
-    
-    # Create new image to show what we're actually displaying
-    converted_img = Image.new("RGB", (WIDTH, HEIGHT))
-    converted_pixels = converted_img.load()
-    
-    for y in range(HEIGHT):
-        for x in range(WIDTH):
-            r, g, b = pixels[x, y]
-            # Our conversion: R→G, B→R, G→B
-            # So to see what we display: R→G, B→R, G→B
-            converted_pixels[x, y] = (b, r, g)  # RBG -> RGB for display
-    
-    converted_img.save("converted_cat.png")
-
-async def update_loop():
     while True:
-        cat = fetch_cat_image()
-        cat.save("original_cat.png")
-        debug_color_conversion(cat)
-        draw_to_framebuffer(cat)
-        await asyncio.sleep(5)
+        updated = False
+
+        # Update widgets
+        for section in sections:
+            for widget in section.widgets:
+                if await widget.maybe_update():
+                    updated = True
+
+        if updated:
+            await asyncio.gather(*(s.render() for s in sections))
+            screen_image = await screen.compose(sections)
+            await screen.output(screen_image)
+
+        await asyncio.sleep(1)
 
 if __name__ == "__main__":
-    asyncio.run(update_loop())
+    asyncio.run(main())
