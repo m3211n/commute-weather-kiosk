@@ -1,13 +1,16 @@
 import time
+from PIL import ImageFont
 
 class QuoteWidget:
     def __init__(self):
         self.quote = "Be water, my friend."
         self.last_updated = 0
-        self.update_interval = 60  # seconds
+        self.update_interval = 60
+        self.x = 100
+        self.y = 100
+        self.font = ImageFont.load_default()
 
     async def update(self):
-        # Simulate fetching a quote
         self.quote = "Stay hungry, stay foolish."
 
     async def maybe_update(self):
@@ -17,9 +20,5 @@ class QuoteWidget:
             return True
         return False
 
-    def get_html(self):
-        return f"""
-        <div style="position:absolute; top:100px; left:100px; color:cyan; font-size:24px; font-family:sans-serif;">
-            {self.quote}
-        </div>
-        """
+    def draw(self, draw):
+        draw.text((self.x, self.y), self.quote, fill="cyan", font=self.font)

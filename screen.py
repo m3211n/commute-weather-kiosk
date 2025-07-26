@@ -1,11 +1,10 @@
-import os
-from datetime import datetime
-
 from PIL import Image
 import struct
 import asyncio
+import os
+from datetime import datetime
 
-WIDTH, HEIGHT = 1920, 1200
+WIDTH, HEIGHT = 1920, 1080
 
 def rgb888_to_rgb565(r, g, b):
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
@@ -15,15 +14,15 @@ class Screen:
         self.width = WIDTH
         self.height = HEIGHT
 
-    async def compose(self, sections):
+    def compose(self, sections):
         image = Image.new("RGB", (self.width, self.height), "black")
         for section in sections:
             section.paste_to(image)
         return image
 
-    async def output(self, image, testing=False):
-        write_to = self._write_to_img if testing else self._write_to_fb
-        await asyncio.to_thread(write_to, image)
+    async def output(self, image, fb=True):
+        task = self._write_to_fb if fb else self._write_to_img
+        await asyncio.to_thread(task, image)
 
     def _write_to_fb(self, image):
         pixels = image.load()

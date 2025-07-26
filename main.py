@@ -22,8 +22,9 @@ async def main():
                     updated = True
 
         if updated:
-            await asyncio.gather(*(s.render() for s in sections))
-            screen_image = await screen.compose(sections)
+            for s in sections:
+                s.render()
+            screen_image = screen.compose(sections)
             await screen.output(screen_image)
 
         await asyncio.sleep(1)

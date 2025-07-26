@@ -1,15 +1,18 @@
 from datetime import datetime
 import time
+from PIL import ImageFont
 
 class ClockWidget:
     def __init__(self):
         self.content = "--:--"
         self.last_updated = 0
-        self.update_interval = 1  # seconds
+        self.update_interval = 1
+        self.x = 50
+        self.y = 50
+        self.font = ImageFont.load_default()
 
     async def update(self):
-        now = datetime.now().strftime("%H:%M:%S")
-        self.content = now
+        self.content = datetime.now().strftime("%H:%M:%S")
 
     async def maybe_update(self):
         if time.monotonic() - self.last_updated >= self.update_interval:
@@ -18,9 +21,5 @@ class ClockWidget:
             return True
         return False
 
-    def get_html(self):
-        return f"""
-        <div style="position:absolute; top:50px; left:50px; color:white; font-size:48px; font-family:sans-serif;">
-            {self.content}
-        </div>
-        """
+    def draw(self, draw):
+        draw.text((self.x, self.y), self.content, fill="white", font=self.font)
