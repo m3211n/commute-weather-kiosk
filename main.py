@@ -27,19 +27,6 @@ def get_free_mem():
     except:
         return "N/A"
 
-"""
-def draw_to_framebuffer(image: Image.Image):
-    buffer = bytearray()
-    pixels = image.load()
-    for y in range(HEIGHT):
-        for x in range(WIDTH):
-            r, g, b = pixels[x, y]
-            rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
-            buffer += rgb565.to_bytes(2, 'little')
-    with open("/dev/fb0", "wb") as f:
-        f.write(buffer)
-"""
-
 import numpy as np
 
 def draw_to_framebuffer(image: Image.Image):
