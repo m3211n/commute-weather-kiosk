@@ -12,18 +12,16 @@ def rgb888_to_rgb565_numpy(image):
     rgb565 = ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3)
     return rgb565.astype('<u2').tobytes()
 
-class Screen(Image.Image):
-    def __new__(cls):
-        obj = Image.new("RGB", (WIDTH, HEIGHT), "black")
-        obj.__class__ = cls
-        return obj
+class Screen:
+    def __init__(self, width=1920, height=1080):
+        self.image = Image.new("RGB", (width, height), "black")
 
     def compose(self, sections):
         for section in sections:
-            section.paste_to(self)
-        return self
+            section.paste_to(self.image)
+        return self.image
 
     async def output(self):
-        buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, self)
+        buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, self.image)
         with open("/dev/fb0", "wb") as f:
             f.write(buf)

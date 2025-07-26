@@ -1,15 +1,13 @@
 from PIL import Image
 
-class Section(Image.Image):
-    def __new__(cls, x, y, width, height):
-        obj = Image.new("RGB", (width, height), "black")
-        obj.__class__ = cls
-        obj.x = x
-        obj.y = y
-        return obj
+class Section:
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.image = Image.new("RGB", (width, height), "black")
 
     def add(self, x, y, widget):
-        self.paste(widget.image, (x, y))
+        self.image.paste(widget.image, (x, y))
 
     def paste_to(self, canvas):
-        canvas.paste(self, (self.x, self.y))
+        canvas.paste(self.image, (self.x, self.y))
