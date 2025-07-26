@@ -1,32 +1,38 @@
+import asyncio
+import requests
 from PIL import Image
 import numpy as np
-import time
+import io
 
-WIDTH = 960
-HEIGHT = 600
+WIDTH = 1920
+HEIGHT = 1200
 
 def draw_to_framebuffer(image: Image.Image):
     arr = np.array(image.convert("RGB"))
-
-    # BGR channel extraction (swap red and blue)
-    b = arr[:, :, 0] >> 3  # originally red
+    r = arr[:, :, 0] >> 3
     g = arr[:, :, 1] >> 2
-    r = arr[:, :, 2] >> 3  # originally blue
-
-    rgb565 = (b << 11) | (g << 5) | r  # BGR565
-
-    # Write as big-endian (high byte first)
-    buffer = rgb565.astype('>u2').tobytes()
-
+    b = arr[:, :, 2] >> 3
+    rgb565 = (r << 11) | (g << 5) | b
+    buffer = rgb565.astype('<u2').tobytes()  # Little-endian, RGB565
     with open("/dev/fb0", "wb") as f:
         f.write(buffer)
 
-def show_color(color, label):
-    img = Image.new("RGB", (WIDTH, HEIGHT), color)
-    draw_to_framebuffer(img)
-    print(f"Displayed {label}")
-    time.sleep(2)
+def fetch_cat_image() -> Image.Image:
+    try:
+        response = requests.get("https://cataas.com/cat", timeout=10)
+        img = Image.open(io.BytesIO(response.content)).convert("RGB")
+        img = img.resize((WIDTH, HEIGHT), Image.LANCZOS)
+        return img
+    except Exception as e:
+        print("Failed to fetch cat:", e)
+        # fallback: blank screen
+        return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
 
-show_color((255, 0, 0), "Red")
-show_color((0, 255, 0), "Green")
-show_color((0, 0, 255), "Blue")
+async def update_loop():
+    while True:
+        img = fetch_cat_image()
+        draw_to_framebuffer(img)
+        await asyncio.sleep(5)
+
+if __name__ == "__main__":
+    asyncio.run(update_loop())
