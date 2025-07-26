@@ -27,8 +27,8 @@ def draw_test_colors():
                 # Blue section - should appear blue
                 r, g, b = 0, 0, 255
             
-            # Use GBR format (G→R position, B→G position, R→B position)
-            rgb565 = ((g & 0xF8) << 8) | ((b & 0xFC) << 3) | (r >> 3)
+            # Use BRG format (B→R position, R→G position, G→B position)
+            rgb565 = ((b & 0xF8) << 8) | ((r & 0xFC) << 3) | (g >> 3)
             buffer += struct.pack(">H", rgb565)  # big-endian 16-bit
 
     with open("/dev/fb0", "wb") as f:
@@ -42,8 +42,8 @@ def draw_to_framebuffer(image: Image.Image):
     for y in range(HEIGHT):
         for x in range(WIDTH):
             r, g, b = pixels[y, x]
-            # Use GBR format (G→R position, B→G position, R→B position)
-            rgb565 = ((g & 0xF8) << 8) | ((b & 0xFC) << 3) | (r >> 3)
+            # Use BRG format (B→R position, R→G position, G→B position)
+            rgb565 = ((b & 0xF8) << 8) | ((r & 0xFC) << 3) | (g >> 3)
             buffer += struct.pack(">H", rgb565)  # big-endian 16-bit
 
     with open("/dev/fb0", "wb") as f:  
