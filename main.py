@@ -37,7 +37,7 @@ def draw_test_colors():
         f.write(buffer)
 
 def draw_to_framebuffer(image: Image.Image):
-    img = image.convert("RGB").resize((WIDTH, HEIGHT))
+    img = image.resize((WIDTH, HEIGHT))
     
     # Add timestamp text
     draw = ImageDraw.Draw(img)
