@@ -3,6 +3,7 @@ import requests
 from PIL import Image
 import io
 import numpy as np
+import struct
 
 WIDTH = 1920
 HEIGHT = 1200
@@ -18,9 +19,9 @@ def draw_to_framebuffer(image: Image.Image):
     for y in range(HEIGHT):
         for x in range(WIDTH):
             r, g, b = pixels[y, x]
-            # Convert to BGR565 format (swap R and B channels)
-            rgb565 = rgb888_to_rgb565(b, g, r)
-            buffer += int(rgb565).to_bytes(2, byteorder='little')  # write as little-endian
+            # Try BGR565 format (swap R and B)
+            rgb565 = ((b & 0xF8) << 8) | ((g & 0xFC) << 3) | (r >> 3)
+            buffer += struct.pack("<H", rgb565)  # little-endian 16-bit
 
     with open("/dev/fb0", "wb") as f:
         f.write(buffer)
