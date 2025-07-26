@@ -8,6 +8,3 @@ class Section:
 
     def add(self, x, y, widget):
         self.image.paste(widget.image, (x, y))
-
-    def paste_to(self, canvas):
-        canvas.paste(self.image, (self.x, self.y))

@@ -13,12 +13,12 @@ def rgb888_to_rgb565_numpy(image):
     return rgb565.astype('<u2').tobytes()
 
 class Screen:
-    def __init__(self, width=1920, height=1080):
+    def __init__(self, width=WIDTH, height=HEIGHT):
         self.image = Image.new("RGB", (width, height), "black")
 
     def compose(self, sections):
         for section in sections:
-            section.paste_to(self.image)
+            self.image.paste(section.image, (section.x, section.y))
         return self.image
 
     async def output(self):
