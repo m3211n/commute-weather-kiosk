@@ -40,9 +40,14 @@ def draw_to_framebuffer(image: Image.Image):
 
 async def update_loop():
     font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
+    prev_time = time.time()
 
     while True:
-        elapsed = int(time.time() - start_time)
+        now = time.time()
+        elapsed = int(now - start_time)
+        delta_ms = int((now - prev_time) * 1000)
+        prev_time = now
+
         temp = get_cpu_temp()
         ram = get_free_mem()
 
@@ -52,7 +57,8 @@ async def update_loop():
         lines = [
             f"{elapsed} seconds since start",
             f"CPU Temp: {temp}",
-            f"Free RAM: {ram}"
+            f"Free RAM: {ram}",
+            f"Last update: {delta_ms} ms ago"
         ]
 
         for i, line in enumerate(lines):
