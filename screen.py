@@ -1,8 +1,8 @@
 from PIL import Image
-import asyncio
 import numpy as np
+import asyncio
 
-WIDTH, HEIGHT = 1920, 1080
+WIDTH, HEIGHT = 1920, 1200  # Full screen
 
 def rgb888_to_rgb565_numpy(image):
     arr = np.array(image, dtype=np.uint8)
