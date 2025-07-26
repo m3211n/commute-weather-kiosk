@@ -1,9 +1,17 @@
+astroid==3.3.11
 certifi==2025.7.14
 charset-normalizer==3.4.2
+dill==0.4.0
 idna==3.10
 imgkit==1.2.3
+isort==6.0.1
+mccabe==0.7.0
 numpy==2.3.2
 pillow==11.3.0
+platformdirs==4.3.8
+pygame==2.6.1
+pylint==3.3.7
 requests==2.32.4
 six==1.17.0
+tomlkit==0.13.3
 urllib3==2.5.0

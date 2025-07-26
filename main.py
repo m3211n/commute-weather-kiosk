@@ -1,34 +1,54 @@
-import asyncio
-from screen import Screen
-from section import Section
-from widget import Widget
+import os
+import sys
+import pygame
+import time
 from datetime import datetime
 
-async def main():
-    screen = Screen()
+# Tell SDL to use the framebuffer console
+os.putenv('SDL_VIDEODRIVER', 'fbcon')
+os.putenv('SDL_FBDEV', '/dev/fb0')
+os.putenv('SDL_NOMOUSE', '1')  # optional: disable mouse
 
+# Init pygame
+pygame.init()
+
+# Set screen resolution
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1200
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
+
+# Hide the cursor
+pygame.mouse.set_visible(False)
+
+# Set up fonts
+pygame.font.init()
+font_big = pygame.font.Font('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 72)
+font_small = pygame.font.Font(None, 36)
+
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+CYAN = (0, 255, 255)
+
+# Main loop
+try:
     while True:
-        # Rebuild layout every cycle
-        section_top = Section(0, 0, 1920, 200)
-        section_main = Section(0, 200, 1920, 1000)
+        screen.fill(BLACK)
 
-        # Clock widget (dynamic)
-        clock = Widget(300, 100)
-        clock.clear()
-        clock.text((10, 10), datetime.now().strftime("%H:%M:%S"), font_size=48)
+        # Draw clock
+        now = datetime.now().strftime("%H:%M:%S")
+        text_surface = font_big.render(now, True, WHITE)
+        screen.blit(text_surface, (100, 100))
 
-        # Quote widget (static)
-        quote = Widget(800, 100)
-        quote.text((10, 10), "Be water, my friend.", font_size=24, color="cyan")
+        # Draw quote
+        quote_surface = font_small.render("Be water, my friend.", True, CYAN)
+        screen.blit(quote_surface, (100, 200))
 
-        # Add widgets to sections
-        section_top.add(50, 50, clock)
-        section_main.add(100, 100, quote)
+        # Flip to framebuffer
+        pygame.display.update()
 
-        # Compose and output
-        screen.compose([section_top, section_main])
-        await screen.output()
-        await asyncio.sleep(0.5)
+        time.sleep(1)
 
-if __name__ == "__main__":
-    asyncio.run(main())
+except KeyboardInterrupt:
+    pygame.quit()
+    sys.exit()
