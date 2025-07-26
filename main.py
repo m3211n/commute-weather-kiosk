@@ -3,7 +3,7 @@ from app.screen import Screen, WIDTH, HEIGHT
 
 TESTING = True
 
-TEXT = "THIS IS A TEST"
+TEXT = "THIS IS A TEST!"
 
 screen = Screen()
 
