@@ -52,9 +52,9 @@ def draw_to_framebuffer(image: Image.Image):
     for y in range(HEIGHT):
         for x in range(WIDTH):
             r, g, b = pixels[y, x]
-            # Use GRB format (G→R position, R→G position, B→B position)
+            # Use exact same format as working test
             rgb565 = ((g & 0xF8) << 8) | ((r & 0xFC) << 3) | ((b & 0xF8) >> 3)
-            buffer += struct.pack("<H", rgb565)  # little-endian
+            buffer += struct.pack("<H", rgb565)  # little-endian with GRB
 
     with open("/dev/fb0", "wb") as f:  
         f.write(buffer)
