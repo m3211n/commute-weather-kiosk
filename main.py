@@ -1,37 +1,65 @@
-from PIL import Image
-from app.screen import Screen, WIDTH, HEIGHT
-import imgkit
-import io
+import asyncio
+import time
+import subprocess
+from PIL import Image, ImageDraw, ImageFont
 
-TESTING = False
+WIDTH = 1920
+HEIGHT = 1200
+FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # Adjust if needed
+FONT_SIZE = 48
+COLOR_BG = (0, 0, 0)
+COLOR_TEXT = (255, 255, 255)
 
-html = '<h1 style="color: red;">Hello, Kiosk</h1>'
-imgkit.from_string(html, 'out.png')
+start_time = time.time()
 
-screen = Screen()
-html = f"""
-<html>
-  <body style="margin: 0; padding: 0;">
-    <div style="width: {WIDTH}px; height: {HEIGHT}px; background: blue; color: white; display: flex; align-items: center; justify-content: center;">
-      <h1>Hello Kiosk!</h1>
-    </div>
-  </body>
-</html>
-"""
+def get_cpu_temp():
+    try:
+        output = subprocess.check_output(["vcgencmd", "measure_temp"]).decode()
+        return output.strip().replace("temp=", "")
+    except:
+        return "N/A"
 
-html_image_bytes = imgkit.from_string(html, False)
-html_image = Image.open(io.BytesIO(html_image_bytes)).convert("RGB")
+def get_free_mem():
+    try:
+        output = subprocess.check_output(["free", "-m"]).decode().splitlines()
+        mem_line = output[1].split()
+        return f"{mem_line[3]} MB"
+    except:
+        return "N/A"
 
-# --- resize or position if needed
-# html_image = html_image.resize((WIDTH, HEIGHT))  # or center it
+def draw_to_framebuffer(image: Image.Image):
+    buffer = bytearray()
+    pixels = image.load()
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            r, g, b = pixels[x, y]
+            rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
+            buffer += rgb565.to_bytes(2, 'little')
+    with open("/dev/fb0", "wb") as f:
+        f.write(buffer)
 
-# --- paste onto your canvas
-screen.image.paste(html_image, (0, 0))  # (x, y) position
+async def update_loop():
+    font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
 
-# --- flush to framebuffer
-screen.output()
+    while True:
+        elapsed = int(time.time() - start_time)
+        temp = get_cpu_temp()
+        ram = get_free_mem()
 
-if TESTING:
-    screen.image.save("__preview/output.png") 
-else:
-    screen.output()
+        img = Image.new("RGB", (WIDTH, HEIGHT), COLOR_BG)
+        draw = ImageDraw.Draw(img)
+
+        lines = [
+            f"{elapsed} seconds since start",
+            f"CPU Temp: {temp}",
+            f"Free RAM: {ram}"
+        ]
+
+        for i, line in enumerate(lines):
+            draw.text((50, 100 + i * 60), line, font=font, fill=COLOR_TEXT)
+
+        draw_to_framebuffer(img)
+        await asyncio.sleep(1)
+
+if __name__ == "__main__":
+    asyncio.run(update_loop())
