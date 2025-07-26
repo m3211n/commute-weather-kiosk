@@ -30,17 +30,15 @@ def get_free_mem():
 import numpy as np
 
 def draw_to_framebuffer(image: Image.Image):
-    arr = np.array(image)  # This is what defines 'arr'
-    # Convert to numpy array and extract RGB channels
-    r = arr[:, :, 2] >> 3  # originally blue
+    arr = np.array(image.convert("RGB"))
+    r = arr[:, :, 0] >> 3
     g = arr[:, :, 1] >> 2
-    b = arr[:, :, 0] >> 3  # originally red
+    b = arr[:, :, 2] >> 3
     rgb565 = (r << 11) | (g << 5) | b
     buffer = rgb565.astype('<u2').tobytes()
 
     with open("/dev/fb0", "wb") as f:
         f.write(buffer)
-
 
 async def update_loop():
     font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
