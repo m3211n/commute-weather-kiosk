@@ -36,9 +36,10 @@ def draw_test_colors():
                 # Yellow (Red + Green)
                 r, g, b = 255, 255, 0
             
-            # Try standard RGB565 format first
-            rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3)
-            buffer += struct.pack(">H", rgb565)  # big-endian 16-bit
+            # Try different bit layout - maybe not standard RGB565
+            # Your framebuffer might need a different format entirely
+            rgb565 = ((g & 0xF8) << 8) | ((r & 0xFC) << 3) | ((b & 0xF8) >> 3)
+            buffer += struct.pack("<H", rgb565)  # little-endian with GRB
 
     with open("/dev/fb0", "wb") as f:
         f.write(buffer)
