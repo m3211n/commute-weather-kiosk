@@ -5,8 +5,8 @@ from widgets import Widget
 from datetime import datetime
 
 async def main():
-    section_top = Section(x=0, y=0, width=1920, height=200)
-    section_main = Section(x=0, y=200, width=1920, height=880)
+    section_top = Section(0, 0, 1920, 200)
+    section_main = Section(0, 200, 1920, 880)
 
     # Create widgets
     clock = Widget(300, 100)
