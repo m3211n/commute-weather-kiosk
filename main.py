@@ -12,9 +12,9 @@ IMGKIT_CONFIG = imgkit.config(wkhtmltoimage='/usr/bin/wkhtmltoimage')
 
 def draw_to_framebuffer(image: Image.Image):
     arr = np.array(image)
-    r = arr[:, :, 0] >> 3
+    b = arr[:, :, 0] >> 3
     g = arr[:, :, 1] >> 2
-    b = arr[:, :, 2] >> 3
+    r = arr[:, :, 2] >> 3
     rgb565 = (r << 11) | (g << 5) | b
     with open("/dev/fb0", "wb") as f:
         f.write(rgb565.astype('<u2').tobytes())
