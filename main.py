@@ -1,43 +1,43 @@
+import asyncio
 import requests
 from PIL import Image
+import io
 import numpy as np
-from io import BytesIO
-import time
 
-FB_WIDTH = 1920
-FB_HEIGHT = 1200
-FB_DEVICE = "/dev/fb0"
-REFRESH_INTERVAL = 5  # seconds
+WIDTH = 1920
+HEIGHT = 1200
 
-def fetch_random_cat_image() -> Image.Image:
-    url = "https://cataas.com/cat"  # Random cat image
-    response = requests.get(url, timeout=10)
-    image = Image.open(BytesIO(response.content)).convert("RGB")
-    return image
+def rgb888_to_rgb565(r, g, b):
+    return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
 def draw_to_framebuffer(image: Image.Image):
-    # Resize image to match framebuffer resolution
-    image = image.resize((FB_WIDTH, FB_HEIGHT), Image.Resampling.LANCZOS)
+    img = image.convert("RGB").resize((WIDTH, HEIGHT))
+    pixels = np.array(img)
+    
+    buffer = bytearray()
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            r, g, b = pixels[y, x]
+            # Swap R and B for BGR565
+            rgb565 = rgb888_to_rgb565(b, g, r)
+            buffer += rgb565.to_bytes(2, byteorder='big')  # write as big-endian
 
-    # Convert to RGB565 format
-    arr = np.array(image)
-    r = arr[:, :, 0] >> 3
-    g = arr[:, :, 1] >> 2
-    b = arr[:, :, 2] >> 3
-    rgb565 = (r << 11) | (g << 5) | b
-    buffer = rgb565.astype('>u2').tobytes()  # big endian
-
-    with open(FB_DEVICE, "wb") as f:
+    with open("/dev/fb0", "wb") as f:
         f.write(buffer)
 
-def main():
+def fetch_cat_image():
+    try:
+        response = requests.get("https://cataas.com/cat", timeout=10)
+        return Image.open(io.BytesIO(response.content)).convert("RGB")
+    except Exception as e:
+        print("Failed to fetch cat:", e)
+        return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))  # fallback
+
+async def update_loop():
     while True:
-        try:
-            img = fetch_random_cat_image()
-            draw_to_framebuffer(img)
-        except Exception as e:
-            print("Error:", e)
-        time.sleep(REFRESH_INTERVAL)
+        cat = fetch_cat_image()
+        draw_to_framebuffer(cat)
+        await asyncio.sleep(5)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(update_loop())
