@@ -1,7 +1,7 @@
 from PIL import ImageFont
 from app.screen import Screen, WIDTH, HEIGHT
 
-TESTING = True
+TESTING = False
 
 TEXT = "THIS IS A TEST!"
 
