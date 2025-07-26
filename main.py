@@ -34,8 +34,11 @@ def draw_to_framebuffer(image: Image.Image):
     r = arr[:, :, 0] >> 3
     g = arr[:, :, 1] >> 2
     b = arr[:, :, 2] >> 3
+
     rgb565 = (r << 11) | (g << 5) | b
-    buffer = rgb565.astype('<u2').tobytes()
+
+    # Force little-endian byte order (swap bytes if needed)
+    buffer = rgb565.astype('>u2').byteswap().tobytes()  # swap to little-endian
 
     with open("/dev/fb0", "wb") as f:
         f.write(buffer)
