@@ -1,75 +1,74 @@
 import asyncio
-# import time
-import imgkit
-from PIL import Image
-import numpy as np
-import io
-# import requests
+import time
+import subprocess
+from PIL import Image, ImageDraw, ImageFont
 
 WIDTH = 960
 HEIGHT = 600
-IMGKIT_CONFIG = imgkit.config(wkhtmltoimage='/usr/bin/wkhtmltoimage')
+FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # Adjust if needed
+FONT_SIZE = 48
+COLOR_BG = (0, 0, 0)
+COLOR_TEXT = (255, 255, 255)
+
+start_time = time.time()
+
+def get_cpu_temp():
+    try:
+        output = subprocess.check_output(["vcgencmd", "measure_temp"]).decode()
+        return output.strip().replace("temp=", "")
+    except:
+        return "N/A"
+
+def get_free_mem():
+    try:
+        output = subprocess.check_output(["free", "-m"]).decode().splitlines()
+        mem_line = output[1].split()
+        return f"{mem_line[3]} MB"
+    except:
+        return "N/A"
+
+import numpy as np
 
 def draw_to_framebuffer(image: Image.Image):
-    arr = np.array(image)
-    b = arr[:, :, 0] >> 3
+    arr = np.array(image)  # This is what defines 'arr'
+    # Convert to numpy array and extract RGB channels
+    r = arr[:, :, 2] >> 3  # originally blue
     g = arr[:, :, 1] >> 2
-    r = arr[:, :, 2] >> 3
+    b = arr[:, :, 0] >> 3  # originally red
     rgb565 = (r << 11) | (g << 5) | b
+    buffer = rgb565.astype('<u2').tobytes()
+
     with open("/dev/fb0", "wb") as f:
-        f.write(rgb565.astype('<u2').tobytes())
+        f.write(buffer)
 
-def build_html():
-    return f"""
-<html>
-<head>
-  <style>
-    body {{
-      background-color: black;
-      color: white;
-      margin: 0;
-      padding: 0;
-    }}
-    img {{
-      display: block;
-      margin: auto;
-    }}
-    .label {{
-      text-align: center;
-      font-family: sans-serif;
-      font-size: 28px;
-      margin-top: 20px;
-    }}
-  </style>
-</head>
-<body>
-  <div class="label">Weather in Stockholm</div>
-  <img src="https://wttr.in/Stockholm.png?m&lang=en&1" />
-</body>
-</html>
-"""
-
-def html_to_image(html: str) -> Image.Image:
-    png_data = imgkit.from_string(html, False, config=IMGKIT_CONFIG, options={
-        'format': 'png',
-        'width': '960',
-        'height': '400',
-        'disable-smart-width': '',
-        'load-error-handling': 'ignore',
-        'javascript-delay': '1000'
-    })
-    return Image.open(io.BytesIO(png_data)).convert("RGB")
 
 async def update_loop():
+    font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
+    prev_time = time.time()
+
     while True:
-        html = build_html()
-        img = html_to_image(html)
+        now = time.time()
+        elapsed = int(now - start_time)
+        delta_ms = int((now - prev_time) * 1000)
+        prev_time = now
 
-        screen = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
-        screen.paste(img, (0, 100))  # Adjust vertical position
+        temp = get_cpu_temp()
+        ram = get_free_mem()
 
-        draw_to_framebuffer(screen)
-        await asyncio.sleep(900)  # update every 15 minutes
+        img = Image.new("RGB", (WIDTH, HEIGHT), COLOR_BG)
+        draw = ImageDraw.Draw(img)
+
+        lines = [
+            f"{elapsed} seconds since start",
+            f"CPU Temp: {temp}",
+            f"Free RAM: {ram}",
+            f"Last update: {delta_ms} ms ago"
+        ]
+
+        for i, line in enumerate(lines):
+            draw.text((50, 100 + i * 60), line, font=font, fill=COLOR_TEXT)
+
+        draw_to_framebuffer(img)
 
 if __name__ == "__main__":
     asyncio.run(update_loop())
