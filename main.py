@@ -55,9 +55,7 @@ def draw_to_framebuffer(image: Image.Image):
     for y in range(HEIGHT):
         for x in range(WIDTH):
             r, g, b = pixels[y, x]
-            # Correct mapping: R→G, G→R, B→B
-            # So put G in R position, R in G position, B in B position
-            rgb565 = ((g & 0xF8) << 8) | ((r & 0xFC) << 3) | ((b & 0xF8) >> 3)
+            rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3)
             buffer += struct.pack("<H", rgb565)
 
     with open("/dev/fb0", "wb") as f:  
