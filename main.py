@@ -1,16 +1,18 @@
 import asyncio
 import time
 import subprocess
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
+import imgkit
+import numpy as np
 
 WIDTH = 960
 HEIGHT = 600
-FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # Adjust if needed
-FONT_SIZE = 48
-COLOR_BG = (0, 0, 0)
-COLOR_TEXT = (255, 255, 255)
+HTML_WIDTH = 800  # logical size for HTML render
+HTML_HEIGHT = 200
+START_TIME = time.time()
 
-start_time = time.time()
+# Path to wkhtmltoimage binary
+IMGKIT_CONFIG = imgkit.config(wkhtmltoimage='/usr/bin/wkhtmltoimage')
 
 def get_cpu_temp():
     try:
@@ -27,50 +29,84 @@ def get_free_mem():
     except:
         return "N/A"
 
-import numpy as np
+def html_to_image(html: str) -> Image.Image:
+    # Render HTML to temporary file
+    img_data = imgkit.from_string(html, False, config=IMGKIT_CONFIG, options={
+        'format': 'png',
+        'width': str(HTML_WIDTH),
+        'height': str(HTML_HEIGHT),
+        'disable-smart-width': ''
+    })
+    return Image.open(io.BytesIO(img_data)).convert("RGB")
 
 def draw_to_framebuffer(image: Image.Image):
-    # Convert to numpy array and extract RGB channels
     arr = np.array(image)
     r = arr[:, :, 0] >> 3
     g = arr[:, :, 1] >> 2
     b = arr[:, :, 2] >> 3
-
-    # Compose RGB565
     rgb565 = (r << 11) | (g << 5) | b
-    buffer = rgb565.astype('<u2').tobytes()
-
     with open("/dev/fb0", "wb") as f:
-        f.write(buffer)
+        f.write(rgb565.astype('<u2').tobytes())
 
+def build_html(elapsed: int, temp: str, ram: str, delta_ms: int) -> str:
+    return f"""
+    <html>
+    <head>
+        <style>
+            body {{
+                background: black;
+                color: white;
+                font-family: Arial, sans-serif;
+                font-size: 24px;
+            }}
+            table {{
+                width: 100%;
+                border-collapse: collapse;
+            }}
+            td {{
+                padding: 10px;
+                border-bottom: 1px solid #444;
+            }}
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr><td>Uptime</td><td>{elapsed} sec</td></tr>
+            <tr><td>CPU Temp</td><td>{temp}</td></tr>
+            <tr><td>Free RAM</td><td>{ram}</td></tr>
+            <tr><td>Render Time</td><td>{delta_ms} ms</td></tr>
+        </table>
+    </body>
+    </html>
+    """
 
 async def update_loop():
-    font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
-    prev_time = time.time()
-
     while True:
-        now = time.time()
-        elapsed = int(now - start_time)
-        delta_ms = int((now - prev_time) * 1000)
-        prev_time = now
+        t0 = time.time()
 
+        elapsed = int(t0 - START_TIME)
         temp = get_cpu_temp()
         ram = get_free_mem()
 
-        img = Image.new("RGB", (WIDTH, HEIGHT), COLOR_BG)
-        draw = ImageDraw.Draw(img)
+        html = build_html(elapsed, temp, ram, 0)
+        img = html_to_image(html)
 
-        lines = [
-            f"{elapsed} seconds since start",
-            f"CPU Temp: {temp}",
-            f"Free RAM: {ram}",
-            f"Last update: {delta_ms} ms ago"
-        ]
+        # Create base screen
+        screen = Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
+        screen.paste(img, (int((WIDTH - HTML_WIDTH) / 2), 100))  # center horizontally
 
-        for i, line in enumerate(lines):
-            draw.text((50, 100 + i * 60), line, font=font, fill=COLOR_TEXT)
+        t1 = time.time()
+        delta_ms = int((t1 - t0) * 1000)
 
-        draw_to_framebuffer(img)
+        # Update render time in HTML and re-render just that part
+        html = build_html(elapsed, temp, ram, delta_ms)
+        img = html_to_image(html)
+        screen.paste(img, (int((WIDTH - HTML_WIDTH) / 2), 100))
+
+        draw_to_framebuffer(screen)
+
+        await asyncio.sleep(2)
 
 if __name__ == "__main__":
+    import io
     asyncio.run(update_loop())
