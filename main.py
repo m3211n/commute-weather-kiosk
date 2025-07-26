@@ -43,7 +43,7 @@ def draw_to_framebuffer(image: Image.Image):
     for y in range(HEIGHT):
         for x in range(WIDTH):
             r, g, b = pixels[y, x]
-            rgb565 = ((g & 0xF8) << 8) | ((r & 0xFC) << 3) | ((b & 0xF8) >> 3)
+            rgb565 = ((r & 0xF8) << 8) | ((b & 0xFC) << 3) | ((g & 0xF8) >> 3)
             buffer += struct.pack("<H", rgb565)
 
     with open("/dev/fb0", "wb") as f:  
@@ -62,14 +62,14 @@ def debug_color_conversion(image: Image.Image):
     img = image.convert("RGB").resize((WIDTH, HEIGHT))
     pixels = np.array(img)
     
-    # Apply our GRB conversion in reverse to see what we're actually displaying
+    # Apply our RBG conversion in reverse to see what we're actually displaying
     converted_pixels = np.zeros_like(pixels)
     for y in range(HEIGHT):
         for x in range(WIDTH):
             r, g, b = pixels[y, x]
-            # Our conversion: G→R, R→G, B→B
-            # So to see what we display: G→R, R→G, B→B
-            converted_pixels[y, x] = [g, r, b]  # GRB -> RGB for display
+            # Our conversion: R→G, B→R, G→B
+            # So to see what we display: R→G, B→R, G→B
+            converted_pixels[y, x] = [b, r, g]  # RBG -> RGB for display
     
     converted_img = Image.fromarray(converted_pixels.astype(np.uint8))
     converted_img.save("converted_cat.png")
