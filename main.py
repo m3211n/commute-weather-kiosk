@@ -11,6 +11,29 @@ HEIGHT = 1200
 def rgb888_to_rgb565(r, g, b):
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
+def draw_test_colors():
+    """Draw test pattern with solid colors to debug"""
+    buffer = bytearray()
+    
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            if x < WIDTH // 3:
+                # Red section - should appear red
+                r, g, b = 255, 0, 0
+            elif x < 2 * WIDTH // 3:
+                # Green section - should appear green  
+                r, g, b = 0, 255, 0
+            else:
+                # Blue section - should appear blue
+                r, g, b = 0, 0, 255
+            
+            # Try big-endian instead of little-endian
+            rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
+            buffer += struct.pack(">H", rgb565)  # big-endian 16-bit
+
+    with open("/dev/fb0", "wb") as f:
+        f.write(buffer)
+
 def draw_to_framebuffer(image: Image.Image):
     img = image.convert("RGB").resize((WIDTH, HEIGHT))
     pixels = np.array(img)
@@ -35,6 +58,10 @@ def fetch_cat_image():
         return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))  # fallback
 
 async def update_loop():
+    # First test with solid colors
+    draw_test_colors()
+    await asyncio.sleep(10)  # Show test pattern for 10 seconds
+    
     while True:
         cat = fetch_cat_image()
         draw_to_framebuffer(cat)
