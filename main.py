@@ -3,8 +3,8 @@ import time
 import subprocess
 from PIL import Image, ImageDraw, ImageFont
 
-WIDTH = 1920
-HEIGHT = 1200
+WIDTH = 960
+HEIGHT = 600
 FONT_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # Adjust if needed
 FONT_SIZE = 48
 COLOR_BG = (0, 0, 0)
