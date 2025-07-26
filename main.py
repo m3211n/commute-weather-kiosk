@@ -2,7 +2,7 @@ import asyncio
 from label import Label
 from datetime import datetime
 
-label = Label(x=50, y=50, width=200, height=50, font_size=32)
+label = Label(x=560, y=500, width=800, height=200, font_size=120)
 
 async def main():
     while True:
