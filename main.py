@@ -36,7 +36,7 @@ def draw_test_colors():
         f.write(buffer)
 
 def draw_to_framebuffer(image: Image.Image):
-    img = image.resize((WIDTH, HEIGHT))
+    img = image.convert("RGB").resize((WIDTH, HEIGHT))
     
     # Add timestamp text
     draw = ImageDraw.Draw(img)
@@ -53,7 +53,7 @@ def draw_to_framebuffer(image: Image.Image):
     buffer = bytearray()
     for y in range(HEIGHT):
         for x in range(WIDTH):
-            r, g, b = pixels[x, y]
+            r, g, b = pixels[x, y]  # Should always be RGB after convert()
             rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3)
             buffer += struct.pack("<H", rgb565)
 
@@ -63,7 +63,7 @@ def draw_to_framebuffer(image: Image.Image):
 def fetch_cat_image():
     try:
         response = requests.get("https://cataas.com/cat", timeout=10)
-        return Image.open(io.BytesIO(response.content))
+        return Image.open(io.BytesIO(response.content)).convert("RGB")
     except Exception as e:
         print("Failed to fetch cat:", e)
         return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))  # fallback
