@@ -2,7 +2,6 @@ import asyncio
 import requests
 from PIL import Image, ImageDraw, ImageFont
 import io
-import numpy as np
 import struct
 import datetime
 
@@ -49,12 +48,12 @@ def draw_to_framebuffer(image: Image.Image):
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
     draw.text((50, 50), f"Updated: {timestamp}", font=font, fill=(255, 255, 255))
     
-    pixels = np.array(img)
+    pixels = img.load()
     
     buffer = bytearray()
     for y in range(HEIGHT):
         for x in range(WIDTH):
-            r, g, b = pixels[y, x]
+            r, g, b = pixels[x, y]
             rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3)
             buffer += struct.pack("<H", rgb565)
 
@@ -72,18 +71,19 @@ def fetch_cat_image():
 def debug_color_conversion(image: Image.Image):
     """Save what the image looks like after our color conversion"""
     img = image.convert("RGB").resize((WIDTH, HEIGHT))
-    pixels = np.array(img)
+    pixels = img.load()
     
-    # Apply our RBG conversion in reverse to see what we're actually displaying
-    converted_pixels = np.zeros_like(pixels)
+    # Create new image to show what we're actually displaying
+    converted_img = Image.new("RGB", (WIDTH, HEIGHT))
+    converted_pixels = converted_img.load()
+    
     for y in range(HEIGHT):
         for x in range(WIDTH):
-            r, g, b = pixels[y, x]
+            r, g, b = pixels[x, y]
             # Our conversion: R→G, B→R, G→B
             # So to see what we display: R→G, B→R, G→B
-            converted_pixels[y, x] = [b, r, g]  # RBG -> RGB for display
+            converted_pixels[x, y] = (b, r, g)  # RBG -> RGB for display
     
-    converted_img = Image.fromarray(converted_pixels.astype(np.uint8))
     converted_img.save("converted_cat.png")
 
 async def update_loop():
