@@ -12,24 +12,32 @@ def rgb888_to_rgb565(r, g, b):
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
 def draw_test_colors():
-    """Draw test pattern with solid colors to debug"""
+    """Draw test pattern with different color combinations to debug"""
     buffer = bytearray()
     
     for y in range(HEIGHT):
         for x in range(WIDTH):
-            if x < WIDTH // 3:
-                # Red section - should appear red
+            if x < WIDTH // 6:
+                # Pure Red
                 r, g, b = 255, 0, 0
-            elif x < 2 * WIDTH // 3:
-                # Green section - should appear green  
-                r, g, b = 0, 255, 0
-            else:
-                # Blue section - should appear blue
+            elif x < WIDTH // 3:
+                # Pure Blue  
                 r, g, b = 0, 0, 255
+            elif x < WIDTH // 2:
+                # Pure Green
+                r, g, b = 0, 255, 0
+            elif x < 2 * WIDTH // 3:
+                # Cyan (Green + Blue)
+                r, g, b = 0, 255, 255
+            elif x < 5 * WIDTH // 6:
+                # Magenta (Red + Blue)
+                r, g, b = 255, 0, 255
+            else:
+                # Yellow (Red + Green)
+                r, g, b = 255, 255, 0
             
-            # Use BRG format with correct bit operations for RGB565
-            # B→R position (5 bits), R→G position (6 bits), G→B position (5 bits)
-            rgb565 = ((b & 0xF8) << 8) | ((r & 0xFC) << 3) | ((g & 0xF8) >> 3)
+            # Try standard RGB565 format first
+            rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | ((b & 0xF8) >> 3)
             buffer += struct.pack(">H", rgb565)  # big-endian 16-bit
 
     with open("/dev/fb0", "wb") as f:
