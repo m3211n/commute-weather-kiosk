@@ -1,9 +1,10 @@
 import asyncio
 import requests
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import io
 import numpy as np
 import struct
+import datetime
 
 WIDTH = 1920
 HEIGHT = 1200
@@ -37,6 +38,17 @@ def draw_test_colors():
 
 def draw_to_framebuffer(image: Image.Image):
     img = image.convert("RGB").resize((WIDTH, HEIGHT))
+    
+    # Add timestamp text
+    draw = ImageDraw.Draw(img)
+    try:
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 48)
+    except:
+        font = ImageFont.load_default()
+    
+    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+    draw.text((50, 50), f"Updated: {timestamp}", font=font, fill=(255, 255, 255))
+    
     pixels = np.array(img)
     
     buffer = bytearray()
