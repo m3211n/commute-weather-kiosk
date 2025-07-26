@@ -68,6 +68,10 @@ def fetch_cat_image():
         return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))  # fallback
 
 async def update_loop():
+    # Test first to confirm colors work
+    draw_test_colors()
+    await asyncio.sleep(5)
+    
     while True:
         cat = fetch_cat_image()
         draw_to_framebuffer(cat)
