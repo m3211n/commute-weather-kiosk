@@ -1,49 +1,43 @@
-import asyncio
 import requests
 from PIL import Image
 import numpy as np
-import io
+from io import BytesIO
+import time
 
-WIDTH = 1920
-HEIGHT = 1200
-CAT_URL = "https://cataas.com/cat"
+FB_WIDTH = 1920
+FB_HEIGHT = 1200
+FB_DEVICE = "/dev/fb0"
+REFRESH_INTERVAL = 5  # seconds
 
-def rgb_to_rgb565(image: Image.Image) -> bytes:
-    """Convert PIL RGB image to raw RGB565 bytes."""
-    img = image.convert("RGB")
-    arr = np.array(img)
+def fetch_random_cat_image() -> Image.Image:
+    url = "https://cataas.com/cat"  # Random cat image
+    response = requests.get(url, timeout=10)
+    image = Image.open(BytesIO(response.content)).convert("RGB")
+    return image
 
+def draw_to_framebuffer(image: Image.Image):
+    # Resize image to match framebuffer resolution
+    image = image.resize((FB_WIDTH, FB_HEIGHT), Image.Resampling.LANCZOS)
+
+    # Convert to RGB565 format
+    arr = np.array(image)
     r = arr[:, :, 0] >> 3
     g = arr[:, :, 1] >> 2
     b = arr[:, :, 2] >> 3
-
     rgb565 = (r << 11) | (g << 5) | b
-    return rgb565.astype('>u2').tobytes()  # >u2 = big-endian 16-bit
+    buffer = rgb565.astype('>u2').tobytes()  # big endian
 
-def draw_to_framebuffer(image: Image.Image):
-    """Write RGB565 image to /dev/fb0."""
-    try:
-        fb_data = rgb_to_rgb565(image)
-        with open("/dev/fb0", "wb") as f:
-            f.write(fb_data)
-    except Exception as e:
-        print("Framebuffer write error:", e)
+    with open(FB_DEVICE, "wb") as f:
+        f.write(buffer)
 
-def fetch_cat_image() -> Image.Image:
-    """Download and resize cat image. Return black fallback if it fails."""
-    try:
-        response = requests.get(CAT_URL, timeout=10)
-        img = Image.open(io.BytesIO(response.content))
-        return img.convert("RGB").resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS)
-    except Exception as e:
-        print("Failed to fetch cat image:", e)
-        return Image.new("RGB", (WIDTH, HEIGHT), (0, 0, 0))
-
-async def update_loop():
+def main():
     while True:
-        img = fetch_cat_image()
-        draw_to_framebuffer(img)
-        await asyncio.sleep(5)
+        try:
+            img = fetch_random_cat_image()
+            draw_to_framebuffer(img)
+        except Exception as e:
+            print("Error:", e)
+        time.sleep(REFRESH_INTERVAL)
 
 if __name__ == "__main__":
-    asyncio.run(update_loop())
+    main()
