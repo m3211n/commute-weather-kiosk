@@ -21,7 +21,7 @@ def fetch_cat_image() -> Image.Image:
     try:
         response = requests.get("https://cataas.com/cat", timeout=10)
         img = Image.open(io.BytesIO(response.content)).convert("RGB")
-        img = img.resize((WIDTH, HEIGHT), Image.LANCZOS)
+        img = img.resize((WIDTH, HEIGHT), Image.Resampling.LANCZOS)
         return img
     except Exception as e:
         print("Failed to fetch cat:", e)
