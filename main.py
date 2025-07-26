@@ -1,5 +1,5 @@
 from PIL import Image
-from app.screen import Screen
+from app.screen import Screen, WIDTH, HEIGHT
 import imgkit
 import io
 
@@ -9,11 +9,11 @@ html = '<h1 style="color: red;">Hello, Kiosk</h1>'
 imgkit.from_string(html, 'out.png')
 
 screen = Screen()
-html = """
+html = f"""
 <html>
   <body style="margin: 0; padding: 0;">
-    <div style="width: 640px; height: 480px; background: black; color: white; display: flex; align-items: center; justify-content: center;">
-      <h1>Hello Kiosk</h1>
+    <div style="width: {WIDTH}px; height: {HEIGHT}px; background: blue; color: white; display: flex; align-items: center; justify-content: center;">
+      <h1>Hello Kiosk!</h1>
     </div>
   </body>
 </html>
