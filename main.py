@@ -4,7 +4,8 @@ from PIL import Image, ImageDraw, ImageFont
 # from datetime import datetime
 from screen import Screen
 
-fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
+fnt_40 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
+fnt_16 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 16)
 
 class Widget:
     def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor=(0, 0, 0)):
@@ -34,7 +35,10 @@ async def main():
         while True:
             for widget in s.widgets.values():
                 context = widget.get_context()
-                context.text((0, 0), f"{random.randint(1000, 9999)}", font=fnt, fill=(255, 255, 255))
+
+                context.text((0, 0), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
+                context.text((0, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))
+
             
             await s.refresh_all()
             await asyncio.sleep(5)
