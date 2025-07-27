@@ -30,7 +30,8 @@ class Label:
     def _render(self, new_text):
         bbox = self.font.getbbox(self._text) # fallback text if empty
         width = bbox[2] - bbox[0]
-        height = bbox[3] - bbox[1]
+        ascent, descent = self.font.getmetrics()
+        height = ascent + descent
         image = Image.new("RGB", (width, height), self.bg)
         draw = ImageDraw.Draw(image)
         draw.text((0, 0), new_text, fill=self.color, font=self.font)
