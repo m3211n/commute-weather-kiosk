@@ -7,7 +7,7 @@ from screen import Screen
 fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
 
 class Widget:
-    def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor="black"):
+    def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor=(0, 0, 0)):
         self.name = name
         self.x, self.y = position
         self.w, self.h = size
@@ -20,13 +20,13 @@ class Widget:
 async def main():
 
     with Screen() as s:
-        for i, color in enumerate(("red", "green", "blue")):
+        for i, color in enumerate(((255, 0, 0), (0, 255, 0), (0, 0, 255))):
             s.add(Widget("test", (i*100, 0), (100, 100), color))
 
     while True:
         for widget in s.widgets.values():
             context = widget.get_context()
-            context.text((0, 0), f"{random.randint(1000, 9999)}", fnt, "white")
+            context.text((0, 0), f"{random.randint(1000, 9999)}", fnt, (255, 255, 255))
         
         await s.refresh_all()
         await asyncio.sleep(5)
