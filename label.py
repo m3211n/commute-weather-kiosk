@@ -24,14 +24,14 @@ class Label:
 
     async def text(self, new_text):
         self._text = new_text
-        bbox = self.font.getbbox(self._text) # fallback text if empty
-        self.width = bbox[2] - bbox[0]
-        self.height = bbox[3] - bbox[1]
         image = self._render(new_text)
         await self._write_to_framebuffer(image)
 
     def _render(self, new_text):
-        image = Image.new("RGB", (self.width, self.height), self.bg)
+        bbox = self.font.getbbox(self._text) # fallback text if empty
+        width = bbox[2] - bbox[0]
+        height = bbox[3] - bbox[1]
+        image = Image.new("RGB", (width, height), self.bg)
         draw = ImageDraw.Draw(image)
         draw.text((0, 0), new_text, fill=self.color, font=self.font)
         return image
@@ -41,11 +41,12 @@ class Label:
 
         row_size = 1920  # screen width in pixels
         fb_offset = (self.y * row_size + self.x) * 2
+        width, height = image.size
 
         with open("/dev/fb0", "r+b") as f:
-            for row in range(self.height):
+            for row in range(height):
                 offset = fb_offset + row * row_size * 2
-                start = row * self.width * 2
-                end = start + self.width * 2
+                start = row * width * 2
+                end = start + width * 2
                 f.seek(offset)
                 f.write(buf[start:end])
