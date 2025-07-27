@@ -11,10 +11,13 @@ class Widget:
         self.name = name
         self.x, self.y = position
         self.w, self.h = size
-        self.image = Image.new("RGB", (self.w, self.h), bgcolor)
-        self._draw_context = ImageDraw.Draw(self.image)
+        self.bgcolor = bgcolor
+        self.image = Image.new("RGB", (self.w, self.h), self.bgcolor)
+        self._draw_context = None
     
-    def get_context(self):
+    def get_context(self, clean=True):
+        image = Image.new("RGB", (self.w, self.h), self.bgcolor) if clean else self.image
+        self._draw_context = ImageDraw.Draw(image)
         return self._draw_context
 
     def get_image(self):
