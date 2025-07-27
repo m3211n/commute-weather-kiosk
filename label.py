@@ -16,7 +16,7 @@ class Label:
     def __init__(self, x, y, text="...", font_size=24, color="white", bg="black"):
         self.font_size = font_size
         self.font = ImageFont.truetype(FONT_PATH, self.font_size)
-        self.text(text)
+        self._text = text
         self.x = x
         self.y = y
         self.color = color
