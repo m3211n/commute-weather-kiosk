@@ -24,6 +24,9 @@ class Widget:
 
     def get_image(self):
         return self.image
+
+    def text(self, *args, **kwargs):
+        self._draw_context.text(*args, **kwargs)
       
 async def main():
 
@@ -34,10 +37,9 @@ async def main():
 
         while True:
             for widget in s.widgets.values():
-                context = widget.get_context()
 
-                context.text((0, 0), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
-                context.text((0, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))
+                widget.text((0, 0), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
+                widget.text((0, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))
 
             
             await s.refresh_all()
