@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 # from datetime import datetime
 from screen import Screen
 
-fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 40)
+fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
 
 class Widget:
     def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor="black"):
