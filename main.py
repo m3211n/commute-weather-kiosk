@@ -21,6 +21,7 @@ class Widget:
         return self.image
 
     def text(self, *args, **kwargs):
+        self._draw_context.rectangle([0, 0, self.w, self.h], fill=self.bgcolor)
         self._draw_context.text(*args, **kwargs)
       
 async def main():
