@@ -26,7 +26,7 @@ async def main():
     while True:
         for widget in s.widgets.values():
             context = widget.get_context()
-            context.text((0, 0), f"{random.randint(1000, 9999)}", fnt, (255, 255, 255))
+            context.text((0, 0), f"{random.randint(1000, 9999)}", font=fnt, fill=(255, 255, 255))
         
         await s.refresh_all()
         await asyncio.sleep(5)

@@ -15,7 +15,7 @@ def rgb888_to_rgb565_numpy(image):
 
 
 class Screen:
-    def __init__(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT, bgcolor="black"):
+    def __init__(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT, bgcolor=(0, 0, 0)):
         self.width = width
         self.height = height
         self.fb = None
