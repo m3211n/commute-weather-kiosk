@@ -59,4 +59,4 @@ class Screen:
         image = Image.new("RGB", (self.width, self.height), self._bgcolor)
         buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
         self.fb.seek(0)
-        self.fb.write(buf)
+        self.fb.write(buf)        

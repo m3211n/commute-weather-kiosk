@@ -29,7 +29,8 @@ async def main():
     with Screen() as s:
         for i, color in enumerate(((255, 0, 0), (0, 255, 0), (0, 0, 255))):
             s.add(Widget(f"test_{i}", (i*100, 0), (100, 100), color))
-
+        s.clear()
+        
         while True:
             for widget in s.widgets.values():
                 context = widget.get_context()
