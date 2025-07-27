@@ -19,9 +19,11 @@ class Widget:
 
     def get_image(self):
         return self.image
+    
+    def clean(self):
+        self._draw_context.rectangle([0, 0, self.w, self.h], fill=self.bgcolor)
 
     def text(self, *args, **kwargs):
-        self._draw_context.rectangle([0, 0, self.w, self.h], fill=self.bgcolor)
         self._draw_context.text(*args, **kwargs)
       
 async def main():
@@ -33,7 +35,7 @@ async def main():
 
         while True:
             for widget in s.widgets.values():
-
+                widget.clean()
                 widget.text((0, 0), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
                 widget.text((0, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))
 
