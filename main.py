@@ -16,8 +16,9 @@ class Widget:
         self._draw_context = None
     
     def get_context(self, clean=True):
-        self.image = Image.new("RGB", (self.w, self.h), self.bgcolor) if clean else self.image
         self._draw_context = ImageDraw.Draw(self.image)
+        if clean:
+            self._draw_context.rectangle([0, 0, self.w, self.h], fill=self.bgcolor)
         return self._draw_context
 
     def get_image(self):
