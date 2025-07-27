@@ -24,7 +24,7 @@ class Label:
 
     async def text(self, new_text):
         self._text = new_text
-        bbox = self.font.getbbox(self.text) # fallback text if empty
+        bbox = self.font.getbbox(self._text) # fallback text if empty
         self.width = bbox[2] - bbox[0]
         self.height = bbox[3] - bbox[1]
         image = self._render(new_text)
