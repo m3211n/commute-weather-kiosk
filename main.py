@@ -20,7 +20,7 @@ class Widget:
 async def main():
 
     with Screen() as s:
-        for i, color in enumerate("red", "green", "blue"):
+        for i, color in enumerate(list("red", "green", "blue")):
             await s.add(Widget("test", (i*100, 0), (100, 100), color))
 
     while True:
