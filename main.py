@@ -16,6 +16,9 @@ class Widget:
     
     def get_context(self):
         return self._draw_context
+
+    def get_image(self):
+        return self.image
       
 async def main():
 
