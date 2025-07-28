@@ -1,5 +1,5 @@
 import logging
-import time
+# import time
 import asyncio
 import random
 from PIL import Image, ImageDraw
@@ -49,23 +49,17 @@ async def main():
         s.add(widgets)
         await s.clear()
         s.widgets["Weather"].add_image("shared/weather_icons/cloudy.png", (200, 200))
-        bulk = False
         while True:
             for widget in s.widgets.values():
                 widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=Colors.title)
                 widget.text((8, 40), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=Colors.default)
                 widget.text((8, 120), f"{random.randint(1000, 9999)}", font=Fonts.clock, fill=Colors.departure_times)
-            on = time.time()
-            if bulk:
-                await s.refresh_all_bulk()
-                method = "refresh_all_bulk"
-            else:
-                await s.refresh_all()
-                method = "refresh_all"
-            bulk = not bulk
-            off = time.time() - on
-            logging.debug(" %s - Finished in: %.3f s.", method, off)
-            await asyncio.sleep(1)
+            # on = time.time()
+            await s.refresh_all()
+            # method = "refresh_all"
+            # off = time.time() - on
+            # logging.debug(" %s - Finished in: %.3f s.", method, off)
+            await asyncio.sleep(2)
 
 if __name__ == "__main__":
     asyncio.run(main())
