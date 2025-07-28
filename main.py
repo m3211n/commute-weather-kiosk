@@ -32,7 +32,7 @@ async def main():
 
     canvas.clear(0)
     canvas.draw_rect(300, 300, 100, 100, 0xFFF0)
-    canvas.draw_text(400, 400, "Hello Hacker!", "fonts/chicago.bdf", 1, 0xFFF0)
+    canvas.draw_text(400, 400, "Hello Hacker!", "fonts/chicago.bdf", 16, 0xFFF0)
 
     with Screen() as s:
         for i, color in enumerate(((127, 0, 0), (0, 127, 0), (0, 0, 127))):
