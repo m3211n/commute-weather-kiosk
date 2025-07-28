@@ -6,7 +6,7 @@ from screen import Screen
 from shared.styles import Fonts, Colors
 
 class Widget:
-    def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor=(0, 0, 0)):
+    def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor=Colors.panel_bg):
         self.name = name
         self.x, self.y = position
         self.w, self.h = size
@@ -31,11 +31,12 @@ class Widget:
         self.image.paste(im, box, mask=im.split()[3])
 
 widgets = {
-    Widget("Clock", (8, 8), (948, 560), (28, 28, 28)),
-    Widget("Trains_1", (8, 576), (948, 200), (28, 28, 28)),
-    Widget("Trains_2", (8, 784), (948, 200), (28, 28, 28)),
-    Widget("Busses_1", (8, 992), (948, 200), (28, 28, 28)),
-    Widget("Weather", (964, 8), (948, 1184), (28, 28, 28))
+    Widget("Clock", (8, 8), (948, 400)),
+    Widget("Trains_1", (8, 416), (948, 200)),
+    Widget("Trains_2", (8, 624), (948, 200)),
+    Widget("Busses_1", (8, 832), (948, 200)),
+    Widget("Weather", (964, 8), (948, 1064)),
+    Widget("Status", (8, 1024), (1920, 160))
 }
 
 
@@ -49,6 +50,7 @@ async def main():
             for widget in s.widgets.values():
                 widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=Colors.title)
                 widget.text((8, 40), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=Colors.default)
+                widget.text((8, 120), f"{random.randint(1000, 9999)}", font=Fonts.clock, fill=Colors.departure_times)
             if bulk:
                 await s.refresh_all_bulk()
             else:
