@@ -1,11 +1,9 @@
 import asyncio
 import random
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 # from datetime import datetime
 from screen import Screen
-
-fnt_40 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
-fnt_16 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 16)
+from shared.fonts import Fonts
 
 class Widget:
     def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor=(0, 0, 0)):
@@ -41,8 +39,8 @@ async def main():
         while True:
             for widget in s.widgets.values():
                 widget.clean()
-                widget.text((8, 8), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
-                widget.text((8, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))      
+                widget.text((8, 8), f"{widget.name}", Fonts.title, fill=(255, 255, 255))
+                widget.text((8, 20), f"{random.randint(1000, 9999)}", Fonts.value_small, fill=(255, 255, 255))      
             await s.refresh_all()
             await asyncio.sleep(0.1)
 
