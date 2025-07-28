@@ -6,12 +6,15 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
 
 def rgb888_to_rgb565_numpy(image):
-    arr = np.array(image, dtype=np.uint8)
-    r = arr[:, :, 0].astype(np.uint16)
-    g = arr[:, :, 1].astype(np.uint16)
-    b = arr[:, :, 2].astype(np.uint16)
-    rgb565 = ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3)
-    return rgb565.astype('<u2').tobytes()
+    arr = np.asarray(image.convert("RGB"))  # ensures RGB mode, shape (H, W, 3), dtype=uint8
+    arr16 = arr.astype(np.uint16)           # single cast for all channels
+
+    r = (arr16[:, :, 0] & 0xF8) << 8         # 5 bits
+    g = (arr16[:, :, 1] & 0xFC) << 3         # 6 bits
+    b = (arr16[:, :, 2] & 0xF8) >> 3         # 5 bits
+
+    rgb565 = r | g | b
+    return rgb565.astype('<u2').tobytes()   # little-endian for /dev/fb0
 
 
 class Screen:
