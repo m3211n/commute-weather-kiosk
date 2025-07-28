@@ -21,7 +21,7 @@ class Widget:
         self._draw_context.rounded_rectangle([0, 0, self.w, self.h], radius=8, fill=self.bgcolor)
 
     def text(self, *args, **kwargs):
-        box = self._draw_context.textbbox(*args, **kwargs)
+        box = self._draw_context.textbbox(*args)
         self._draw_context.rectangle(box, fill=self.bgcolor)
         self._draw_context.text(*args, **kwargs)
     
@@ -46,8 +46,8 @@ async def main():
         s.widgets["Weather"].add_image("shared/weather_icons/cloudy.png", (200, 200))
         while True:
             for widget in s.widgets.values():
-                widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=(255, 255, 255))
-                widget.text((8, 32), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=(255, 255, 255))      
+                widget.text((8, 8), f"{widget.name}", Fonts.title, fill=(255, 255, 255))
+                widget.text((8, 32), f"{random.randint(1000, 9999)}", Fonts.value, fill=(255, 255, 255))      
             await s.refresh_all()
             await asyncio.sleep(0.1)
 
