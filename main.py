@@ -26,9 +26,9 @@ class Widget:
         self._draw_context.text(*args, **kwargs)
 
 widgets = {
-    Widget("Nipples", (200, 0), (200, 200), (255, 0, 0)),
-    Widget("Penises", (400, 0), (200, 200), (0, 255, 0)),
-    Widget("Vaginas", (600, 0), (200, 200), (0, 0, 255))
+    Widget("Nipples", (0, 0), (200, 200), (100, 0, 0)),
+    Widget("Penises", (200, 0), (200, 200), (0, 100, 0)),
+    Widget("Vaginas", (400, 0), (200, 200), (0, 0, 100))
 }
 
 
