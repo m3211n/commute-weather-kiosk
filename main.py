@@ -3,7 +3,7 @@ import random
 from PIL import Image, ImageDraw
 # from datetime import datetime
 from screen import Screen
-from shared.styles import Fonts
+from shared.styles import Fonts, Colors
 
 class Widget:
     def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor=(0, 0, 0)):
@@ -46,8 +46,8 @@ async def main():
         s.widgets["Weather"].add_image("shared/weather_icons/cloudy.png", (200, 200))
         while True:
             for widget in s.widgets.values():
-                widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=(255, 255, 255))
-                widget.text((8, 36), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=(255, 255, 255))
+                widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=Colors.title)
+                widget.text((8, 40), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=Colors.default)
             await s.refresh_all()
             await asyncio.sleep(0.1)
 
