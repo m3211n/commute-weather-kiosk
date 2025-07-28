@@ -53,7 +53,6 @@ async def main():
             for widget in s.widgets.values():
                 widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=Colors.title)
                 widget.text((8, 40), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=Colors.default)
-                widget.text((8, 120), f"{random.randint(1000, 9999)}", font=Fonts.clock, fill=Colors.departure_times)
             # on = time.time()
             await s.refresh_all()
             # method = "refresh_all"
