@@ -1,9 +1,13 @@
+import logging
+import time
 import asyncio
 import random
 from PIL import Image, ImageDraw
 # from datetime import datetime
 from screen import Screen
 from shared.styles import Fonts, Colors
+
+logging.basicConfig(level=logging.DEBUG)
 
 class Widget:
     def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor=Colors.panel_bg):
@@ -51,11 +55,16 @@ async def main():
                 widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=Colors.title)
                 widget.text((8, 40), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=Colors.default)
                 widget.text((8, 120), f"{random.randint(1000, 9999)}", font=Fonts.clock, fill=Colors.departure_times)
+            on = time.time()
             if bulk:
                 await s.refresh_all_bulk()
+                method = "refresh_all_bulk"
             else:
                 await s.refresh_all()
+                method = "refresh_all"
             bulk = not bulk
+            off = time.time() - on
+            logging.debug(" %s - Finished in: %.3f s.", method, off)
             await asyncio.sleep(1)
 
 if __name__ == "__main__":
