@@ -39,40 +39,35 @@ class Screen:
         for widget in widgets:
             self.widgets[widget.name] = widget
 
-    async def refresh_all(self, bulk=False):
+    async def refresh_all(self):
         """Render and draw all layers to the framebuffer"""
+        print("--- Offset + seek() + write rows")
+        start = time.time()
         for widget in self.widgets.values():
             image = await asyncio.to_thread(widget.get_image)
-            write = self.write_at if not bulk else self.write_at_bulk
-            print("--- Benchmarking:")
-            start = time.time()
-            await write(widget.x, widget.y, image)
-            end = time.time() - start
-            print(f"--- Done in {end} s.")
+            img_w, img_h = image.size
+            buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
+            row_size = self.width
+            fb_offset = (widget.y * row_size + widget.x) * 2
+            for row in range(img_h):
+                offset = fb_offset + row * row_size * 2
+                start = row * img_w * 2
+                end = start + img_w * 2
+                self.fb.seek(offset)
+                self.fb.write(buf[start:end])
+        print(f"--- Finished in: {time.time() - start}")
 
-    async def write_at(self, x, y, image):
-        print("Write_at() -- seek() + write rows")
-        img_w, img_h = image.size
-        buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
-
-        row_size = self.width
-        fb_offset = (y * row_size + x) * 2
-        for row in range(img_h):
-            offset = fb_offset + row * row_size * 2
-            start = row * img_w * 2
-            end = start + img_w * 2
-            self.fb.seek(offset)
-            self.fb.write(buf[start:end])
-
-    async def write_at_bulk(self, x, y, image):
-        """Compose the entire framebuffer in memory and write at once."""
-        print("Write_at_bulk() -- PIL.Image.paste() + write full buffer")
-        # Create a full-size image with the current background
+    async def refresh_all_bulk(self):
+        print("--- Compose using PIL.Image.paste and blit entire buffer at once.")
+        start = time.time()
         fb_img = Image.new("RGB", (self.width, self.height), self._bgcolor)
-        fb_img.paste(image, (x, y))
+        for widget in self.widgets.values():
+            image = await asyncio.to_thread(widget.get_image)
+            fb_img.paste(image, (widget.x, widget.y))
         buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, fb_img)
         self.fb.seek(0)
         self.fb.write(buf)
+        print(f"--- Finished in: {time.time() - start}")
 
     async def clear(self):
         image = Image.new("RGB", (self.width, self.height), self._bgcolor)
