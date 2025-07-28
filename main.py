@@ -25,23 +25,24 @@ class Widget:
     def text(self, *args, **kwargs):
         self._draw_context.text(*args, **kwargs)
 
-s = Screen()
-s.widgets = {
-    Widget(f"Nipples", (200, 0), (200, 200), (255, 0, 0)),
-    Widget(f"Penises", (400, 0), (200, 200), (0, 255, 0)),
-    Widget(f"Vaginas", (600, 0), (200, 200), (0, 0, 255))
+widgets = {
+    Widget("Nipples", (200, 0), (200, 200), (255, 0, 0)),
+    Widget("Penises", (400, 0), (200, 200), (0, 255, 0)),
+    Widget("Vaginas", (600, 0), (200, 200), (0, 0, 255))
 }
 
 
 async def main():
-    await s.clear()
-    while True:
-        for widget in s.widgets.values():
-            widget.clean()
-            widget.text((8, 8), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
-            widget.text((8, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))      
-        await s.refresh_all()
-        await asyncio.sleep(0.1)
+    with Screen() as s:
+        s.widgets = widgets
+        await s.clear()
+        while True:
+            for widget in s.widgets.values():
+                widget.clean()
+                widget.text((8, 8), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
+                widget.text((8, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))      
+            await s.refresh_all()
+            await asyncio.sleep(0.1)
 
 if __name__ == "__main__":
     asyncio.run(main())
