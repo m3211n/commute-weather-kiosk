@@ -58,7 +58,7 @@ class Screen:
                 self.fb.seek(offset)
                 self.fb.write(buf[start:end])
         off = time.time() - on
-        logging.debug("seek(offset) - Finished in: %d s.", off)
+        logging.debug("seek(offset) - Finished in: %.3f s.", off)
 
     async def refresh_all_bulk(self):
         on = time.time()
@@ -70,7 +70,7 @@ class Screen:
         self.fb.seek(0)
         self.fb.write(buf)
         off = time.time() - on
-        logging.debug("PIL.Image.paste() - Finished in: %d s.", off)
+        logging.debug("PIL.Image.paste() - Finished in: %.3f s.", off)
 
     async def clear(self):
         image = Image.new("RGB", (self.width, self.height), self._bgcolor)
