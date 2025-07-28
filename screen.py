@@ -4,6 +4,8 @@ import asyncio
 import time
 import logging
 
+logging.basicConfig(level=logging.DEBUG)
+
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
 
@@ -56,7 +58,7 @@ class Screen:
                 self.fb.seek(offset)
                 self.fb.write(buf[start:end])
         off = time.time() - on
-        logging.debug(f"seek(offset) - Finished in: {off}")
+        logging.debug("seek(offset) - Finished in: %d s.", off)
 
     async def refresh_all_bulk(self):
         on = time.time()
@@ -68,7 +70,7 @@ class Screen:
         self.fb.seek(0)
         self.fb.write(buf)
         off = time.time() - on
-        logging.debug(f"PIL.Image.paste() - Finished in: {off}")
+        logging.debug("PIL.Image.paste() - Finished in: %d s.", off)
 
     async def clear(self):
         image = Image.new("RGB", (self.width, self.height), self._bgcolor)
