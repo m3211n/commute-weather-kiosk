@@ -35,10 +35,10 @@ class Widget:
         self.image.paste(im, box, mask=im.split()[3])
 
 widgets = {
-    Widget("Clock", (8, 8), (948, 464)),
-    Widget("Trains_1", (8, 480), (948, 200)),
-    Widget("Trains_2", (8, 688), (948, 200)),
-    Widget("Busses_1", (8, 896), (948, 200)),
+    Widget("Clock", (8, 8), (948, 472)),
+    Widget("Trains_1", (8, 488), (948, 200)),
+    Widget("Trains_2", (8, 696), (948, 200)),
+    Widget("Busses_1", (8, 904), (948, 200)),
     Widget("Status", (8, 1112), (1904, 80)),
     Widget("Weather", (964, 8), (948, 1096))
 }
