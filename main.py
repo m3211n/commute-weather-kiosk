@@ -6,9 +6,9 @@ from PIL import Image
 WIDTH = 1920
 HEIGHT = 1200
 TILE_WIDTH = 240
-TILE_HEIGHT = 600
-ROWS = 2
-COLS = 4
+TILE_HEIGHT = 240
+ROWS = HEIGHT / TILE_HEIGHT
+COLS = WIDTH / TILE_WIDTH
 
 HTML_TEMPLATE = """
 <html><body style='margin:0; background:black; color:white; font-size:40px;'>
