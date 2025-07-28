@@ -24,11 +24,11 @@ class Widget:
         self._draw_context.text(*args, **kwargs)
 
 widgets = {
-    Widget("Clock", (8, 8), (948, 400), (56, 28, 56)),
-    Widget("Trains_1", (8, 416), (948, 200), (56, 28, 56)),
-    Widget("Trains_2", (8, 624), (948, 200), (56, 28, 56)),
-    Widget("Busses_1", (8, 832), (948, 200), (56, 28, 56)),
-    Widget("Vaginas", (964, 8), (948, 1184), (56, 28, 56))
+    Widget("Clock", (8, 8), (948, 560), (56, 28, 56)),
+    Widget("Trains_1", (8, 566), (948, 200), (56, 28, 56)),
+    Widget("Trains_2", (8, 774), (948, 200), (56, 28, 56)),
+    Widget("Busses_1", (8, 982), (948, 200), (56, 28, 56)),
+    Widget("Vaginas", (964, 8), (948, 1182), (56, 28, 56))
 }
 
 
