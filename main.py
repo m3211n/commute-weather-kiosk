@@ -21,7 +21,7 @@ class Widget:
         self._draw_context.rounded_rectangle([0, 0, self.w, self.h], radius=8, fill=self.bgcolor)
 
     def text(self, *args, **kwargs):
-        box = self._draw_context.textbbox(*args[0], *args[1], *kwargs["font"])
+        box = self._draw_context.textbbox(args[0], args[1], font=kwargs.get("font"))
         self._draw_context.rectangle(box, fill=self.bgcolor)
         self._draw_context.text(*args, **kwargs)
     
