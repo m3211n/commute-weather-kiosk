@@ -36,7 +36,7 @@ widgets = {
     Widget("Trains_2", (8, 624), (948, 200)),
     Widget("Busses_1", (8, 832), (948, 200)),
     Widget("Weather", (964, 8), (948, 1064)),
-    Widget("Status", (8, 1024), (1920, 160))
+    Widget("Status", (8, 1032), (1904, 160))
 }
 
 
