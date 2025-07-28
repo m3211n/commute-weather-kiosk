@@ -63,8 +63,7 @@ class CanvasRGB565:
 
     def draw_text(self, x, y, text, font_path, pixel_size, color):
         face = freetype.Face(font_path)
-        face.set_pixel_sizes(0, pixel_size)
-
+        face.set_char_size(width=0, height=pixel_size * 64, hres=75, vres=75)
         pen_x = x
         for char in text:
             face.load_char(char, FT_LOAD_RENDER | FT_LOAD_TARGET_MONO)
