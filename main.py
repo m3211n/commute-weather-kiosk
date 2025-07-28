@@ -28,7 +28,7 @@ class Widget:
     def add_image(self, path, coordinates):
         im = Image.open(path)
         box = coordinates[0], coordinates[1], coordinates[0] + im.width, coordinates[1] + im.height
-        self.image.paste(im, box)
+        self.image.paste(im, box, mask=im.split()[3])
 
 widgets = {
     Widget("Clock", (8, 8), (948, 560), (28, 28, 28)),
@@ -47,7 +47,7 @@ async def main():
         while True:
             for widget in s.widgets.values():
                 widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=(255, 255, 255))
-                widget.text((8, 32), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=(255, 255, 255))
+                widget.text((8, 36), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=(255, 255, 255))
             await s.refresh_all()
             await asyncio.sleep(0.1)
 
