@@ -44,13 +44,11 @@ class Screen:
         for widget in self.widgets.values():
             image = await asyncio.to_thread(widget.get_image)
             write = self.write_at if not bulk else self.write_at_bulk
-            if bulk:
-                print("--- Benchmarking:")
+            print("--- Benchmarking:")
             start = time.time()
             await write(widget.x, widget.y, image)
             end = time.time() - start
-            if bulk:
-                print(f"--- Done in {end} s.")
+            print(f"--- Done in {end} s.")
 
     async def write_at(self, x, y, image):
         print("Write_at() -- seek() + write rows")
