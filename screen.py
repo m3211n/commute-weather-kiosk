@@ -2,6 +2,7 @@ from PIL import Image
 import numpy as np
 import asyncio
 import time
+import logging
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
@@ -41,7 +42,6 @@ class Screen:
 
     async def refresh_all(self):
         """Render and draw all layers to the framebuffer"""
-        print("--- Offset + seek() + write rows")
         on = time.time()
         for widget in self.widgets.values():
             image = await asyncio.to_thread(widget.get_image)
@@ -56,10 +56,9 @@ class Screen:
                 self.fb.seek(offset)
                 self.fb.write(buf[start:end])
         off = time.time() - on
-        print(f"--- Finished in: {off}")
+        logging.debug(f"seek(offset) - Finished in: {off}")
 
     async def refresh_all_bulk(self):
-        print("--- Compose using PIL.Image.paste and blit entire buffer at once.")
         on = time.time()
         fb_img = Image.new("RGB", (self.width, self.height), self._bgcolor)
         for widget in self.widgets.values():
@@ -69,7 +68,7 @@ class Screen:
         self.fb.seek(0)
         self.fb.write(buf)
         off = time.time() - on
-        print(f"--- Finished in: {off}")
+        logging.debug(f"PIL.Image.paste() - Finished in: {off}")
 
     async def clear(self):
         image = Image.new("RGB", (self.width, self.height), self._bgcolor)
