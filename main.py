@@ -1,52 +1,54 @@
-import asyncio
-import random
-from PIL import Image, ImageDraw, ImageFont
-# from datetime import datetime
-from screen import Screen
-from rgb565fb import CanvasRGB565
+import imgkit
+import io
+import time
+from PIL import Image
 
-fnt_40 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
-fnt_16 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 16)
+WIDTH = 1920
+HEIGHT = 1200
+TILE_WIDTH = 240
+TILE_HEIGHT = 600
+ROWS = 2
+COLS = 4
 
-class Widget:
-    def __init__(self, name, position=(0, 0), size=(100, 100), bgcolor=(0, 0, 0)):
-        self.name = name
-        self.x, self.y = position
-        self.w, self.h = size
-        self.bgcolor = bgcolor
-        self.image = Image.new("RGB", (self.w, self.h), self.bgcolor)
-        self._draw_context = ImageDraw.Draw(self.image)
+HTML_TEMPLATE = """
+<html><body style='margin:0; background:black; color:white; font-size:40px;'>
+  <div style='display:flex; justify-content:center; align-items:center; height:100%;'>
+    <p>{}</p>
+  </div>
+</body></html>
+"""
 
-    def get_image(self):
-        return self.image
-    
-    def clean(self):
-        self._draw_context.rectangle([0, 0, self.w, self.h], fill=self.bgcolor)
+def render_html(html: str, width: int, height: int) -> Image.Image:
+    options = {
+        "width": width,
+        "height": height,
+        "disable-smart-width": "",
+        "format": "png"
+    }
+    png_bytes = imgkit.from_string(html, False, options=options)
+    return Image.open(io.BytesIO(png_bytes))
 
-    def text(self, *args, **kwargs):
-        self._draw_context.text(*args, **kwargs)
+def benchmark_fullscreen():
+    html = HTML_TEMPLATE.format("FULLSCREEN 1920x1200")
+    start = time.time()
+    img = render_html(html, WIDTH, HEIGHT)
+    duration = time.time() - start
+    print(f"Full-screen render time: {duration:.3f} s")
+    return img
 
-canvas = CanvasRGB565(1920, 1200)
-
-async def main():
-
-    canvas.clear(0)
-    canvas.draw_rect(300, 300, 100, 100, 0xFFF0)
-    canvas.draw_text(400, 400, "Hello Hacker!", "fonts/chicago.bdf", 16, 0xFFF0)
-    canvas.blit_to_fb()
-
-    with Screen() as s:
-        for i, color in enumerate(((127, 0, 0), (0, 127, 0), (0, 0, 127))):
-            s.add(Widget(f"test_{i}", (i*200, 0), (200, 100), color))
-
-        while True:
-            for widget in s.widgets.values():
-                widget.clean()
-                widget.text((0, 0), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
-                widget.text((0, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))
-            
-            await s.refresh_all()
-            await asyncio.sleep(5)
+def benchmark_tiles():
+    durations = []
+    for i in range(ROWS * COLS):
+        html = HTML_TEMPLATE.format(f"TILE {i}")
+        start = time.time()
+        _ = render_html(html, TILE_WIDTH, TILE_HEIGHT)
+        durations.append(time.time() - start)
+    total_time = sum(durations)
+    print(f"8x TILE render time (sum): {total_time:.3f} s")
+    print(f"Average tile render time: {total_time / (ROWS * COLS):.3f} s")
+    return durations
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    print("Benchmarking HTML rendering with imgkit...")
+    benchmark_fullscreen()
+    benchmark_tiles()
