@@ -14,7 +14,6 @@ class Widget:
         self.w, self.h = size
         self.bgcolor = bgcolor
         self.image = Image.new("RGB", (self.w, self.h), self.bgcolor)
-        self._draw_context = None
         self._draw_context = ImageDraw.Draw(self.image)
 
     def get_image(self):
@@ -29,8 +28,8 @@ class Widget:
 async def main():
 
     with Screen() as s:
-        for i, color in enumerate(((255, 0, 0), (0, 255, 0), (0, 0, 255))):
-            s.add(Widget(f"test_{i}", (i*100, 0), (100, 100), color))
+        for i, color in enumerate(((127, 0, 0), (0, 127, 0), (0, 0, 127))):
+            s.add(Widget(f"test_{i}", (i*200, 0), (200, 100), color))
         await s.clear()
 
         while True:
@@ -38,7 +37,6 @@ async def main():
                 widget.clean()
                 widget.text((0, 0), f"{widget.name}", font=fnt_16, fill=(255, 255, 255))
                 widget.text((0, 20), f"{random.randint(1000, 9999)}", font=fnt_40, fill=(255, 255, 255))
-
             
             await s.refresh_all()
             await asyncio.sleep(5)
