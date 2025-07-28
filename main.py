@@ -3,6 +3,7 @@ import random
 from PIL import Image, ImageDraw, ImageFont
 # from datetime import datetime
 from screen import Screen
+from rgb565fb import CanvasRGB565
 
 fnt_40 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
 fnt_16 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 16)
@@ -24,8 +25,14 @@ class Widget:
 
     def text(self, *args, **kwargs):
         self._draw_context.text(*args, **kwargs)
-      
+
+canvas = CanvasRGB565(1920, 1200)
+
 async def main():
+
+    canvas.clear()
+    canvas.draw_rect(300, 300, 100, 100, 0xFFF0)
+    canvas.draw_text(400, 400, "Hello Hacker!", "fonts/chicago.bdf", 2, 0xFFF0)
 
     with Screen() as s:
         for i, color in enumerate(((127, 0, 0), (0, 127, 0), (0, 0, 127))):
