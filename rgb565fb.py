@@ -84,7 +84,7 @@ class CanvasRGB565:
                         if 0 <= px < self.width and 0 <= py < self.height:
                             self.buffer[py, px] = color
 
-            pen_x += bitmap.width + face.glyph.bitmap_left
+            pen_x += face.glyph.advance.x // 64 or bitmap.width
 
     def to_bytes(self):
         return self.buffer.tobytes()
