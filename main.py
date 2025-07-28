@@ -30,7 +30,7 @@ canvas = CanvasRGB565(1920, 1200)
 
 async def main():
 
-    canvas.clear()
+    canvas.clear(0)
     canvas.draw_rect(300, 300, 100, 100, 0xFFF0)
     canvas.draw_text(400, 400, "Hello Hacker!", "fonts/chicago.bdf", 2, 0xFFF0)
 
