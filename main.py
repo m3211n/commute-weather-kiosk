@@ -44,11 +44,13 @@ async def main():
         s.add(widgets)
         await s.clear()
         s.widgets["Weather"].add_image("shared/weather_icons/cloudy.png", (200, 200))
+        bulk = False
         while True:
             for widget in s.widgets.values():
                 widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=Colors.title)
                 widget.text((8, 40), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=Colors.default)
-            await s.refresh_all(benchmark=True)
+            await s.refresh_all(bulk=bulk)
+            bulk = not bulk
             await asyncio.sleep(1)
 
 if __name__ == "__main__":

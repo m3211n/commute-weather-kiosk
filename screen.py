@@ -39,17 +39,17 @@ class Screen:
         for widget in widgets:
             self.widgets[widget.name] = widget
 
-    async def refresh_all(self, benchmark=False):
+    async def refresh_all(self, bulk=False):
         """Render and draw all layers to the framebuffer"""
         for widget in self.widgets.values():
             image = await asyncio.to_thread(widget.get_image)
-            write = self.write_at if not benchmark else self.write_at_bulk
-            if benchmark:
+            write = self.write_at if not bulk else self.write_at_bulk
+            if bulk:
                 print("--- Benchmarking:")
             start = time.time()
             await write(widget.x, widget.y, image)
             end = time.time() - start
-            if benchmark:
+            if bulk:
                 print(f"--- Done in {end} s.")
 
     async def write_at(self, x, y, image):
