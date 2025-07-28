@@ -7,8 +7,8 @@ WIDTH = 1920
 HEIGHT = 1200
 TILE_WIDTH = 240
 TILE_HEIGHT = 240
-ROWS = HEIGHT / TILE_HEIGHT
-COLS = WIDTH / TILE_WIDTH
+ROWS = round(HEIGHT / TILE_HEIGHT)
+COLS = round(WIDTH / TILE_WIDTH)
 
 HTML_TEMPLATE = """
 <html><body style='margin:0; background:black; color:white; font-size:40px;'>
