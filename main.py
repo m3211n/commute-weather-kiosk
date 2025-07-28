@@ -22,7 +22,6 @@ def render_html(html: str, width: int, height: int) -> Image.Image:
     options = {
         "width": width,
         "height": height,
-        "disable-smart-width": "",
         "format": "png"
     }
     png_bytes = imgkit.from_string(html, False, options=options)
