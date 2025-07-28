@@ -49,7 +49,7 @@ async def main():
                 widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=Colors.title)
                 widget.text((8, 40), f"{random.randint(1000, 9999)}", font=Fonts.value, fill=Colors.default)
             await s.refresh_all()
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(1)
 
 if __name__ == "__main__":
     asyncio.run(main())
