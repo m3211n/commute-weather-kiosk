@@ -20,10 +20,10 @@ class Widget:
     def clean(self):
         self._draw_context.rounded_rectangle([0, 0, self.w, self.h], radius=8, fill=self.bgcolor)
 
-    def text(self, *args, **kwargs):
-        box = self._draw_context.textbbox(*args)
+    def text(self, *args):
+        box = self._draw_context.textbbox(*args[0], *args[1], *args[2])
         self._draw_context.rectangle(box, fill=self.bgcolor)
-        self._draw_context.text(*args, **kwargs)
+        self._draw_context.text(*args)
     
     def add_image(self, path, coordinates):
         im = Image.open(path)
