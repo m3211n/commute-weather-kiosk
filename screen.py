@@ -55,7 +55,8 @@ class Screen:
                 end = start + img_w * 2
                 self.fb.seek(offset)
                 self.fb.write(buf[start:end])
-        print(f"--- Finished in: {time.time() - on}")
+        off = time.time() - on
+        print(f"--- Finished in: {off}")
 
     async def refresh_all_bulk(self):
         print("--- Compose using PIL.Image.paste and blit entire buffer at once.")
@@ -67,7 +68,8 @@ class Screen:
         buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, fb_img)
         self.fb.seek(0)
         self.fb.write(buf)
-        print(f"--- Finished in: {time.time() - on}")
+        off = time.time() - on
+        print(f"--- Finished in: {off}")
 
     async def clear(self):
         image = Image.new("RGB", (self.width, self.height), self._bgcolor)
