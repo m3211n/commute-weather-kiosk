@@ -36,9 +36,9 @@ class Widget:
 
 widgets = {
     Widget("Clock", (8, 8), (948, 464)),
-    Widget("Trains_1", (8, 472), (948, 200)),
-    Widget("Trains_2", (8, 680), (948, 200)),
-    Widget("Busses_1", (8, 888), (948, 200)),
+    Widget("Trains_1", (8, 480), (948, 200)),
+    Widget("Trains_2", (8, 688), (948, 200)),
+    Widget("Busses_1", (8, 896), (948, 200)),
     Widget("Status", (8, 1112), (1904, 80)),
     Widget("Weather", (964, 8), (948, 1096))
 }
