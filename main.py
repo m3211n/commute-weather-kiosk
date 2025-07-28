@@ -39,8 +39,8 @@ async def main():
         while True:
             for widget in s.widgets.values():
                 widget.clean()
-                widget.text((8, 8), f"{widget.name}", Fonts.title, fill=(255, 255, 255))
-                widget.text((8, 20), f"{random.randint(1000, 9999)}", Fonts.value_small, fill=(255, 255, 255))      
+                widget.text((8, 8), f"{widget.name}", font=Fonts.title, fill=(255, 255, 255))
+                widget.text((8, 20), f"{random.randint(1000, 9999)}", font=Fonts.value_small, fill=(255, 255, 255))      
             await s.refresh_all()
             await asyncio.sleep(0.1)
 
