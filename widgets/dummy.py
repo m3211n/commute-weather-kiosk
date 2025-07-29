@@ -1,15 +1,15 @@
 from widgets.core import Widget, Label
 
 
-def _callback(label: Label):
-    label.text = "Hello"
-    return True
+class Dummy(Widget):
+    def __init__(self):
+        super().__init__()
 
+        def _callback():
+            return False
 
-labelDummy = Label(
-    callback=lambda: _callback(labelDummy)
-)
+        label = Label(
+                callback=lambda: _callback(label)
+        )
 
-dummmy = Widget(
-    content=[labelDummy]
-    )
+        self.content = [label]
