@@ -47,4 +47,4 @@ def get_system_info():
             else:
                 pass
 
-    return f"SSID: {ssid}({ip}) | CPU t°: {cpu_t} | Available RAM: {ram} MB"
+    return f"SSID: {ssid} ({ip}) | CPU: {cpu_t} | Available RAM: {ram} MB"

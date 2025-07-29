@@ -4,7 +4,7 @@ from shared.styles import Fonts, Colors
 
 class System(Widget):
     def __init__(self):
-        super().__init__(position=(8, 1120), size=(1904, 64))
+        super().__init__(position=(8, 1128), size=(1904, 64))
         self.label = Label(
             xy=(20, 20),
             fill=Colors.TITLE,
