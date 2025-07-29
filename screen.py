@@ -46,9 +46,10 @@ class Screen:
 
     async def refresh_all(self):
         """Render and draw all layers to the framebuffer"""
-        for widget in self.widgets.values():
+        for name, widget in self.widgets.items():
             await widget.render()
             if widget.dirty:
+                yield f"Dirty widget {name} will be redrawn."
                 image = widget.image
                 img_w, img_h = image.size
                 buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
@@ -60,3 +61,5 @@ class Screen:
                     end = start + img_w * 2
                     self.fb.seek(offset)
                     self.fb.write(buf[start:end])
+            else:
+                yield "All widgets clean. Sleepin'..."

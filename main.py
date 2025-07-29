@@ -17,11 +17,9 @@ async def main():
         await s.start()
         while True:
             # on = time.time()
-            await s.refresh_all()
-            # method = "refresh_all"
-            # off = time.time() - on
-            # logging.debug(" %s - Finished in: %.3f s.", method, off)
-            await asyncio.sleep(0.1)
+            for response in await s.refresh_all():
+                logging.debug(" Screen loop reported: %s", response)
+            await asyncio.sleep(5)
 
 if __name__ == "__main__":
     asyncio.run(main())
