@@ -7,6 +7,7 @@ class Widget:
         self._interval = interval
         self.x, self.y = position
         self.size = size
+        self.dirty = True
         self.bgcolor = bgcolor
         self.text_content = {}
         self.image = Image.new("RGB", self.size)
@@ -20,10 +21,8 @@ class Widget:
             self._draw_context.rounded_rectangle([(0, 0), self.size], radius=8, fill=self.bgcolor)
             for item in self.text_content.values():
                 self._draw_context.text(**item.__dict__)
-            return True # Dirty Flag
-        else:
-            return False # Dirty Flag
-        
+            self.dirty = True
+        return self.dirty        
 
 
 class Label:

@@ -49,6 +49,7 @@ class Screen:
         for name, widget in self.widgets.items():
             is_dirty = await widget.render()
             if is_dirty:
+                widget.dirty = False
                 image = widget.image
                 img_w, img_h = image.size
                 buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
