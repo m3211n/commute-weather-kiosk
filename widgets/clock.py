@@ -15,5 +15,5 @@ class Clock(Widget):
         self._interval = interval
 
     async def callback(self):
-        self.time.update(time_str(TIME))
-        self.date.update(time_str(DATE))
+        await self.time.update(time_str(TIME))
+        await self.date.update(time_str(DATE))
