@@ -18,7 +18,7 @@ class Widget:
         pass
 
     async def start(self):
-        await self._draw_context.rounded_rectangle([(0, 0), self.size], radius=8, fill=self.bgcolor)
+        self._draw_context.rounded_rectangle([(0, 0), self.size], radius=8, fill=self.bgcolor)
         await self.callback()
         self.dirty = True
 
