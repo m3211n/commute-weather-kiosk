@@ -36,20 +36,21 @@ class Widget:
         if not self.dirty:
             await self.callback()
         for item in self.content.values():
-            self.image.paste(item.image, item.bbox, mask=item.image.split()[3])
+            self.image.paste(item.image, item.bbox)
         await asyncio.sleep(self._interval)
         self.dirty = True
 
 
 class Label:
-    def __init__(self, text="Label", font=Fonts.value, position=(0, 0), anchor="la", fill=Colors.default):
+    def __init__(self, text="Label", font=Fonts.value, position=(0, 0), anchor="la", fill=Colors.default, bg=Colors.panel_bg):
         self.text = text
         self.font = font
         self.bbox = self.get_bbox()
         self.size = self.bbox[2] - self.bbox[0], self.bbox[3] - self.bbox[1]
         self.position = position
         self.fill = fill
-        self.image = Image.new("RGBA", self.size, (0, 0, 0, 0))
+        self.bg = bg
+        self.image = Image.new("RGB", self.size, self.bg)
         self.context = ImageDraw.Draw(self.image)
         self.anchor = anchor
 
