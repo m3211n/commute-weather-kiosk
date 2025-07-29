@@ -6,10 +6,11 @@ class Widget:
     def __init__(self, name, interval=1, position=(0, 0), size=(100, 100), bgcolor=Colors.panel_bg):
         self.name = name
         self._interval = interval
-        self.dirty = True
+        self.dirty = False
         self.x, self.y = position
         self.size = size
         self.bgcolor = bgcolor
+        self.content = {}
         self.image = Image.new("RGB", self.size)
         self._draw_context = ImageDraw.Draw(self.image)
         self._draw_context.rounded_rectangle([(0, 0), self.size], radius=8, fill=self.bgcolor)
@@ -27,9 +28,15 @@ class Widget:
     async def callback(self):
         pass
 
+    async def start(self):
+        await self.callback()
+        self.dirty = True
+
     async def update(self):
         if not self.dirty:
             await self.callback()
+        for item in self.content.values():
+            self.image.paste(item.image, item.bbox, mask=item.image.split()[3])
         await asyncio.sleep(self._interval)
         self.dirty = True
 
@@ -38,8 +45,8 @@ class Label:
     def __init__(self, text="Label", font=Fonts.value, position=(0, 0), anchor="la", fill=Colors.default):
         self.text = text
         self.font = font
-        self._bbox = self.font.getbbox(self.text)
-        self.size = self._bbox[2] - self._bbox[0], self._bbox[3] - self._bbox[1]
+        self.bbox = self.font.getbbox(self.text)
+        self.size = self.bbox[2] - self.bbox[0], self.bbox[3] - self.bbox[1]
         self.position = position
         self.fill = fill
         self.image = Image.new("RGBA", self.size, (0, 0, 0, 0))
@@ -48,5 +55,5 @@ class Label:
 
     async def update(self, new_text):
         self.text = new_text
-        self.image.paste((0, 0, 0, 0), self._bbox)
+        self.image.paste((0, 0, 0, 0), self.bbox)
         self.context.text((0, 0), self.text, self.fill, self.font, self.anchor)
