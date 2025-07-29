@@ -7,7 +7,7 @@ class Weather(Widget):
         self.labelTime = Label()
 
     async def update_content(self) -> bool:
-        return False
+        return True
 
     async def render(self):
         self._clear()
