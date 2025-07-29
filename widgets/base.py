@@ -26,7 +26,7 @@ class Widget:
         if not self.dirty:
             await self.callback()
         for item in self.content.values():
-            self.image.paste(item.image, item.bbox)
+            self.image.paste(item.image, item.position)
         await asyncio.sleep(self._interval)
         self.dirty = True
 
