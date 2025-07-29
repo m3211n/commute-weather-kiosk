@@ -39,6 +39,10 @@ class Screen:
         """Add a widget-like object with .x, .y, .get_image() and a name to refer to it"""
         for widget in widgets:
             self.widgets[widget.name] = widget
+    
+    async def start(self):
+        for widget in self.widgets.values():
+            widget.render()
 
     async def refresh_all(self):
         """Render and draw all layers to the framebuffer"""
