@@ -35,6 +35,4 @@ class Clock(Widget):
             self._current_minute = datetime.now().minute
             self.text_content["time"].text = time_str(TIME)
             self.text_content["date"].text = time_str(DATE)
-            return True
-        else:
-            return False
+        return self._in_sync
