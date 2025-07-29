@@ -10,12 +10,12 @@ class Clock(Widget):
     def __init__(self):
         super().__init__(position=(8, 8), size=(948, 548))
         self.labelTime = Label(
-            xy=(474, 274),
+            xy=(474, 338),
             font=Fonts.CLOCK,
             anchor="mb"
         )
         self.labelDate = Label(
-            xy=(474, 298),
+            xy=(474, 360),
             fill=Colors.SECONDARY,
             font=Fonts.TITLE,
             anchor="mt"
