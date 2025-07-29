@@ -50,16 +50,11 @@ class Screen:
         for widget in widgets:
             self.widgets[widget.name] = widget
 
-    async def start(self):
-        """Renders all widgets at start"""
-        for widget in self.widgets.values():
-            await widget.render()
-
-    async def refresh_all(self):
+    async def refresh_all(self, dirty_only=True):
         """Render and draw all layers to the framebuffer"""
         for name, widget in self.widgets.items():
             is_dirty = await widget.render()
-            if is_dirty:
+            if (dirty_only and is_dirty) or (not dirty_only):
                 image = widget.image
                 img_w, img_h = image.size
                 buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)

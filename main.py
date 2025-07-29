@@ -17,7 +17,7 @@ widgets = {
 async def main():
     with Screen() as s:
         await s.add(widgets)
-        await s.start()
+        await s.refresh_all(dirty_only=False)
         while True:
             # on = time.time()
             response = await s.refresh_all()
