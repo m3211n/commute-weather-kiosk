@@ -57,9 +57,10 @@ class Screen:
             if (dirty_only and is_dirty) or (not dirty_only):
                 image = widget.image
                 img_w, img_h = image.size
+                pos_x, pos_y = widget.position
                 buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
                 row_size = self.width
-                fb_offset = (widget.y * row_size + widget.x) * 2
+                fb_offset = (pos_y * row_size + pos_x) * 2
                 for row in range(img_h):
                     offset = fb_offset + row * row_size * 2
                     start = row * img_w * 2
