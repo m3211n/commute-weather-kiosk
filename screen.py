@@ -43,7 +43,7 @@ class Screen:
         for widget in self.widgets.values():
             if widget.dirty:
                 widget.dirty = False
-                image = await asyncio.to_thread(widget.image)
+                image = widget.image
                 img_w, img_h = image.size
                 buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
                 row_size = self.width
