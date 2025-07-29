@@ -41,7 +41,7 @@ class Screen:
         buf = np.zeros((self.width, self.height), dtype="<u2")
         self.fb.seek(0)
         self.fb.write(buf)
-        for widget in self.widgets:
+        for widget in self.widgets.values():
             widget.start()
 
     async def refresh_all(self):
