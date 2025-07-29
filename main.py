@@ -15,7 +15,6 @@ async def main():
     with Screen() as s:
         s.add(widgets)
         await s.clear()
-        s.widgets["Weather"].add_image("shared/weather_icons/cloudy.png", (200, 200))
         while True:
             for widget in s.widgets.values():
                 widget.update()
