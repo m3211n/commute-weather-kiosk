@@ -26,6 +26,9 @@ class Screen:
 
     def __enter__(self):
         self.fb = open("/dev/fb0", "r+b", buffering=0)
+        buf = np.zeros((self.width, self.height), dtype="<u2")
+        self.fb.seek(0)
+        self.fb.write(buf)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -38,9 +41,6 @@ class Screen:
             self.widgets[widget.name] = widget
     
     async def start(self):
-        buf = np.zeros((self.width, self.height), dtype="<u2")
-        self.fb.seek(0)
-        self.fb.write(buf)
         for widget in self.widgets.values():
             widget.start()
 
