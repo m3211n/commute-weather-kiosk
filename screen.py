@@ -42,7 +42,7 @@ class Screen:
     
     async def start(self):
         for widget in self.widgets.values():
-            await widget.start()
+            await widget.render()
 
     async def refresh_all(self):
         """Render and draw all layers to the framebuffer"""
