@@ -33,5 +33,6 @@ class Clock(Widget):
         return False
 
     async def render(self):
+        self._clear()
         await self.labelTime.render_at(self.image)
         await self.labelDate.render_at(self.image)
