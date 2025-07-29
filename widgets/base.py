@@ -33,16 +33,8 @@ class Widget:
 
 class Label:
     def __init__(self, xy=(0, 0), text="Label", fill=Colors.default, font=Fonts.value, anchor="la"):
-        self._text = text
+        self.text = text
         self.font = font
         self.xy = xy
         self.fill = fill
         self.anchor = anchor
-
-    @property
-    def text(self):
-        return self._text
-
-    @text.setter
-    def text(self, new_text):
-        self._text = new_text
