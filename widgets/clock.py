@@ -8,7 +8,7 @@ DATE_FORMAT = "%A, %B %d, %Y"
 
 class Clock(Widget):
     def __init__(self):
-        super.__init__(
+        super().__init__(
             position=(8, 8),
             size=(948, 472)
         )
