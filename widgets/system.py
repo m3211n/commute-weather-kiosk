@@ -14,7 +14,7 @@ class System(Widget):
     async def update_content(self) -> bool:
         from widgets.data_sources import get_system_info
         self.label.text = get_system_info()
-        return False
+        return True
 
     async def render(self):
         self._clear()
