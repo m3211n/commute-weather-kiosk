@@ -5,7 +5,6 @@ from shared.styles import Fonts, Colors
 class Label:
     """Generic label class.
     Uses the same attributes as PIL.ImageDraw.Draw.text"""
-    __slots__ = ('xy', 'text', 'fill', 'font', 'anchor')
 
     def __init__(self, xy=(0, 0), text="Label", fill=Colors.default,
                  font=Fonts.value, anchor="la"):
@@ -20,7 +19,10 @@ class Label:
             raise Warning("Attempt to render empty string skipped.")
         else:
             _draw_context = ImageDraw.Draw(image)
-            _draw_context.text(**self.__dict__)
+            try:
+                _draw_context.text(**self.__dict__)
+            except AttributeError as e:
+                raise e
 
 
 class Widget:
