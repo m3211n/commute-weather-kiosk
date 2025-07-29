@@ -13,7 +13,7 @@ widgets = {
 
 async def main():
     with Screen() as s:
-        s.add(widgets)
+        await s.add(widgets)
         await s.clear()
         while True:
             for widget in s.widgets.values():
