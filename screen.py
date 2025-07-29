@@ -47,7 +47,7 @@ class Screen:
 
     async def refresh_all(self, dirty_only=True) -> str:
         """Render and draw all layers to the framebuffer"""
-        for widget in self.widgets():
+        for widget in self.widgets:
             is_dirty = widget.render()
             if (dirty_only and is_dirty) or (not dirty_only):
                 image = widget.image
