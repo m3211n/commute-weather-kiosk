@@ -1,28 +1,26 @@
 from PIL import Image, ImageDraw
 from shared.styles import Fonts, Colors
-from typing import List
 
 
-class Content():
-    """Generic class for dynamically updated content"""
-    async def update(self):
-        return False
-
-
-class Label(Content):
+class Label:
     """Generic label class.
     Uses the same attributes as PIL.ImageDraw.Draw.text"""
+    __slots__ = ('xy', 'text', 'fill', 'font', 'anchor')
+
     def __init__(self, xy=(0, 0), text="Label", fill=Colors.default,
-                 font=Fonts.value, anchor="la", callback=None):
+                 font=Fonts.value, anchor="la"):
         self.xy = xy
         self.text = text
         self.fill = fill
         self.font = font
         self.anchor = anchor
-        self.callback = callback
 
-    async def update(self):
-        return await super().update()
+    async def render_at(self, image):
+        if len(self.text) == 0:
+            raise Warning("Attempt to render empty string skipped.")
+        else:
+            _draw_context = ImageDraw.Draw(image)
+            _draw_context.text(**self.__dict__)
 
 
 class Widget:
@@ -32,14 +30,12 @@ class Widget:
             position=(0, 0),
             size=(100, 100),
             bgcolor=Colors.panel_bg,
-            radius=16,
-            content: List[Content] = []):
-
+            radius=16
+            ):
         self.position = position
         self.size = size
         self.bgcolor = bgcolor
         self.radius = radius
-        self.content = content
         self.image = Image.new("RGB", self.size)
         self._draw_context = ImageDraw.Draw(self.image)
 
