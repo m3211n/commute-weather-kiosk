@@ -5,7 +5,7 @@ from shared.styles import Colors, Fonts
 class Widget:
     def __init__(self, name, interval=1, position=(0, 0), size=(100, 100), bgcolor=Colors.panel_bg):
         self.name = name
-        self.interval = interval
+        self._interval = interval
         self.dirty = False
         self.x, self.y = position
         self.size = size
@@ -29,7 +29,7 @@ class Widget:
 
     async def update(self):
         await self.callback()
-        await asyncio.sleep(self.interval)
+        await asyncio.sleep(self._interval)
 
 
 
