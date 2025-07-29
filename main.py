@@ -1,7 +1,7 @@
 import logging
 # import time
 import asyncio
-from widgets.clock import Clock
+from widgets import Clock
 # from datetime import datetime
 from screen import Screen
 

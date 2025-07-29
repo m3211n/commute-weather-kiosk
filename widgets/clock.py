@@ -1,4 +1,4 @@
-from widgets.base import Widget, Label
+from widgets import Widget, Label
 from datetime import datetime
 from shared.styles import Fonts, Colors
 
