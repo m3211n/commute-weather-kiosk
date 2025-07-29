@@ -23,7 +23,7 @@ async def main():
             # method = "refresh_all"
             # off = time.time() - on
             # logging.debug(" %s - Finished in: %.3f s.", method, off)
-            await asyncio.sleep(0.2)
+            await asyncio.sleep(0.1)
 
 if __name__ == "__main__":
     asyncio.run(main())
