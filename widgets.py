@@ -6,12 +6,11 @@ from shared.styles import Fonts, Colors
 class Widget:
     """Generic widget class"""
     def __init__(
-            self, name,
+            self,
             position=(0, 0),
             size=(100, 100),
             bgcolor=Colors.panel_bg):
 
-        self.name = name
         self.position = position
         self.size = size
         self.bgcolor = bgcolor
@@ -19,11 +18,11 @@ class Widget:
         self.image = Image.new("RGB", self.size)
         self._draw_context = ImageDraw.Draw(self.image)
 
-    def update_content(self):
+    def update(self) -> bool:
         return False
 
-    def render(self):
-        if self.update_content():
+    def render(self) -> bool:
+        if self.update():
             self._draw_context.rounded_rectangle(
                 [(0, 0), self.size],
                 radius=8,
@@ -52,7 +51,6 @@ class Clock(Widget):
 
     def __init__(self):
         super().__init__(
-            "Clock",
             position=(8, 8),
             size=(948, 472)
         )
@@ -60,27 +58,27 @@ class Clock(Widget):
         self.content = {
             "time": Label(
                 xy=(474, 268),
-                text=self.strf_now(Clock.TIME),
+                text=self._strf_now(Clock.TIME),
                 fill=Colors.default,
                 font=Fonts.clock,
                 anchor="mb"
             ),
             "date": Label(
                 xy=(474, 300),
-                text=self.strf_now(Clock.DATE),
+                text=self._strf_now(Clock.DATE),
                 fill=Colors.title,
                 font=Fonts.title,
                 anchor="mt"
             )
         }
 
-    def strf_now(self, f):
+    def _strf_now(self, f) -> str:
         return datetime.now().strftime(f)
 
-    def update_content(self):
+    def update(self) -> bool:
         if not self._current_minute == datetime.now().minute:
             self._current_minute = datetime.now().minute
-            self.content["time"].text = self.strf_now(Clock.TIME)
-            self.content["date"].text = self.strf_now(Clock.DATE)
+            self.content["time"].text = self._strf_now(Clock.TIME)
+            self.content["date"].text = self._strf_now(Clock.DATE)
             return True
         return False

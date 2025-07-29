@@ -31,7 +31,7 @@ class Screen:
         self.width = width
         self.height = height
         self.fb = None
-        self.widgets = {}
+        self.widgets = []
         self._bgcolor = bgcolor
 
     def __enter__(self):
@@ -45,14 +45,9 @@ class Screen:
         if self.fb:
             self.fb.close()
 
-    async def add(self, widgets):
-        """Adds widgets to the screen"""
-        for widget in widgets:
-            self.widgets[widget.name] = widget
-
-    async def refresh_all(self, dirty_only=True):
+    async def refresh_all(self, dirty_only=True) -> str:
         """Render and draw all layers to the framebuffer"""
-        for name, widget in self.widgets.items():
+        for widget in self.widgets():
             is_dirty = widget.render()
             if (dirty_only and is_dirty) or (not dirty_only):
                 image = widget.image
@@ -67,6 +62,6 @@ class Screen:
                     end = start + img_w * 2
                     self.fb.seek(offset)
                     self.fb.write(buf[start:end])
-                return f"Dirty widget {name} was redrawn."
+                return f"Dirty widget {widget.__name__} was redrawn."
             else:
                 return "All widgets clean. Sleepin'..."
