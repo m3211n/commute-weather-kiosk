@@ -79,7 +79,7 @@ class Clock(Widget):
     async def update_content(self):
         if not self._current_minute == datetime.now().minute:
             self._current_minute = datetime.now().minute
-            self.text_content["time"].text = self.strf_now(Clock.TIME)
-            self.text_content["date"].text = self.strf_now(Clock.DATE)
+            self.content["time"].text = self.strf_now(Clock.TIME)
+            self.content["date"].text = self.strf_now(Clock.DATE)
             return True
         return False
