@@ -37,27 +37,25 @@ class Label:
 
 class Clock(Widget):
 
-    DATE = "%A, %B %d, , %Y"
     TIME = "%H:%M"
-    MIN = "%-M"
+    DATE = "%A, %B %d, , %Y"
 
-    time_str = lambda format: datetime.now().strftime(format)
+    strf_now = lambda f: datetime.now().strftime(f)
 
     def __init__(self, interval=1):
         super().__init__("Clock", interval=interval, position=(8, 8), size=(948, 472))
         self._current_minute = -1
-        self._in_sync = lambda: self._current_minute == datetime.now().minute
         self.text_content = {
             "time": Label(
                 xy=(474, 268),
-                text=Clock.time_str(Clock.TIME),
+                text=Clock.strf_now(Clock.TIME),
                 fill=Colors.default,
                 font=Fonts.clock,
                 anchor="mb"
             ),
             "date": Label(
                 xy=(474, 300),
-                text=Clock.time_str(Clock.DATE),
+                text=Clock.strf_now(Clock.DATE),
                 fill=Colors.title,
                 font=Fonts.title,
                 anchor="mt"
@@ -65,9 +63,9 @@ class Clock(Widget):
         }
     
     async def update_content(self):
-        if not self._in_sync():
+        if not self._current_minute == datetime.now().minute:
             self._current_minute = datetime.now().minute
-            self.text_content["time"].text = Clock.time_str(Clock.TIME)
-            self.text_content["date"].text = Clock.time_str(Clock.DATE)
+            self.text_content["time"].text = Clock.strf_now(Clock.TIME)
+            self.text_content["date"].text = Clock.strf_now(Clock.DATE)
             return True
         return False
