@@ -8,8 +8,11 @@ DATE_FORMAT = "%A, %B %d, %Y"
 
 class Clock(Widget):
     def __init__(self):
-        self.position = (8, 8),
-        self.size = (948, 472),
+        super.__init__(
+            self,
+            position=(8, 8),
+            size=(948, 472)
+        )
 
         def _callback(label: Label, f):
             new_text = datetime.now().strftime(f)
