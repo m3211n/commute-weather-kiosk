@@ -18,17 +18,17 @@ class Widget:
         pass
 
     async def start(self):
+        await self._draw_context.rounded_rectangle([(0, 0), self.size], radius=8, fill=self.bgcolor)
         await self.callback()
         self.dirty = True
 
     async def update(self):
         if not self.dirty:
-            self._draw_context.rounded_rectangle([(0, 0), self.size], radius=8, fill=self.bgcolor)
-            await self.callback()
+            await self.start()
         for item in self.text_content.values():
             self._draw_context.text(**item.__dict__)
         await asyncio.sleep(self._interval)
-        self.dirty = True
+
 
 
 class Label:
