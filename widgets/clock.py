@@ -8,31 +8,36 @@ DATE_FORMAT = "%A, %B %d, %Y"
 
 class Clock(Widget):
     def __init__(self):
-        super().__init__(
-            position=(8, 8),
-            size=(948, 472)
-        )
+        super().__init__(position=(8, 8), size=(948, 472))
 
-        def _callback(label: Label, f):
-            new_text = datetime.now().strftime(f)
-            if not label.text == new_text:
-                label.text = new_text
-                return True
-            return False
-
-        labelTime = Label(
+        self.labelTime = Label(
                 xy=(474, 268),
                 fill=Colors.default,
                 font=Fonts.clock,
-                anchor="mb",
-                callback=lambda: _callback(labelTime, TIME_FORMAT)
+                anchor="mb"
         )
-        labelDate = Label(
+        self.labelTime.callback = lambda: self._time_str(
+            self.labelTime,
+            TIME_FORMAT
+        )
+
+        self.labelDate = Label(
                 xy=(474, 300),
                 fill=Colors.title,
                 font=Fonts.title,
-                anchor="mt",
-                callback=lambda: _callback(labelDate, DATE_FORMAT)
+                anchor="mt"
+        )
+        self.labelDate.callback = lambda: self._time_str(
+            self.labelDate,
+            DATE_FORMAT
         )
 
-        self.content = [labelTime, labelDate]
+        self.content = [self.labelTime, self.labelDate]
+
+    @staticmethod
+    def _time_str(label: Label, f):
+        new_text = datetime.now().strftime(f)
+        if not label.text == new_text:
+            label.text = new_text
+            return True
+        return False
