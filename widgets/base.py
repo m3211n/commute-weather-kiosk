@@ -17,7 +17,7 @@ class Widget:
     async def callback(self):
         pass
 
-    async def start(self):
+    async def render(self):
         self._draw_context.rounded_rectangle([(0, 0), self.size], radius=8, fill=self.bgcolor)
         await self.callback()
         for item in self.text_content.values():
@@ -25,9 +25,9 @@ class Widget:
 
     async def update(self):
         if not self.dirty:
-            await self.start()
+            await self.render()
             self.dirty = True
-        await asyncio.sleep(self._interval)
+            await asyncio.sleep(self._interval)
 
 
 
