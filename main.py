@@ -1,15 +1,18 @@
 import logging
-# import time
+import locale
+
 import asyncio
+
 from widgets import Clock
-# from datetime import datetime
 from screen import Screen
 
 logging.basicConfig(level=logging.INFO)
+locale.setlocale(locale.LC_ALL, "sv_SE.UTF-8")
 
 widgets = {
     Clock(60)
 }
+
 
 async def main():
     with Screen() as s:

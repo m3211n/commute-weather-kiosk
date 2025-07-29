@@ -4,9 +4,13 @@ import asyncio
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
 
+
 def rgb888_to_rgb565_numpy(image):
-    arr = np.asarray(image.convert("RGB"))  # ensures RGB mode, shape (H, W, 3), dtype=uint8
-    arr16 = arr.astype(np.uint16)           # single cast for all channels
+    """Convert image from RGB888 to RGB565 for /dev/fb0 on Pi Zero 2W"""
+    # ensures RGB mode, shape (H, W, 3), dtype=uint8
+    arr = np.asarray(image.convert("RGB"))
+    # single cast for all channels
+    arr16 = arr.astype(np.uint16)
 
     r = (arr16[:, :, 0] & 0xF8) << 8         # 5 bits
     g = (arr16[:, :, 1] & 0xFC) << 3         # 6 bits
@@ -17,7 +21,13 @@ def rgb888_to_rgb565_numpy(image):
 
 
 class Screen:
-    def __init__(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT, bgcolor=(0, 0, 0)):
+    """Generic screen class"""
+    def __init__(
+            self,
+            width=SCREEN_WIDTH,
+            height=SCREEN_HEIGHT,
+            bgcolor=(0, 0, 0)
+    ):
         self.width = width
         self.height = height
         self.fb = None
@@ -36,11 +46,12 @@ class Screen:
             self.fb.close()
 
     async def add(self, widgets):
-        """Add a widget-like object with .x, .y, .get_image() and a name to refer to it"""
+        """Adds widgets to the screen"""
         for widget in widgets:
             self.widgets[widget.name] = widget
-    
+
     async def start(self):
+        """Renders all widgets at start"""
         for widget in self.widgets.values():
             await widget.render()
 
@@ -49,7 +60,6 @@ class Screen:
         for name, widget in self.widgets.items():
             is_dirty = await widget.render()
             if is_dirty:
-                widget.dirty = False
                 image = widget.image
                 img_w, img_h = image.size
                 buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
