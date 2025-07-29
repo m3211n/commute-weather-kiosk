@@ -33,7 +33,7 @@ class Screen:
             self.fb.close()
 
     async def _decode_and_write(self, widget: Widget):
-        x, y, w, h = *widget.position, *widget.size
+        x, y, w, h = (*widget.position, *widget.size)
         elapsed = time.perf_counter()
         buf = await convert(widget.image)
         fb_offset = (y * SCREEN_WIDTH + x) * BYTES_PER_PIXEL

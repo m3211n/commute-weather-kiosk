@@ -55,7 +55,7 @@ class Widget:
 
     async def maybe_render(self) -> bool:
         if await self.update_content():
-            self.render()
+            await self.render()
             return True
         return False
 
