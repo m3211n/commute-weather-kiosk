@@ -4,8 +4,9 @@ from shared.styles import Fonts, Colors
 
 
 class Info(Widget):
-    def __init__(self):
+    def __init__(self, timeout=5):
         super().__init__(position=(8, 1128), size=(1904, 64))
+        self.timeout = timeout
         self.labelLeft = Label(
             xy=(16, 32),
             fill=Colors.TITLE,
@@ -20,12 +21,14 @@ class Info(Widget):
         )
 
     async def update_content(self) -> bool:
-        ssid, ip = Local.ssid(), Local.ip_address()
-        self.labelLeft.text = f"SSID: {ssid} | IPv4: {ip}"
-        cpu = Local.cpu()
-        temp, load = cpu[0], round(cpu[1] * 100, 1)
-        self.labelRight.text = f"CPU: {temp} | Avg.load (1 min): {load}%"
-        return True
+        if self._update_timeout():
+            ssid, ip = Local.ssid(), Local.ip_address()
+            self.labelLeft.text = f"SSID: {ssid} | IPv4: {ip}"
+            cpu = Local.cpu()
+            temp, load = cpu[0], round(cpu[1] * 100, 1)
+            self.labelRight.text = f"CPU: {temp} | Avg.load (1 min): {load}%"
+            return True
+        return False
 
     async def render(self):
         self._clear()

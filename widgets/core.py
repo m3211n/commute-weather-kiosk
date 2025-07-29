@@ -1,3 +1,4 @@
+from widgets.data_sources import Tools
 from PIL import Image, ImageDraw
 from shared.styles import Fonts, Colors
 
@@ -32,14 +33,23 @@ class Widget:
             position=(0, 0),
             size=(100, 100),
             bgcolor=Colors.PANEL_BG,
-            radius=16
+            radius=16,
+            timeout=1,
             ):
+        self.timeout = timeout
+        self._last_update = Tools.time()
         self.position = position
         self.size = size
         self.bgcolor = bgcolor
         self.radius = radius
         self.image = Image.new("RGB", self.size)
         self._draw_context = ImageDraw.Draw(self.image)
+
+    def _update_timeout(self):
+        if self._last_update < Tools.time():
+            self._last_update = Tools.time() + self.timeout
+            return True
+        return False
 
     def _clear(self):
         self._draw_context.rounded_rectangle(
