@@ -20,10 +20,10 @@ class Info(Widget):
         )
 
     async def update_content(self) -> bool:
-        self.labelLeft.text = f"SSID: {Local.ssid()} | IPv4: {Local.ip_address()})"
+        ssid, ip = Local.ssid(), Local.ip_address()
+        self.labelLeft.text = f"SSID: {ssid} | IPv4: {ip}"
         cpu = Local.cpu()
-        temp = cpu[0]
-        load = f"{round(cpu[1] * 100, 1)}%"
+        temp, load = cpu[0], round(cpu[1] * 100, 1)
         self.labelRight.text = f"CPU: {temp} | Avg.load (1 min): {load}"
         return True
 
