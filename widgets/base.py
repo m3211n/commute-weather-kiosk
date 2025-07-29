@@ -6,7 +6,7 @@ class Widget:
     def __init__(self, name, interval=1, position=(0, 0), size=(100, 100), bgcolor=Colors.panel_bg):
         self.name = name
         self._interval = interval
-        self.dirty = False
+        self.dirty = True
         self.x, self.y = position
         self.size = size
         self.bgcolor = bgcolor
