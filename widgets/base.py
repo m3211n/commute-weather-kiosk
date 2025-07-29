@@ -48,5 +48,5 @@ class Label:
     
     async def update(self, new_text):
         self.text = new_text
-        self.image.paste((0, 0, 0, 0), [(0, 0), self.getbbox()])
+        self.image.paste((0, 0, 0, 0), [(0, 0), self.getbbox()[2], self.getbbox()[3]])
         self.context.text((0, 0), self.text, self.fill, self.font, self.anchor)
