@@ -31,7 +31,7 @@ class Widget:
                 radius=8,
                 fill=self.bgcolor
             )
-            for item in self.content.values():
+            for item in self.content:
                 if isinstance(item, Label):
                     self._draw_context.text(**item.__dict__)
             return True
