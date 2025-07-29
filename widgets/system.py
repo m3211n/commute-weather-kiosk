@@ -29,7 +29,8 @@ class Info(Widget):
 
     async def render(self):
         self._clear()
-        await self.label.render_at(self.image)
+        await self.labelLeft.render_at(self.image)
+        await self.labelRight.render_at(self.image)
 
 
 class Clock(Widget):
