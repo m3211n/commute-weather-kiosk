@@ -14,4 +14,4 @@ class Weather(Widget):
 
     async def render(self):
         self._clear()
-        self.label.render_at(self.image)
+        await self.label.render_at(self.image)
