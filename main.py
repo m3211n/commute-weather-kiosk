@@ -19,7 +19,7 @@ async def main():
         while True:
             # on = time.time()
             response = await s.refresh()
-            logging.info(" Screen loop reported: %s", response)
+            logging.debug(" Screen loop reported: %s", response)
             await asyncio.sleep(1)
 
 if __name__ == "__main__":

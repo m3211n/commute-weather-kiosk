@@ -1,3 +1,5 @@
+import logging
+import time
 import numpy as np
 import asyncio
 
@@ -45,11 +47,14 @@ class Screen:
         if self.fb:
             self.fb.close()
 
-    async def refresh(self, dirty=True) -> str:
+    async def refresh(self, dirty=True):
         """Render and draw all layers to the framebuffer"""
+        loop_start = time.perf_counter()
         for widget in self.widgets:
             is_dirty = widget.render()
+            widget_name = widget.__class__.__name__
             if (dirty and is_dirty) or (not dirty):
+                start_timestamp = time.perf_counter()
                 image = widget.image
                 img_w, img_h = image.size
                 pos_x, pos_y = widget.position
@@ -62,6 +67,12 @@ class Screen:
                     end = start + img_w * 2
                     self.fb.seek(offset)
                     self.fb.write(buf[start:end])
-                return f"Dirty widget {widget.__class__.__name__} was redrawn."
+                e = time.perf_counter() - start_timestamp
+                msg = f"Widget {widget_name} was redrawn."
+                logging.info(msg)
+                logging.debug(f"{msg} Render time: {e:.3f} s.")
             else:
-                return "All widgets clean. Sleepin'..."
+                logging.debug("Nothing to redraw, just sleepin...")
+
+        e = time.perf_counter() - loop_start
+        logging.debug(f"Refresh routine complete in: {e:.3f} s.")
