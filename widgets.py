@@ -56,7 +56,7 @@ class Clock(Widget):
             size=(948, 472)
         )
         self._current_minute = -1
-        self.text_content = {
+        self.content = {
             "time": Label(
                 xy=(474, 268),
                 text=self.strf_now(Clock.TIME),
