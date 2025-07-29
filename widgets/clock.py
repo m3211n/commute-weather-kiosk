@@ -11,7 +11,7 @@ time_str = lambda format: datetime.now().strftime(format)
 class Clock(Widget):
     def __init__(self, interval=1):
         super().__init__("Clock", interval=interval, position=(8, 8), size=(948, 472))
-        self._current_minute = datetime.now().minute
+        self._current_minute = -1
         self._in_sync = lambda: self._current_minute == datetime.now().minute
         self.text_content = {
             "time": Label(
