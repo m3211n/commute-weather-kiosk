@@ -3,7 +3,7 @@ import locale
 
 import asyncio
 
-from widgets import Clock
+from widgets.clock import clock
 from screen import Screen
 
 logging.basicConfig(level=logging.INFO)
@@ -12,9 +12,7 @@ locale.setlocale(locale.LC_ALL, "sv_SE.UTF-8")
 
 async def main():
     with Screen() as s:
-        s.widgets = [
-            Clock()
-        ]
+        s.widgets = [clock]
         await s.refresh(dirty=False)
         while True:
             # on = time.time()

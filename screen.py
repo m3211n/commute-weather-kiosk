@@ -5,6 +5,7 @@ import asyncio
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
+BG_COLOR = (0, 0, 0)
 
 
 def rgb888_to_rgb565_numpy(image):
@@ -24,21 +25,15 @@ def rgb888_to_rgb565_numpy(image):
 
 class Screen:
     """Generic screen class"""
-    def __init__(
-            self,
-            width=SCREEN_WIDTH,
-            height=SCREEN_HEIGHT,
-            bgcolor=(0, 0, 0)
-    ):
-        self.width = width
-        self.height = height
+    def __init__(self):
+        self.size = SCREEN_WIDTH, SCREEN_HEIGHT
         self.fb = None
         self.widgets = []
-        self._bgcolor = bgcolor
+        self._bgcolor = BG_COLOR
 
     def __enter__(self):
         self.fb = open("/dev/fb0", "r+b", buffering=0)
-        buf = np.zeros((self.width, self.height), dtype="<u2")
+        buf = np.zeros(self.size, dtype="<u2")
         self.fb.seek(0)
         self.fb.write(buf)
         return self
@@ -55,11 +50,13 @@ class Screen:
             widget_name = widget.__class__.__name__
             if (dirty and is_dirty) or (not dirty):
                 start_timestamp = time.perf_counter()
-                image = widget.image
-                img_w, img_h = image.size
+                img_w, img_h = widget.image.size
                 pos_x, pos_y = widget.position
-                buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
-                row_size = self.width
+                buf = await asyncio.to_thread(
+                    rgb888_to_rgb565_numpy,
+                    widget.image
+                )
+                row_size = self.size[0]
                 fb_offset = (pos_y * row_size + pos_x) * 2
                 for row in range(img_h):
                     offset = fb_offset + row * row_size * 2
@@ -68,7 +65,7 @@ class Screen:
                     self.fb.seek(offset)
                     self.fb.write(buf[start:end])
                 e = time.perf_counter() - start_timestamp
-                msg = f"Widget {widget_name} was redrawn."
+                msg = f"Widget {widget_name} rendered updated content."
                 logging.info(msg)
                 logging.debug(f"{msg} Render time: {e:.3f} s.")
             else:
