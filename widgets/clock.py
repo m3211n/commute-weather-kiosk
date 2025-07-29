@@ -33,5 +33,5 @@ class Clock(Widget):
         return False
 
     async def render(self):
-        self._draw_context.text(**self.labelTime)
-        self._draw_context.text(**self.labelDate)
+        self._draw_context.text(*self.labelTime)
+        self._draw_context.text(*self.labelDate)
