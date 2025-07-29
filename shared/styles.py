@@ -32,3 +32,4 @@ class Colors:
     DEPARTURE_TIMES = (216, 216, 0)
     DEFAULT = (216, 216, 216)
     SECONDARY = (160, 160, 160)
+    NONE = (0, 0, 0)

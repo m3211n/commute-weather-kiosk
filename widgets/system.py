@@ -5,16 +5,18 @@ from shared.styles import Fonts, Colors
 
 class Info(Widget):
     def __init__(self, timeout=5):
-        super().__init__(position=(8, 1128), size=(1904, 64))
+        super().__init__(
+            position=(8, 1128), size=(1904, 48), bgcolor=Colors.NONE
+            )
         self.timeout = timeout
         self.labelLeft = Label(
-            xy=(16, 32),
+            xy=(16, 24),
             fill=Colors.TITLE,
             font=Fonts.STATUS,
             anchor="lm"
         )
         self.labelRight = Label(
-            xy=(1888, 32),
+            xy=(1888, 24),
             fill=Colors.TITLE,
             font=Fonts.STATUS,
             anchor="rm"
