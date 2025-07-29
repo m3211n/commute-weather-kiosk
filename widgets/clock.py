@@ -16,7 +16,6 @@ def _callback(label: Label, f):
 
 labelTime = Label(
     xy=(474, 268),
-    text="--:--",
     fill=Colors.default,
     font=Fonts.clock,
     anchor="mb",
@@ -25,7 +24,6 @@ labelTime = Label(
 
 labelDate = Label(
     xy=(474, 300),
-    text="Today",
     fill=Colors.title,
     font=Fonts.title,
     anchor="mt",
@@ -35,7 +33,5 @@ labelDate = Label(
 clock = Widget(
     position=(8, 8),
     size=(948, 472),
-    content=[
-        labelTime,
-        labelDate
-    ])
+    content=[labelTime, labelDate]
+    )
