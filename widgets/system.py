@@ -1,4 +1,4 @@
-from data_sources import Local
+from widgets.data_sources import Local
 from widgets.core import Widget, Label
 from shared.styles import Fonts, Colors
 
