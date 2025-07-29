@@ -1,4 +1,3 @@
-from PIL import Image
 import numpy as np
 import asyncio
 
@@ -39,6 +38,9 @@ class Screen:
             self.widgets[widget.name] = widget
     
     async def start(self):
+        buf = np.zeros((self.width, self.height), dtype="<u2")
+        self.fb.seek(0)
+        self.fb.write(buf)
         for widget in self.widgets:
             widget.start()
 
@@ -58,9 +60,3 @@ class Screen:
                     end = start + img_w * 2
                     self.fb.seek(offset)
                     self.fb.write(buf[start:end])
-
-    async def clear(self):
-        image = Image.new("RGB", (self.width, self.height), self._bgcolor)
-        buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
-        self.fb.seek(0)
-        self.fb.write(buf)        

@@ -14,7 +14,7 @@ widgets = {
 async def main():
     with Screen() as s:
         await s.add(widgets)
-        await s.clear()
+        await s.start()
         while True:
             for widget in s.widgets.values():
                 await widget.update()
