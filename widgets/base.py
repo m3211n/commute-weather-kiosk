@@ -5,7 +5,6 @@ class Widget:
     def __init__(self, name, interval=1, position=(0, 0), size=(100, 100), bgcolor=Colors.panel_bg):
         self.name = name
         self._interval = interval
-        self.dirty = True
         self.x, self.y = position
         self.size = size
         self.bgcolor = bgcolor
@@ -18,10 +17,12 @@ class Widget:
 
     async def render(self):
         if await self.update_content():
-            self.dirty = True
             self._draw_context.rounded_rectangle([(0, 0), self.size], radius=8, fill=self.bgcolor)
             for item in self.text_content.values():
                 self._draw_context.text(**item.__dict__)
+            return True # Dirty Flag
+        else:
+            return False # Dirty Flag
         
 
 

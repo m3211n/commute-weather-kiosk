@@ -39,16 +39,12 @@ class Screen:
         """Add a widget-like object with .x, .y, .get_image() and a name to refer to it"""
         for widget in widgets:
             self.widgets[widget.name] = widget
-    
-    async def start(self):
-        for widget in self.widgets.values():
-            await widget.render()
 
     async def refresh_all(self):
         """Render and draw all layers to the framebuffer"""
         for name, widget in self.widgets.items():
-            await widget.render()
-            if widget.dirty:
+            is_dirty = await widget.render()
+            if is_dirty:
                 image = widget.image
                 img_w, img_h = image.size
                 buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
