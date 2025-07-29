@@ -45,7 +45,7 @@ class Label:
     def __init__(self, text="Label", font=Fonts.value, position=(0, 0), anchor="la", fill=Colors.default):
         self.text = text
         self.font = font
-        self.bbox = self.font.getbbox(self.text)
+        self.bbox = self.get_bbox()
         self.size = self.bbox[2] - self.bbox[0], self.bbox[3] - self.bbox[1]
         self.position = position
         self.fill = fill
@@ -53,7 +53,11 @@ class Label:
         self.context = ImageDraw.Draw(self.image)
         self.anchor = anchor
 
+    def get_bbox(self):
+        return self.font.getbbox(self.text)
+
     async def update(self, new_text):
         self.text = new_text
+        self.bbox = self.get_bbox()
         self.image.paste((0, 0, 0, 0), self.bbox)
         self.context.text((0, 0), self.text, self.fill, self.font, self.anchor)
