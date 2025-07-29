@@ -16,14 +16,14 @@ class Clock(Widget):
         self.text_content = {
             "time": Label(
                 xy=(474, 268),
-                text="--:--",
+                text=time_str(TIME),
                 fill=Colors.default,
                 font=Fonts.clock,
                 anchor="mb"
             ),
             "date": Label(
                 xy=(474, 300),
-                text="Today",
+                text=time_str(DATE),
                 fill=Colors.title,
                 font=Fonts.title,
                 anchor="mt"
