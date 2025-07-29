@@ -17,7 +17,7 @@ async def main():
         await s.clear()
         while True:
             for widget in s.widgets.values():
-                widget.update()
+                await widget.update()
             # on = time.time()
             await s.refresh_all()
             # method = "refresh_all"
