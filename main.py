@@ -9,8 +9,8 @@ async def main():
 
     with Screen() as s:
         s.widgets = [
-            clock.Clock(), 
-            weather.Weather(), 
+            clock.Clock(),
+            weather.Weather(),
             system.System()
         ]
         await s.refresh(only_dirty=False)
