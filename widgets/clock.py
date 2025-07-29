@@ -16,10 +16,6 @@ class Clock(Widget):
                 font=Fonts.clock,
                 anchor="mb"
         )
-        self.labelTime.update = lambda: self._time_str(
-            self.labelTime,
-            TIME_FORMAT
-        )
 
         self.labelDate = Label(
                 xy=(474, 300),
@@ -27,17 +23,15 @@ class Clock(Widget):
                 font=Fonts.title,
                 anchor="mt"
         )
-        self.labelDate.update = lambda: self._time_str(
-            self.labelDate,
-            DATE_FORMAT
-        )
 
-        self.content = [self.labelTime, self.labelDate]
-
-    @staticmethod
-    def _time_str(label: Label, f):
-        current_time = get_time(f)
-        if not label.text == current_time:
-            label.text = current_time
+    async def update_content(self):
+        current_time = get_time(TIME_FORMAT)
+        if self.labelTime.text != current_time:
+            self.labelTime.text = current_time
+            self.labelDate.text = get_time(DATE_FORMAT)
             return True
         return False
+
+    async def render(self):
+        self._draw_context.text(**self.labelTime)
+        self._draw_context.text(**self.labelDate)

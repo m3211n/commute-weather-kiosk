@@ -51,14 +51,13 @@ class Widget:
         )
 
     async def update_content(self) -> bool:
-        return any([await item.update() for item in self.content])
+        return False
 
     async def maybe_render(self) -> bool:
         if await self.update_content():
-            # Render and convert to RGB565
-            self._clear()
-            for item in self.content:
-                if isinstance(item, Label):
-                    self._draw_context.text(**item.__dict__)
+            self.render()
             return True
         return False
+
+    async def render(self) -> bool:
+        self._clear()
