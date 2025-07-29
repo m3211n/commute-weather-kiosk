@@ -1,6 +1,6 @@
 import asyncio
 from PIL import Image, ImageDraw
-from shared.styles import Colors, Fonts
+from shared.styles import Colors
 
 class Widget:
     def __init__(self, name, interval=1, position=(0, 0), size=(100, 100), bgcolor=Colors.panel_bg):
@@ -33,5 +33,5 @@ class Widget:
 
 class Label:
     def __init__(self, **kwargs):
-        for key, value in kwargs:
+        for key, value in kwargs.items():
             setattr(self, key, value)
