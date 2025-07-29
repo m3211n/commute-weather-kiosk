@@ -48,7 +48,7 @@ class Screen:
         for widget in self.widgets:
             widget_is_dirty = widget.render()
             if (only_dirty and widget_is_dirty) or (not only_dirty):
-                widget_name = widget.__class__.__name__
+                widget_name = widget.__name__
                 start_timestamp = time.perf_counter()
                 img_w, img_h = widget.image.size
                 pos_x, pos_y = widget.position
