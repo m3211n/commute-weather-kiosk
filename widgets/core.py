@@ -18,14 +18,13 @@ class Widget:
         self.image = Image.new("RGB", self.size)
         self._draw_context = ImageDraw.Draw(self.image)
 
-    def update(self) -> bool:
-        result = False
-        for item in self.content:
-            result = item.callback()
-        return result
+    def is_up_to_date(self) -> bool:
+        if any(item.callback() for item in self.content):
+            return True
+        return False
 
     def render(self) -> bool:
-        if self.update():
+        if self.is_up_to_date():
             self._draw_context.rounded_rectangle(
                 [(0, 0), self.size],
                 radius=8,

@@ -42,13 +42,13 @@ class Screen:
         if self.fb:
             self.fb.close()
 
-    async def refresh(self, dirty=True):
+    async def refresh(self, only_dirty=True):
         """Render and draw all layers to the framebuffer"""
         loop_start = time.perf_counter()
         for widget in self.widgets:
-            is_dirty = widget.render()
-            widget_name = widget.__class__.__name__
-            if (dirty and is_dirty) or (not dirty):
+            widget_is_dirty = widget.render()
+            if (only_dirty and widget_is_dirty) or (not only_dirty):
+                widget_name = widget.__class__.__name__
                 start_timestamp = time.perf_counter()
                 img_w, img_h = widget.image.size
                 pos_x, pos_y = widget.position
