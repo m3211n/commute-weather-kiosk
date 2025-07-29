@@ -61,6 +61,6 @@ class Screen:
                     end = start + img_w * 2
                     self.fb.seek(offset)
                     self.fb.write(buf[start:end])
-                return f"Dirty widget {name} will be redrawn."
+                return f"Dirty widget {name} was redrawn."
             else:
                 return "All widgets clean. Sleepin'..."
