@@ -47,8 +47,8 @@ class Screen:
     async def refresh_all(self):
         """Render and draw all layers to the framebuffer"""
         for widget in self.widgets.values():
+            await widget.render()
             if widget.dirty:
-                widget.dirty = False
                 image = widget.image
                 img_w, img_h = image.size
                 buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
