@@ -11,17 +11,17 @@ class Clock(Widget):
         super().__init__(position=(8, 8), size=(948, 472))
 
         self.labelTime = Label(
-                xy=(474, 268),
-                fill=Colors.default,
-                font=Fonts.clock,
-                anchor="mb"
+            xy=(474, 268),
+            fill=Colors.default,
+            font=Fonts.clock,
+            anchor="mb"
         )
 
         self.labelDate = Label(
-                xy=(474, 300),
-                fill=Colors.title,
-                font=Fonts.title,
-                anchor="mt"
+            xy=(474, 300),
+            fill=Colors.title,
+            font=Fonts.title,
+            anchor="mt"
         )
 
     async def update_content(self):
