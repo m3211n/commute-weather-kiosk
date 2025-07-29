@@ -19,7 +19,7 @@ class Clock(Widget):
                 anchor="mb"
             ),
             "date": Label(
-                xy=(474, 284),
+                xy=(474, 300),
                 text="Today",
                 fill=Colors.title,
                 font=Fonts.title,
