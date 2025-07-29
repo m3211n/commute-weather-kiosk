@@ -32,9 +32,6 @@ class Widget:
 
 
 class Label:
-    def __init__(self, xy=(0, 0), text="Label", fill=Colors.default, font=Fonts.value, anchor="la"):
-        self.text = text
-        self.font = font
-        self.xy = xy
-        self.fill = fill
-        self.anchor = anchor
+    def __init__(self, **kwargs):
+        for key, value in kwargs:
+            setattr(self, key, value)
