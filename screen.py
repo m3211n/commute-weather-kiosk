@@ -41,26 +41,18 @@ class Screen:
     async def refresh_all(self):
         """Render and draw all layers to the framebuffer"""
         for widget in self.widgets.values():
-            image = await asyncio.to_thread(widget.get_image)
-            img_w, img_h = image.size
-            buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
-            row_size = self.width
-            fb_offset = (widget.y * row_size + widget.x) * 2
-            for row in range(img_h):
-                offset = fb_offset + row * row_size * 2
-                start = row * img_w * 2
-                end = start + img_w * 2
-                self.fb.seek(offset)
-                self.fb.write(buf[start:end])
-
-    async def refresh_all_bulk(self):
-        fb_img = Image.new("RGB", (self.width, self.height), self._bgcolor)
-        for widget in self.widgets.values():
-            image = await asyncio.to_thread(widget.get_image)
-            fb_img.paste(image, (widget.x, widget.y))
-        buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, fb_img)
-        self.fb.seek(0)
-        self.fb.write(buf)
+            if widget.dirty:
+                image = await asyncio.to_thread(widget.image)
+                img_w, img_h = image.size
+                buf = await asyncio.to_thread(rgb888_to_rgb565_numpy, image)
+                row_size = self.width
+                fb_offset = (widget.y * row_size + widget.x) * 2
+                for row in range(img_h):
+                    offset = fb_offset + row * row_size * 2
+                    start = row * img_w * 2
+                    end = start + img_w * 2
+                    self.fb.seek(offset)
+                    self.fb.write(buf[start:end])
 
     async def clear(self):
         image = Image.new("RGB", (self.width, self.height), self._bgcolor)

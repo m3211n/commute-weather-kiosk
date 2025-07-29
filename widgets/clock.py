@@ -1,25 +1,19 @@
+from widgets.base import Widget, Label
 from datetime import datetime
-import time
-from PIL import ImageFont
+from shared.styles import Fonts, Colors
 
-class ClockWidget:
-    def __init__(self):
-        self.content = "--:--"
-        self.last_updated = 0
-        self.update_interval = 1
-        self.x = 50
-        self.y = 50
-        self.font = ImageFont.load_default()
+DATE = "%A, %d, %B, %Y"
+TIME = "%H:%M"
 
-    async def update(self):
-        self.content = datetime.now().strftime("%H:%M:%S")
+time_str = lambda format: datetime.now().strftime(format)
 
-    async def maybe_update(self):
-        if time.monotonic() - self.last_updated >= self.update_interval:
-            await self.update()
-            self.last_updated = time.monotonic()
-            return True
-        return False
+class Clock(Widget):
+    def __init__(self, interval=60):
+        super().__init__("Clock", (8, 8), (948, 472))
+        self.time = Label("--:--", font=Fonts.clock, anchor="mb", fill=Colors.default)
+        self.date = Label("Today", font=Fonts.title, anchor="mt", position=(0, 16), fill=Colors.title)
+        self._interval = interval
 
-    def draw(self, draw):
-        draw.text((self.x, self.y), self.content, fill="white", font=self.font)
+    async def callback(self):
+        self.time.update(time_str(TIME))
+        self.date.update(time_str(DATE))
