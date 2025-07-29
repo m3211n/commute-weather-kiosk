@@ -26,7 +26,7 @@ class Widget:
         if not self.dirty:
             await self.callback()
         for item in self.text_content.values():
-            self._draw_context.text(*item)
+            self._draw_context.text(**item)
         await asyncio.sleep(self._interval)
         self.dirty = True
 
