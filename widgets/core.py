@@ -42,18 +42,20 @@ class Label:
     """Generic label class.
     Uses the same attributes as PIL.ImageDraw.Draw.text"""
 
+    def _default_callback():
+        return False
+
     def __init__(
             self,
             xy=(0, 0),
             text="Label",
             fill=Colors.default,
             font=Fonts.value,
-            anchor="la"):
+            anchor="la",
+            callback=None):
         self.xy = xy
         self.text = text
         self.fill = fill
         self.font = font
         self.anchor = anchor
-
-    def callback(self):
-        return False
+        self.callback = callback

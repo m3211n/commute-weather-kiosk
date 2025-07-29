@@ -20,6 +20,7 @@ labelTime = Label(
     fill=Colors.default,
     font=Fonts.clock,
     anchor="mb",
+    callback=lambda: _callback(labelTime, TIME_FORMAT)
 )
 
 labelDate = Label(
@@ -27,11 +28,9 @@ labelDate = Label(
     text="Today",
     fill=Colors.title,
     font=Fonts.title,
-    anchor="mt"
+    anchor="mt",
+    callback=lambda: _callback(labelDate, DATE_FORMAT)
 )
-
-labelTime.callback = lambda: _callback(labelTime, TIME_FORMAT)
-labelDate.callback = lambda: _callback(labelDate, DATE_FORMAT)
 
 clock = Widget(
     position=(8, 8),
