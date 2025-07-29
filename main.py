@@ -8,7 +8,11 @@ async def main():
     logging.basicConfig(level=logging.INFO)
 
     with Screen() as s:
-        s.widgets = [clock.Clock(), weather.Weather(), system.System()]
+        s.widgets = [
+            clock.Clock(), 
+            weather.Weather(), 
+            system.System()
+        ]
         await s.refresh(only_dirty=False)
         while True:
             # on = time.time()

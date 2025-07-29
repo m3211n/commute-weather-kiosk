@@ -17,7 +17,7 @@ class Fonts:
     TITLE = get_font(FONT_PATHS["dejavu_mono"], 40)
     WEATHER_TODAY = get_font(FONT_PATHS["dejavu_sans"], 120)
     CLOCK = get_font(FONT_PATHS["dejavu_sans"], 240)
-    STATUS = get_font(FONT_PATHS["dejavu_mono", 20])
+    STATUS = get_font(FONT_PATHS["dejavu_mono"], 20)
 
     @staticmethod
     def custom(name: str, size: int):
