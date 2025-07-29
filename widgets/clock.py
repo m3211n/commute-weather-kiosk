@@ -2,7 +2,7 @@ from widgets.base import Widget, Label
 from datetime import datetime
 from shared.styles import Fonts, Colors
 
-DATE = "%A, %d, %B, %Y"
+DATE = "%A, %B %d, %Y"
 TIME = "%H:%M"
 MIN = "%-M"
 
