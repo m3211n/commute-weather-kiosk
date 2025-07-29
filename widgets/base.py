@@ -22,11 +22,11 @@ class Widget:
         await self.callback()
         for item in self.text_content.values():
             self._draw_context.text(**item.__dict__)
-        self.dirty = True
 
     async def update(self):
         if not self.dirty:
             await self.start()
+            self.dirty = True
         await asyncio.sleep(self._interval)
 
 
