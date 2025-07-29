@@ -12,14 +12,14 @@ class Clock(Widget):
         super().__init__("Clock", interval=interval, position=(8, 8), size=(948, 472))
         self.text_content = {
             "time": Label(
-                xy=(474, 236),
+                xy=(474, 268),
                 text="--:--",
                 fill=Colors.default,
                 font=Fonts.clock,
                 anchor="mb"
             ),
             "date": Label(
-                xy=(474, 252),
+                xy=(474, 284),
                 text="Today",
                 fill=Colors.title,
                 font=Fonts.title,
