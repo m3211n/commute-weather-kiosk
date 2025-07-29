@@ -23,8 +23,8 @@ class Info(Widget):
         self.labelLeft.text = f"SSID: {Local.ssid()} ({Local.ip_address()})"
         cpu = Local.cpu()
         temp = cpu[0]
-        load = f"{round((cpu[1] + cpu[2] + cpu[3]) * 100 / 3, 1)}%"
-        self.labelRight.text = f"CPU: {temp} (Avg.load: {load})"
+        load = f"{round(cpu[1] * 100, 1)}%"
+        self.labelRight.text = f"CPU: {temp} (Avg.load (1 min): {load})"
         return True
 
     async def render(self):
