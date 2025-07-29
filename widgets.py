@@ -19,11 +19,11 @@ class Widget:
         self.image = Image.new("RGB", self.size)
         self._draw_context = ImageDraw.Draw(self.image)
 
-    async def update_content(self):
+    def update_content(self):
         return False
 
-    async def render(self):
-        if await self.update_content():
+    def render(self):
+        if self.update_content():
             self._draw_context.rounded_rectangle(
                 [(0, 0), self.size],
                 radius=8,
@@ -37,7 +37,8 @@ class Widget:
 
 
 class Label:
-    """Generic label class"""
+    """Generic label class.
+    Uses the same attributes as PIL.ImageDraw.Draw.text"""
     def __init__(self, text="Label", **kwargs):
         self.text = text
         for key, value in kwargs.items():
@@ -76,7 +77,7 @@ class Clock(Widget):
     def strf_now(self, f):
         return datetime.now().strftime(f)
 
-    async def update_content(self):
+    def update_content(self):
         if not self._current_minute == datetime.now().minute:
             self._current_minute = datetime.now().minute
             self.content["time"].text = self.strf_now(Clock.TIME)
