@@ -6,7 +6,7 @@ from shared.styles import Fonts, Colors
 class Info(Widget):
     def __init__(self, timeout=5):
         super().__init__(
-            position=(8, 1128), size=(1904, 48), bgcolor=Colors.NONE
+            position=(8, 1144), size=(1904, 48), bgcolor=Colors.NONE
             )
         self.timeout = timeout
         self.labelLeft = Label(
