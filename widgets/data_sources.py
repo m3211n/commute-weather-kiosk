@@ -24,7 +24,7 @@ def get_system_info():
     try:
         ssid = s.check_output(
             "iwgetid -r", shell=True, encoding="utf-8"
-        )
+        ).strip()
         if not ssid:
             ssid = "N/A"
     except Exception:
@@ -47,4 +47,4 @@ def get_system_info():
             else:
                 pass
 
-    return f"SSID: {ssid} ({ip}) | CPU t°: {cpu_t} | Available RAM: {ram} MB"
+    return f"SSID: {ssid}({ip}) | CPU t°: {cpu_t} | Available RAM: {ram} MB"
