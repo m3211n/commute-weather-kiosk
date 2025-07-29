@@ -1,6 +1,6 @@
 import logging
 import asyncio
-from widgets.clock import Clock
+from widgets import clock, weather
 from screen import Screen
 
 
@@ -8,7 +8,7 @@ async def main():
     logging.basicConfig(level=logging.INFO)
 
     with Screen() as s:
-        s.widgets = [Clock()]
+        s.widgets = [clock.Clock(), weather.Weather()]
         await s.refresh(only_dirty=False)
         while True:
             # on = time.time()
