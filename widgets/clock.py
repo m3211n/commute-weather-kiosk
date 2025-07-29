@@ -1,4 +1,4 @@
-from datetime import datetime
+from widgets.data_sources import get_time
 from widgets.core import Widget, Label
 from shared.styles import Colors, Fonts
 
@@ -16,7 +16,7 @@ class Clock(Widget):
                 font=Fonts.clock,
                 anchor="mb"
         )
-        self.labelTime.callback = lambda: self._time_str(
+        self.labelTime.update = lambda: self._time_str(
             self.labelTime,
             TIME_FORMAT
         )
@@ -27,7 +27,7 @@ class Clock(Widget):
                 font=Fonts.title,
                 anchor="mt"
         )
-        self.labelDate.callback = lambda: self._time_str(
+        self.labelDate.update = lambda: self._time_str(
             self.labelDate,
             DATE_FORMAT
         )
@@ -36,8 +36,8 @@ class Clock(Widget):
 
     @staticmethod
     def _time_str(label: Label, f):
-        new_text = datetime.now().strftime(f)
-        if not label.text == new_text:
-            label.text = new_text
+        current_time = get_time(f)
+        if not label.text == current_time:
+            label.text = current_time
             return True
         return False
