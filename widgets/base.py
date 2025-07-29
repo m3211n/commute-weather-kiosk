@@ -28,9 +28,10 @@ class Widget:
         pass
 
     async def update(self):
-        await self.callback()
+        if not self.dirty:
+            await self.callback()
         await asyncio.sleep(self._interval)
-
+        self.dirty = True
 
 
 class Label:
