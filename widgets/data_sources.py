@@ -1,5 +1,7 @@
 from datetime import datetime
 from locale import setlocale, LC_ALL
+import subprocess as s
+
 
 setlocale(LC_ALL, "sv_SE.UTF-8")
 
@@ -9,42 +11,40 @@ def get_time(format):
     return datetime.now().strftime(format)
 
 
-def get_system_info():
-    import subprocess as s
+class Local:
 
-    # IP address
-    try:
-        ip = s.check_output(
+    @staticmethod
+    def time(format) -> str:
+        return datetime.now().strftime(format)
+
+    @staticmethod
+    def ip_address() -> str:
+        return s.check_output(
             "hostname -I", shell=True, encoding="utf-8"
         ).split()[0]
-    except Exception:
-        ip = "N/A"
 
-    # Wi-Fi SSID
-    try:
-        ssid = s.check_output(
+    @staticmethod
+    def ssid() -> str:
+        return s.check_output(
             "iwgetid -r", shell=True, encoding="utf-8"
         ).strip()
-        if not ssid:
-            ssid = "N/A"
-    except Exception:
-        ssid = "N/A"
 
-    # CPU temperature
-    try:
+    @staticmethod
+    def cpu() -> str:
+        """Returns Temp, Load 1m, Load 5m, Load 15m"""
         with open("/sys/class/thermal/thermal_zone0/temp") as f:
             cpu_t = f"{float(f.read())/1000:.1f}°C"
-    except Exception:
-        cpu_t = "N/A"
+        with open("/proc/loadavg") as f:
+            load1, load5, load15 = map(float, f.read().split()[:3])
+        return cpu_t, load1, load5, load15
 
-    # RAM usage (free/total in MB)
-    with open("/proc/meminfo") as f:
-        ram = "N/A"
-        for line in f:
-            if line.startswith("MemAvailable:"):
-                ram = int(line.split()[1]) // 1024
-                break
-            else:
-                pass
-
-    return f"SSID: {ssid} ({ip}) | CPU: {cpu_t} | Available RAM: {ram} MB"
+    @staticmethod
+    def ram() -> str:
+        with open("/proc/meminfo") as f:
+            for line in f:
+                if line.startswith("MemAvailable:"):
+                    ram = int(line.split()[1]) // 1024
+                    break
+                else:
+                    pass
+        return f"{ram} MB"

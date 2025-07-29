@@ -1,6 +1,6 @@
 import logging
 import asyncio
-from widgets import clock, weather, system
+from widgets import weather, system
 from screen import Screen
 
 
@@ -9,9 +9,9 @@ async def main():
 
     with Screen() as s:
         s.widgets = [
-            clock.Clock(),
+            system.Clock(),
             weather.Weather(),
-            system.System()
+            system.Info()
         ]
         await s.refresh(only_dirty=False)
         while True:
