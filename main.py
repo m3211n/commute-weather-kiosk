@@ -8,7 +8,7 @@ from screen import Screen
 logging.basicConfig(level=logging.DEBUG)
 
 widgets = {
-    Clock(5)
+    Clock(60)
 }
 
 async def main():
