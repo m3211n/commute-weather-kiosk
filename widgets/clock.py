@@ -12,15 +12,14 @@ class Clock(Widget):
 
         self.labelTime = Label(
             xy=(474, 268),
-            fill=Colors.default,
-            font=Fonts.clock,
+            font=Fonts.CLOCK,
             anchor="mb"
         )
 
         self.labelDate = Label(
             xy=(474, 300),
-            fill=Colors.title,
-            font=Fonts.title,
+            fill=Colors.SECONDARY,
+            font=Fonts.TITLE,
             anchor="mt"
         )
 

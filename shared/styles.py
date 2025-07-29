@@ -1,16 +1,33 @@
 from PIL import ImageFont
 
-DejaVuSans = lambda size: ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", size)
-Mono = lambda size: ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", size) 
+
+def get_font(path, size):
+    return ImageFont.truetype(path, size)
+
+
+FONT_PATHS = {
+    "dejavu_sans": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "dejavu_mono": "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+}
+
 
 class Fonts:
-    value = DejaVuSans(80)
-    title = Mono(40)
-    weather_today = DejaVuSans(120)
-    clock = DejaVuSans(240)
+    """Font presets for the UI."""
+    VALUE = get_font(FONT_PATHS["dejavu_sans"], 80)
+    TITLE = get_font(FONT_PATHS["dejavu_mono"], 40)
+    WEATHER_TODAY = get_font(FONT_PATHS["dejavu_sans"], 120)
+    CLOCK = get_font(FONT_PATHS["dejavu_sans"], 240)
+
+    @staticmethod
+    def custom(name: str, size: int):
+        """Get a custom font by name and size."""
+        return get_font(FONT_PATHS[name], size)
+
 
 class Colors:
-    panel_bg = (32, 32, 32)
-    title = (88, 88, 88)
-    departure_times = (216, 216, 0)
-    default = (216, 216, 216)
+    """Color palette for the UI."""
+    PANEL_BG = (32, 32, 32)
+    TITLE = (88, 88, 88)
+    DEPARTURE_TIMES = (216, 216, 0)
+    DEFAULT = (216, 216, 216)
+    SECONDARY = (160, 160, 160)

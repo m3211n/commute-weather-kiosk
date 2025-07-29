@@ -6,8 +6,8 @@ class Label:
     """Generic label class.
     Uses the same attributes as PIL.ImageDraw.Draw.text"""
 
-    def __init__(self, xy=(0, 0), text="Label", fill=Colors.default,
-                 font=Fonts.value, anchor="la"):
+    def __init__(self, xy=(0, 0), text="Label", fill=Colors.DEFAULT,
+                 font=Fonts.VALUE, anchor="la"):
         self.xy = xy
         self.text = text
         self.fill = fill
@@ -31,7 +31,7 @@ class Widget:
             self,
             position=(0, 0),
             size=(100, 100),
-            bgcolor=Colors.panel_bg,
+            bgcolor=Colors.PANEL_BG,
             radius=16
             ):
         self.position = position
