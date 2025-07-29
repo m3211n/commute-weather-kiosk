@@ -2,7 +2,7 @@ from widgets.base import Widget, Label
 from datetime import datetime
 from shared.styles import Fonts, Colors
 
-DATE = "%A, %B %d, %Y"
+DATE = "%A, %B %d, , %Y"
 TIME = "%H:%M"
 MIN = "%-M"
 
@@ -35,5 +35,6 @@ class Clock(Widget):
             self._current_minute = datetime.now().minute
             self.text_content["time"].text = time_str(TIME)
             self.text_content["date"].text = time_str(DATE)
-            self._in_sync = True
-        return self._in_sync
+            return True
+        else:
+            return False
