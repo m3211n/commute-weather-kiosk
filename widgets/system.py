@@ -59,7 +59,7 @@ class Clock(Widget):
         self.labelTime = Label(
             xy=(64, 116),
             font=Fonts.CLOCK,
-            anchor="tl"
+            anchor="lt"
 
         )
         self.labelDate = Label(
