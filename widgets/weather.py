@@ -14,7 +14,7 @@ class Weather(Widget):
         )
         self.labelConditions = Label(
             xy=(90, 120),
-            font=Fonts.WEATHER_TODAY,
+            font=Fonts.TITLE,
             fill=Colors.TITLE,
             anchor="lt"
         )
