@@ -15,7 +15,7 @@ class Weather(Widget):
         self.labelConditions = Label(
             xy=(90, 210),
             font=Fonts.TITLE,
-            fill=Colors.TITLE,
+            fill=Colors.SECONDARY,
             anchor="lt"
         )
         self.timeout = timeout
