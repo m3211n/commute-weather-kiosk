@@ -8,7 +8,8 @@ def get_font(path, size):
 FONT_PATHS = {
     "black": "./shared/fonts/MuseoModerno-Black.ttf",
     "bold": "./shared/fonts/MuseoModerno-Bold.ttf",
-    "regular": "./shared/fonts/MuseoModerno-Regular.ttf"
+    "regular": "./shared/fonts/MuseoModerno-Regular.ttf",
+    "mono": "./shared/fonts/RobotoMono-Regular.ttf"
 }
 
 
@@ -18,7 +19,7 @@ class Fonts:
     TITLE = get_font(FONT_PATHS["regular"], 40)
     WEATHER_TODAY = get_font(FONT_PATHS["black"], 120)
     CLOCK = get_font(FONT_PATHS["black"], 210)
-    STATUS = get_font(FONT_PATHS["regular"], 20)
+    STATUS = get_font(FONT_PATHS["mono"], 20)
 
     @staticmethod
     def custom(name: str, size: int):
