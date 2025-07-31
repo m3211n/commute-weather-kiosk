@@ -14,11 +14,11 @@ FONT_PATHS = {
 
 class Fonts:
     """Font presets for the UI."""
-    VALUE = get_font(FONT_PATHS["dejavu_sans"], 80)
-    TITLE = get_font(FONT_PATHS["dejavu_mono"], 40)
-    WEATHER_TODAY = get_font(FONT_PATHS["dejavu_sans"], 120)
-    CLOCK = get_font(FONT_PATHS["dejavu_sans"], 240)
-    STATUS = get_font(FONT_PATHS["dejavu_mono"], 20)
+    VALUE = get_font(FONT_PATHS["bold"], 80)
+    TITLE = get_font(FONT_PATHS["regular"], 40)
+    WEATHER_TODAY = get_font(FONT_PATHS["black"], 120)
+    CLOCK = get_font(FONT_PATHS["black"], 210)
+    STATUS = get_font(FONT_PATHS["regular"], 20)
 
     @staticmethod
     def custom(name: str, size: int):
