@@ -26,7 +26,7 @@ class Info(Widget):
         if self._update_timeout():
             host_info = [
                 f"WI-FI SSID: {Local.ssid()}",
-                f"IPv4: {Local.hostname("-I")}",
+                f"IPv4: {Local.hostname('-I')}",
                 Local.hostname()
             ]
             self.labelLeft.text = " | ".join(host_info)
