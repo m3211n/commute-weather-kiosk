@@ -17,7 +17,7 @@ class Fonts:
     """Font presets for the UI."""
     VALUE = get_font(FONT_PATHS["bold"], 86)
     TITLE = get_font(FONT_PATHS["regular"], 40)
-    WEATHER_TODAY = get_font(FONT_PATHS["black"], 120)
+    WEATHER_TODAY = get_font(FONT_PATHS["regular"], 180)
     CLOCK = get_font(FONT_PATHS["black"], 211)
     STATUS = get_font(FONT_PATHS["mono"], 20)
 
