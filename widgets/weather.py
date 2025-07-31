@@ -4,7 +4,7 @@ from core.ui import Widget, Label
 
 class Weather(Widget):
     def __init__(self, timeout=900):
-        super().__init__(position=(964, 8), size=(948, 1128))
+        super().__init__(position=(1208, 24), size=(688, 1112))
         self.label = Label()
         self.timeout = timeout
         self._next_update = Tools.time()

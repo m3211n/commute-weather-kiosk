@@ -48,36 +48,53 @@ class Info(Widget):
 class Clock(Widget):
 
     TIME_FORMAT = "%H:%M"
-    DATE_FORMAT = "%A, %B %d, %Y"
+    DATE_FORMAT = "%A-%B %d-%Y"
 
     def __init__(self):
         super().__init__(
-            position=(8, 8),
+            position=(24, 24),
             radius=64,
-            size=(1174, 378)
+            size=(1160, 328)
             )
         self.labelTime = Label(
-            xy=(64, 116),
+            xy=(64, 90),
             font=Fonts.CLOCK,
             anchor="lt"
 
         )
-        self.labelDate = Label(
-            xy=(474, 336),
+        self.labelWeekday = Label(
+            xy=(1096, 90),
             fill=Colors.SECONDARY,
             font=Fonts.TITLE,
-            anchor="mt"
+            anchor="rt"
+        )
+        self.labelDate = Label(
+            xy=(1096, 134),
+            fill=Colors.SECONDARY,
+            font=Fonts.TITLE,
+            anchor="rt"
+        )
+        self.labelYear = Label(
+            xy=(1096, 178),
+            fill=Colors.SECONDARY,
+            font=Fonts.VALUE,
+            anchor="rt"
         )
 
     async def update_content(self):
         current_time = Local.time(Clock.TIME_FORMAT)
+        weekday, date, year = Local.time(Clock.DATE_FORMAT).split("-")
         if self.labelTime.text != current_time:
             self.labelTime.text = current_time
-            self.labelDate.text = Local.time(Clock.DATE_FORMAT)
+            self.labelWeekday.text = weekday
+            self.labelDate.text = date
+            self.labelYear.text = year
             return True
         return False
 
     async def render(self):
         self._clear()
         await self.labelTime.render_at(self.image)
+        await self.labelWeekday.render_at(self.image)
         await self.labelDate.render_at(self.image)
+        await self.labelYear.render_at(self.image)
