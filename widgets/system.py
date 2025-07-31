@@ -51,11 +51,14 @@ class Clock(Widget):
     DATE_FORMAT = "%A, %B %d, %Y"
 
     def __init__(self):
-        super().__init__(position=(8, 8), size=(948, 548))
+        super().__init__(
+            position=(8, 8),
+            radius=(64, 64, 16, 16),
+            size=(1174, 378)
+            )
         self.labelTime = Label(
-            xy=(474, 314),
-            font=Fonts.CLOCK,
-            anchor="mb"
+            xy=(64, 116),
+            font=Fonts.CLOCK
         )
         self.labelDate = Label(
             xy=(474, 336),
