@@ -6,9 +6,9 @@ def get_font(path, size):
 
 
 FONT_PATHS = {
-    "black": "shared/fonts/MuseoModerno-Black.ttf",
-    "bold": "shared/fonts/MuseoModerno-Bold.ttf",
-    "regular": "shared/fonts/MuseoModerno-Regular.ttf"
+    "black": "./shared/fonts/MuseoModerno-Black.ttf",
+    "bold": "./shared/fonts/MuseoModerno-Bold.ttf",
+    "regular": "./shared/fonts/MuseoModerno-Regular.ttf"
 }
 
 
