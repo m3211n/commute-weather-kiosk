@@ -53,29 +53,28 @@ class Clock(Widget):
     def __init__(self):
         super().__init__(
             position=(24, 24),
-            radius=64,
             size=(1160, 328)
             )
         self.labelTime = Label(
-            xy=(64, 90),
+            xy=(90, 90),
             font=Fonts.CLOCK,
             anchor="lt"
 
         )
         self.labelWeekday = Label(
-            xy=(1096, 90),
+            xy=(1070, 90),
             fill=Colors.SECONDARY,
             font=Fonts.TITLE,
             anchor="rt"
         )
         self.labelDate = Label(
-            xy=(1096, 134),
+            xy=(1070, 134),
             fill=Colors.SECONDARY,
             font=Fonts.TITLE,
             anchor="rt"
         )
         self.labelYear = Label(
-            xy=(1096, 178),
+            xy=(1070, 178),
             fill=Colors.SECONDARY,
             font=Fonts.VALUE,
             anchor="rt"

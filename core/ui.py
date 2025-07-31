@@ -33,7 +33,7 @@ class Widget:
             position=(0, 0),
             size=(100, 100),
             bgcolor=Colors.PANEL_BG,
-            radius=16,
+            radius=24,
             timeout=1,
             ):
         self.timeout = timeout
