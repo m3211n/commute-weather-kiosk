@@ -6,8 +6,9 @@ def get_font(path, size):
 
 
 FONT_PATHS = {
-    "dejavu_sans": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    "dejavu_mono": "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+    "black": "shared/fonts/MuseoModerno-Black.ttf",
+    "bold": "shared/fonts/MuseoModerno-Bold.ttf",
+    "regular": "shared/fonts/MuseoModerno-Regular.ttf"
 }
 
 

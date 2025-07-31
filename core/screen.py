@@ -2,8 +2,8 @@ import logging
 import time
 
 from typing import List
-from shared.rgb565 import rgb888_to_rgb565_numpy as convert, clear, clear_rgb
-from shared.rgb565 import Image
+from core.rgb565 import rgb888_to_rgb565_numpy as convert, clear, clear_rgb
+from core.rgb565 import Image
 from core.ui import Widget
 
 SCREEN_WIDTH = 1920
