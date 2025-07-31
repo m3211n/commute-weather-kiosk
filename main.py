@@ -3,7 +3,7 @@ import asyncio
 import argparse
 
 from widgets import weather, system
-from screen import Screen
+from core.screen import Screen
 
 
 async def main(using_fb=True):

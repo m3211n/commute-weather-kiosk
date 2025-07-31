@@ -1,4 +1,4 @@
-from widgets.core import Widget, Label
+from core.ui import Widget, Label
 
 
 class Dummy(Widget):

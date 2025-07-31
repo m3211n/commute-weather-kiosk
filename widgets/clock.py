@@ -1,5 +1,5 @@
 from widgets.data_sources import get_time
-from widgets.core import Widget, Label
+from core.ui import Widget, Label
 from shared.styles import Colors, Fonts
 
 TIME_FORMAT = "%H:%M"

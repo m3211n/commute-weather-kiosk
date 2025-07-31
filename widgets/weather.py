@@ -1,5 +1,5 @@
 from widgets.data_sources import Tools
-from widgets.core import Widget, Label
+from core.ui import Widget, Label
 
 
 class Weather(Widget):
