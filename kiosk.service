@@ -11,7 +11,7 @@ Environment="PATH=/home/m3211n/kiosk/venv/bin:/usr/local/sbin:/usr/local/bin:/us
 ExecStartPre=/bin/sh -c 'printf "\033[?25l" > /dev/tty0'
 ExecStart=/bin/sh -c '/home/m3211n/kiosk/venv/bin/python /home/m3211n/kiosk/main.py --fb'
 Restart=on-failure
-RestartSec=5
+RestartSec=1
 StartLimitBurst=2
 StartLimitIntervalSec=60
 
