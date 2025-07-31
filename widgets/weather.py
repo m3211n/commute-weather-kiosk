@@ -13,7 +13,7 @@ class Weather(Widget):
             anchor="lt"
         )
         self.labelConditions = Label(
-            xy=(90, 120),
+            xy=(90, 210),
             font=Fonts.TITLE,
             fill=Colors.TITLE,
             anchor="lt"
