@@ -53,7 +53,7 @@ class Clock(Widget):
     def __init__(self):
         super().__init__(
             position=(8, 8),
-            radius=(64, 64, 16, 16),
+            radius=64,
             size=(1174, 378)
             )
         self.labelTime = Label(
