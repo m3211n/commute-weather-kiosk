@@ -24,11 +24,18 @@ class Info(Widget):
 
     async def update_content(self) -> bool:
         if self._update_timeout():
-            ssid, ip = Local.ssid(), Local.ip_address()
-            self.labelLeft.text = f"SSID: {ssid} | IPv4: {ip}"
+            host_info = [
+                f"WI-FI SSID: {Local.ssid()}",
+                f"IPv4: {Local.hostname("-I")}",
+                Local.hostname()
+            ]
+            self.labelLeft.text = " | ".join(host_info)
             cpu = Local.cpu()
-            temp, load = cpu[0], round(cpu[1] * 100, 1)
-            self.labelRight.text = f"CPU: {temp} | Avg.load (1 min): {load}%"
+            hw_info = [
+                f"CPU Temp: {cpu[0]:.1f}°C",
+                f"CPU Load: {round(cpu[1] * 100, 1)}%"
+            ]
+            self.labelRight.text = " | ".join(hw_info)
             return True
         return False
 

@@ -1,8 +1,8 @@
-from PIL.Image import Image
+from PIL import Image
 import numpy as np
 
 
-async def rgb888_to_rgb565_numpy(image: Image):
+async def rgb888_to_rgb565_numpy(image: Image.Image):
     """Convert image from RGB888 to RGB565
     for /dev/fb0 on Pi Zero 2W"""
     arr = np.asarray(image)
@@ -17,3 +17,7 @@ async def rgb888_to_rgb565_numpy(image: Image):
 
 def clear(block):
     return np.zeros(block, dtype="<u2")
+
+
+def clear_rgb(block) -> Image:
+    return Image.new("RGB", block)

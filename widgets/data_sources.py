@@ -20,9 +20,11 @@ class Local:
         return datetime.now().strftime(format)
 
     @staticmethod
-    def ip_address() -> str:
+    def hostname(flags="") -> str:
+        if len(flags) > 0:
+            flags = " " + flags
         return s.check_output(
-            "hostname -I", shell=True, encoding="utf-8"
+            f"hostname{flags}", shell=True, encoding="utf-8"
         ).split()[0]
 
     @staticmethod
@@ -35,7 +37,7 @@ class Local:
     def cpu() -> str:
         """Returns Temp, Load 1m, Load 5m, Load 15m"""
         with open("/sys/class/thermal/thermal_zone0/temp") as f:
-            cpu_t = f"{float(f.read())/1000:.1f}°C"
+            cpu_t = float(f.read())/1000
         with open("/proc/loadavg") as f:
             load1, load5, load15 = map(float, f.read().split()[:3])
         return cpu_t, load1, load5, load15
