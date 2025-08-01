@@ -84,7 +84,7 @@ class Clock(ImageWidget):
             )
         ]
 
-    def _update_timeout(self):
+    def _update_timer(self):
         current_time = self._get_time()
         if self.current_time_ref != current_time:
             return True
