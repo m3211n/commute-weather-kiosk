@@ -24,14 +24,15 @@ class DynamicContainer(Container):
     def __init__(self, xy, size, timeout=1):
         super().__init__(xy, size)
         self._timeout = timeout
-        self._last_update = Tools.time()
+        self._next_update = Tools.time()
         self.children: List[Container] = []
 
     def _update_timer(self):
-        if self._last_update < Tools.time():
+        if self._next_update < Tools.time():
             target = self.__class__.__name__
-            logging.debug("Update triggered from: %s", target)
-            self._last_update = Tools.time() + self._timeout
+            logging.debug(" >>> Update triggered from: %s", target)
+            self._next_update = Tools.time() + self._timeout
+            logging.debug(" *** Next update is in: %d", self._next_update)
             return True
         return False
 
