@@ -5,7 +5,7 @@ import logging
 
 
 class Info(ColorWidget):
-    def __init__(self, timeout=5):
+    def __init__(self, timeout=1):
         super().__init__(
             xy=(8, 1144), size=(1904, 48), fill=Colors.NONE, timeout=timeout
             )

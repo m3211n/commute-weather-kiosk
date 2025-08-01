@@ -69,8 +69,6 @@ class Screen:
                     await self._decode_and_write(widget)
                 else:
                     self.output.paste(widget.image, widget.xy)
-            else:
-                logging.debug("Nothing to redraw, just sleepin...")
 
         if dirty and not self._using_fb:
             self.output.save("__preview/output.png", format="PNG")
