@@ -42,7 +42,6 @@ class Label(Content):
         else:
             try:
                 self.render_context.text(**self.__dict__)
-                logging.debug(f"-- render context: {self.render_context}")
             except AttributeError as e:
                 raise e
 
@@ -54,6 +53,7 @@ class Widget:
             position=(0, 0),
             size=(100, 100),
             bgcolor=Colors.PANEL_BG,
+            image_url="",
             radius=24,
             timeout=1,
             ):
@@ -64,8 +64,23 @@ class Widget:
         self.bgcolor = bgcolor
         self.radius = radius
         self.image = Image.new("RGB", self.size)
+        self.bg = self._get_background(image_url)
         self.render_context = ImageDraw.Draw(self.image)
         self.content: List[Content] = []
+
+    def _get_background(self, url=""):
+        if len(url) > 0:
+            bg = Image.open(url)
+            logging.debug(f"--Opened image from URL <{url}>")
+        else:
+            bg = Image.new("RGB", self.size)
+            tmp_context = ImageDraw.Draw(bg)
+            tmp_context.rounded_rectangle(
+                [(0, 0), self.size],
+                radius=self.radius,
+                fill=self.bgcolor
+            )
+        return bg
 
     def _update_timeout(self):
         if self._last_update < Tools.time():
@@ -74,11 +89,7 @@ class Widget:
         return False
 
     def _clear(self):
-        self.render_context.rounded_rectangle(
-            [(0, 0), self.size],
-            radius=self.radius,
-            fill=self.bgcolor
-        )
+        self.image.paste(self.bg)
 
     async def update_content(self) -> bool:
         if self._update_timeout():
@@ -96,8 +107,7 @@ class Widget:
     async def render(self) -> bool:
         self._clear()
         logging.debug(
-            f"Rendering {len(self.content)} items",
-            f"from {self.__class__.__name__}.content"
+            f"Rendering {len(self.content)} items."
         )
         for item in self.content:
             logging.debug(f"Rendering {item.__class__.__name__}")
