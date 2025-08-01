@@ -1,6 +1,7 @@
 from core.data_sources import Local
 from core.ui import ColorWidget, Label, ImageWidget
 from shared.styles import Fonts, Colors
+import logging
 
 
 class Info(ColorWidget):
@@ -48,7 +49,6 @@ class Info(ColorWidget):
 class Clock(ImageWidget):
 
     TIME_FORMAT = "%H:%M"
-    DATE_FORMAT = "%A-%B %d-%Y"
 
     def __init__(self):
         super().__init__(
@@ -87,6 +87,11 @@ class Clock(ImageWidget):
     def _update_timer(self):
         current_time = self._get_time()
         if self.current_time_ref != current_time:
+            debug_msg = " ".join(
+                "Clock updating got triggered:",
+                f"{current_time} != {self.current_time_ref}"
+            )
+            logging.debug(debug_msg)
             return True
         return False
 
