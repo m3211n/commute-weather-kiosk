@@ -87,6 +87,7 @@ class Clock(ImageWidget):
     def _update_timer(self):
         current_time = self._get_time()
         if self.current_time_ref != current_time:
+            self.current_time_ref = current_time
             debug_msg = " ".join(
                 (
                     "Clock updating got triggered:",
