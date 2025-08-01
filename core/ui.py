@@ -21,7 +21,7 @@ class Container:
 
 
 class DynamicContainer(Container):
-    def __init__(self, xy, size, timeout=1):
+    def __init__(self, xy, size, timeout):
         super().__init__(xy, size)
         self._timeout = timeout
         self._next_update = Tools.time()
@@ -97,7 +97,7 @@ class Label(DynamicText):
 
 class ColorWidget(DynamicContainer):
     """Generic widget class"""
-    def __init__(self, xy, size, fill=Colors.PANEL_BG, radius=24, timeout=1):
+    def __init__(self, xy, size, radius=24, timeout=1, fill=Colors.PANEL_BG):
         super().__init__(xy, size, timeout)
         self.fill = fill
         self.radius = radius
@@ -112,7 +112,7 @@ class ColorWidget(DynamicContainer):
 
 
 class ImageWidget(DynamicContainer):
-    def __init__(self, xy, size, img_url, timeout=1):
+    def __init__(self, xy, size, img_url, timeout):
         super().__init__(xy, size, timeout)
         self.bg = Image.open(img_url)
 

@@ -7,9 +7,8 @@ import logging
 class Info(ColorWidget):
     def __init__(self, timeout=5):
         super().__init__(
-            xy=(8, 1144), size=(1904, 48), fill=Colors.NONE
+            xy=(8, 1144), size=(1904, 48), fill=Colors.NONE, timeout=timeout
             )
-        self.timeout = timeout
         self.labelLeft = Label(
             callback=self._host_info,
             xy=(16, 24),
@@ -54,7 +53,8 @@ class Clock(ImageWidget):
         super().__init__(
             xy=(24, 24),
             size=(1160, 328),
-            img_url="./shared/images/clock-bg.png"
+            img_url="./shared/images/clock-bg.png",
+            timeout=0
         )
         self.current_time_ref = "--:--"
         self.children = [
