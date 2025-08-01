@@ -70,9 +70,6 @@ class Screen:
                     await self._decode_and_write(widget)
                 else:
                     self.output.paste(widget.image, widget.xy)
-                logging.info(
-                    "Widget <%s> was updated.",
-                    widget.__class__.__name__)
             else:
                 logging.debug("Nothing to redraw, just sleepin...")
 
