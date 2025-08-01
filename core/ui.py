@@ -2,117 +2,117 @@ from typing import List
 from core.data_sources import Tools
 from PIL import Image, ImageDraw
 from shared.styles import Fonts, Colors
-import logging
+# import logging
 
 
-class Content:
-    def __init__(self):
-        self.render_context = None
-        self.value = None
-
-    def render(self):
-        pass
-
-
-class Label(Content):
-    """Generic label class.
-    Uses the same attributes as PIL.ImageDraw.Draw.text"""
-
-    def __init__(self, update_callback=None, xy=(0, 0), fill=Colors.DEFAULT,
-                 font=Fonts.VALUE, anchor="la"):
+class Container:
+    def __init__(self, xy=(0, 0), size=(100, 100)):
         self.xy = xy
-        self.text = self._update_callback_placeholder()
-        self.fill = fill
-        self.font = font
-        self.anchor = anchor
-        if update_callback:
-            self.update_callback = update_callback
-        else:
-            self.update_callback = self._update_callback_placeholder
+        self.size = size
+        self.image = Image.new("RGB", self.size)
+        self.draw_context = ImageDraw.Draw(self.image)
 
-    def _update_callback_placeholder(self) -> str:
+    def _clear(self):
+        self.image.paste(Colors.NONE, self.box)
+
+    @property
+    def box(self):
+        return (*self.xy, self.xy[0] + self.size[0], self.xy[1] + self.size[1])
+
+
+class DynamicContainer(Container):
+    def __init__(self, xy, size, timeout=1):
+        super().__init__(xy, size)
+        self._timeout = timeout
+        self._last_update = Tools.time()
+        self.children: List[Container] = []
+
+    def _update_timer(self):
+        if self._last_update < Tools.time():
+            self._last_update = Tools.time() + self._timeout
+            return True
+        return False
+
+    async def update_children(self) -> bool:
+        if self._update_timer():
+            for item in self.children:
+                item.update()
+            return True
+        return False
+
+    async def render(self) -> bool:
+        self._clear()
+        for child in self.children:
+            child.draw_context = self.draw_context
+            try:
+                await child.render()
+            except ValueError as e:
+                raise e
+
+    async def maybe_render(self) -> bool:
+        if await self.update_children():
+            await self.render()
+            return True
+        return False
+
+
+class DynamicText:
+    def __init__(self, xy, size, callback=None):
+        self.xy = xy
+        self.size = size
+        self.text = ""
+        self.do_update = callback if callback else self._callback_dummy
+        self.draw_context = None
+
+    def _callback_dummy(self) -> str:
         return "Just a label"
 
     def update(self):
-        self.text = self.update_callback()
+        self.text = self.do_update()
+
+
+class Label(DynamicText):
+    """Generic label class.
+    Uses the same attributes as PIL.ImageDraw.Draw.text"""
+
+    def __init__(self, callback=None, xy=(0, 0), size=(0, 0),
+                 fill=Colors.DEFAULT, font=Fonts.VALUE, anchor="la"):
+        super().__init__(xy, size, callback)
+        self.fill = fill
+        self.font = font
+        self.anchor = anchor
 
     async def render(self):
         if len(self.text) == 0:
             raise Warning("Attempt to render empty string skipped.")
         else:
             try:
-                self.render_context.text(**self.__dict__)
+                self.draw_context.text(**self.__dict__)
             except AttributeError as e:
                 raise e
 
 
-class Widget:
+class ColorWidget(DynamicContainer):
     """Generic widget class"""
-    def __init__(
-            self,
-            position=(0, 0),
-            size=(100, 100),
-            bgcolor=Colors.PANEL_BG,
-            image_url="",
-            radius=24,
-            timeout=1,
-            ):
-        self.timeout = timeout
-        self._last_update = Tools.time()
-        self.position = position
-        self.size = size
-        self.bgcolor = bgcolor
+    def __init__(self, xy, size, fill=Colors.PANEL_BG, radius=24, timeout=1):
+        super().__init__(xy, size, timeout)
+        self.fill = fill
         self.radius = radius
-        self.image = Image.new("RGB", self.size)
-        self.bg = self._get_background(image_url)
-        self.render_context = ImageDraw.Draw(self.image)
-        self.content: List[Content] = []
-
-    def _get_background(self, url=""):
-        if len(url) > 0:
-            bg = Image.open(url)
-            logging.debug(f"--Opened image from URL <{url}>")
-        else:
-            bg = Image.new("RGB", self.size)
-            tmp_context = ImageDraw.Draw(bg)
-            tmp_context.rounded_rectangle(
-                [(0, 0), self.size],
-                radius=self.radius,
-                fill=self.bgcolor
-            )
-        return bg
-
-    def _update_timeout(self):
-        if self._last_update < Tools.time():
-            self._last_update = Tools.time() + self.timeout
-            return True
-        return False
 
     def _clear(self):
-        self.image.paste(self.bg)
-
-    async def update_content(self) -> bool:
-        if self._update_timeout():
-            for item in self.content:
-                item.update()
-            return True
-        return False
-
-    async def maybe_render(self) -> bool:
-        if await self.update_content():
-            await self.render()
-            return True
-        return False
-
-    async def render(self) -> bool:
-        self._clear()
-        logging.debug(
-            f"Rendering {len(self.content)} items."
+        super()._clear()
+        self.draw_context.rounded_rectangle(
+            [(0, 0), self.size],
+            radius=self.radius,
+            fill=self.fill
         )
-        for item in self.content:
-            logging.debug(f"Rendering {item.__class__.__name__}")
-            item.render_context = self.render_context
-            try:
-                await item.render()
-            except ValueError as e:
-                raise e
+
+
+class ImageWidget(DynamicContainer):
+    def __init__(self, xy, size, img_url, timeout=1):
+        super().__init__(xy, size, timeout)
+        self.bg = Image.open(img_url)
+
+    def _clear(self):
+        super()._clear()
+        self.image.paste(self.bg)

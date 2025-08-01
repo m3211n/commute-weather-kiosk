@@ -1,29 +1,29 @@
 from core.data_sources import Local
-from core.ui import Widget, Label
+from core.ui import ColorWidget, Label, ImageWidget
 from shared.styles import Fonts, Colors
 
 
-class Info(Widget):
+class Info(ColorWidget):
     def __init__(self, timeout=5):
         super().__init__(
-            position=(8, 1144), size=(1904, 48), bgcolor=Colors.NONE
+            xy=(8, 1144), size=(1904, 48), fill=Colors.NONE
             )
         self.timeout = timeout
         self.labelLeft = Label(
-            update_callback=self._host_info,
+            callback=self._host_info,
             xy=(16, 24),
             fill=Colors.TITLE,
             font=Fonts.STATUS,
             anchor="lm"
         )
         self.labelRight = Label(
-            update_callback=self._hw_stats,
+            callback=self._hw_stats,
             xy=(1888, 24),
             fill=Colors.TITLE,
             font=Fonts.STATUS,
             anchor="rm"
         )
-        self.content = [
+        self.children = [
             self.labelLeft,
             self.labelRight
         ]
@@ -45,41 +45,41 @@ class Info(Widget):
         return " | ".join(hw_info)
 
 
-class Clock(Widget):
+class Clock(ImageWidget):
 
     TIME_FORMAT = "%H:%M"
     DATE_FORMAT = "%A-%B %d-%Y"
 
     def __init__(self):
         super().__init__(
-            position=(24, 24),
+            xy=(24, 24),
             size=(1160, 328),
-            image_url="./shared/images/clock-bg.png"
+            img_url="./shared/images/clock-bg.png"
         )
         self.current_time_ref = "--:--"
-        self.content = [
+        self.children = [
             Label(
-                update_callback=self._get_time,
+                callback=self._get_time,
                 xy=(90, 90),
                 font=Fonts.CLOCK,
                 anchor="lt"
             ),
             Label(
-                update_callback=self._get_weekday,
+                callback=self._get_weekday,
                 xy=(1070, 90),
                 fill=Colors.SECONDARY,
                 font=Fonts.LABEL_SMALL,
                 anchor="rt"
             ),
             Label(
-                update_callback=self._get_day,
+                callback=self._get_day,
                 xy=(1070, 142),
                 fill=Colors.SECONDARY,
                 font=Fonts.LABEL_SMALL,
                 anchor="rt"
             ),
             Label(
-                update_callback=self._get_year,
+                callback=self._get_year,
                 xy=(1070, 194),
                 fill=Colors.DEFAULT,
                 font=Fonts.LABEL_LARGE,

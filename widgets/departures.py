@@ -1,17 +1,17 @@
-from core.ui import Widget, Label
+from core.ui import ColorWidget, Label
 from shared.styles import Fonts, Colors
 # from core.data_sources import Commute
 
 
-class Departures(Widget):
+class Departures(ColorWidget):
     def __init__(self, position):
         super().__init__(
-            position=position,
+            xy=position,
             size=(1160, 368),
             timeout=60)
-        self.content = [
+        self.children = [
             Label(
-                update_callback=self._title,
+                callback=self._title,
                 xy=(32, 32),
                 fill=Colors.TITLE,
                 font=Fonts.LABEL_SMALL

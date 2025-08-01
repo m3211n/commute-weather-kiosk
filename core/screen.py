@@ -4,7 +4,7 @@ import time
 from typing import List
 from core.rgb565 import rgb888_to_rgb565_numpy as convert, clear, clear_rgb
 from core.rgb565 import Image
-from core.ui import Widget
+from core.ui import ColorWidget
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
@@ -21,7 +21,7 @@ class Screen:
         self.output = None
         self.size = (SCREEN_WIDTH, SCREEN_HEIGHT)
         self._using_fb = using_fb
-        self.widgets: List[Widget] = []
+        self.widgets: List[ColorWidget] = []
         self._bgcolor = BG_COLOR
 
     def __enter__(self):
@@ -42,7 +42,7 @@ class Screen:
                 # dumping the last buffer to file (maybe not needed)
                 self.output.save("__preview/output.png", format="PNG")
 
-    async def _decode_and_write(self, widget: Widget):
+    async def _decode_and_write(self, widget: ColorWidget):
         x, y, w, h = (*widget.position, *widget.size)
         elapsed = time.perf_counter()
         buf = await convert(widget.image)
@@ -69,7 +69,7 @@ class Screen:
                 if self._using_fb:
                     await self._decode_and_write(widget)
                 else:
-                    self.output.paste(widget.image, widget.position)
+                    self.output.paste(widget.image, widget.xy)
                 logging.info(
                     "Widget <%s> was updated.",
                     widget.__class__.__name__)

@@ -1,12 +1,12 @@
-from core.ui import Widget, Label
+from core.ui import ColorWidget, Label
 
 
-class Dummy(Widget):
+class Dummy(ColorWidget):
     def __init__(self):
-        super().__init__(position=(8, 8), size=(948, 472))
+        super().__init__(xy=(8, 8), size=(948, 472))
         self.labelTime = Label()
 
-    async def update_content(self) -> bool:
+    async def update_children(self) -> bool:
         return False
 
     async def render(self):
