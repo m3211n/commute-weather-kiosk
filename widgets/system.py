@@ -1,4 +1,4 @@
-from widgets.data_sources import Local
+from core.data_sources import Local
 from core.ui import Widget, Label
 from shared.styles import Fonts, Colors
 
@@ -10,39 +10,39 @@ class Info(Widget):
             )
         self.timeout = timeout
         self.labelLeft = Label(
+            update_callback=self._host_info,
             xy=(16, 24),
             fill=Colors.TITLE,
             font=Fonts.STATUS,
             anchor="lm"
         )
         self.labelRight = Label(
+            update_callback=self._hw_stats,
             xy=(1888, 24),
             fill=Colors.TITLE,
             font=Fonts.STATUS,
             anchor="rm"
         )
+        self.content = [
+            self.labelLeft,
+            self.labelRight
+        ]
 
-    async def update_content(self) -> bool:
-        if self._update_timeout():
-            host_info = [
-                f"WI-FI SSID: {Local.ssid()}",
-                f"IPv4: {Local.hostname('-I')}",
-                Local.hostname()
-            ]
-            self.labelLeft.text = " | ".join(host_info)
-            cpu = Local.cpu()
-            hw_info = [
-                f"CPU Temp: {cpu[0]:.1f}°C",
-                f"CPU Load: {round(cpu[1] * 100, 1)}%"
-            ]
-            self.labelRight.text = " | ".join(hw_info)
-            return True
-        return False
+    def _host_info(self):
+        host_info = [
+            f"WI-FI SSID: {Local.ssid()}",
+            f"IPv4: {Local.hostname('-I')}",
+            Local.hostname()
+        ]
+        return " | ".join(host_info)
 
-    async def render(self):
-        self._clear()
-        await self.labelLeft.render_at(self.image)
-        await self.labelRight.render_at(self.image)
+    def _hw_stats(self):
+        cpu = Local.cpu()
+        hw_info = [
+            f"CPU Temp: {cpu[0]:.1f}°C",
+            f"CPU Load: {round(cpu[1] * 100, 1)}%"
+        ]
+        return " | ".join(hw_info)
 
 
 class Clock(Widget):
@@ -55,45 +55,60 @@ class Clock(Widget):
             position=(24, 24),
             size=(1160, 328)
             )
+        self.current_time_ref = "--:--"
         self.labelTime = Label(
+            update_callback=self._get_time,
             xy=(90, 90),
             font=Fonts.CLOCK,
             anchor="lt"
 
         )
         self.labelWeekday = Label(
+            update_callback=self._get_weekday,
             xy=(1070, 90),
             fill=Colors.SECONDARY,
             font=Fonts.TITLE,
             anchor="rt"
         )
         self.labelDate = Label(
+            update_callback=self._get_day,
             xy=(1070, 134),
             fill=Colors.SECONDARY,
             font=Fonts.TITLE,
             anchor="rt"
         )
         self.labelYear = Label(
+            update_callback=self._get_year,
             xy=(1070, 178),
             fill=Colors.SECONDARY,
             font=Fonts.VALUE,
             anchor="rt"
         )
+        self.content = [
+            self.labelTime,
+            self.labelDate,
+            self.labelWeekday,
+            self.labelYear
+        ]
 
-    async def update_content(self):
-        current_time = Local.time(Clock.TIME_FORMAT)
-        weekday, date, year = Local.time(Clock.DATE_FORMAT).split("-")
-        if self.labelTime.text != current_time:
-            self.labelTime.text = current_time
-            self.labelWeekday.text = weekday
-            self.labelDate.text = date
-            self.labelYear.text = year
+    def _update_timeout(self):
+        current_time = self._get_time()
+        if self.current_time_ref != current_time:
             return True
         return False
 
-    async def render(self):
-        self._clear()
-        await self.labelTime.render_at(self.image)
-        await self.labelWeekday.render_at(self.image)
-        await self.labelDate.render_at(self.image)
-        await self.labelYear.render_at(self.image)
+    @staticmethod
+    def _get_time():
+        return Local.time(Clock.TIME_FORMAT)
+
+    @staticmethod
+    def _get_weekday():
+        return Local.time("%A")
+
+    @staticmethod
+    def _get_day():
+        return Local.time("%B %d")
+
+    @staticmethod
+    def _get_year():
+        return Local.time("%Y")

@@ -2,7 +2,7 @@ import logging
 import asyncio
 import argparse
 
-from widgets import weather, system
+from widgets import weather, system, departures
 from core.screen import Screen
 
 
@@ -13,7 +13,9 @@ async def main(using_fb=True):
         s.widgets = [
             system.Clock(),
             weather.Weather(),
-            system.Info()
+            system.Info(),
+            departures.Trains(),
+            departures.Busses()
         ]
         await s.refresh(only_dirty=False)
         while True:

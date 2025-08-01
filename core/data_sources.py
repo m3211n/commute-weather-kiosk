@@ -3,6 +3,8 @@ from time import time
 from locale import setlocale, LC_ALL
 import subprocess as s
 
+from core.links import SL_ENDPOINT, SL_TRAINS, WEATHER_ENDPOINT, WEATHER_HOURLY
+
 
 setlocale(LC_ALL, "sv_SE.UTF-8")
 
@@ -52,3 +54,20 @@ class Local:
                 else:
                     pass
         return f"{ram} MB"
+
+
+class Commute:
+    def __init__(self, endpoint=SL_ENDPOINT):
+        self.endpoint = endpoint
+        pass
+
+    def get_trains(self, url=SL_TRAINS):
+        pass
+
+
+class Weather:
+    def __init__(self, endpoint=WEATHER_ENDPOINT):
+        self.endpoint = endpoint
+
+    def get_current(self, url=WEATHER_HOURLY):
+        pass

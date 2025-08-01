@@ -1,4 +1,4 @@
-from widgets.data_sources import Tools
+from core.data_sources import Tools
 from core.ui import Widget, Label
 from shared.styles import Colors, Fonts
 
@@ -18,6 +18,10 @@ class Weather(Widget):
             fill=Colors.SECONDARY,
             anchor="lt"
         )
+        self.content = [
+            self.labelConditions,
+            self.labelTemperature
+        ]
         self.timeout = timeout
         self._next_update = Tools.time()
 
@@ -25,8 +29,3 @@ class Weather(Widget):
         self.labelTemperature.text = "24°C"
         self.labelConditions.text = "Clear"
         return self._update_timeout()
-
-    async def render(self):
-        self._clear()
-        await self.labelTemperature.render_at(self.image)
-        await self.labelConditions.render_at(self.image)
