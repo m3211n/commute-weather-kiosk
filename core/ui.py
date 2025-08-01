@@ -2,7 +2,7 @@ from typing import List
 from core.data_sources import Tools
 from PIL import Image, ImageDraw
 from shared.styles import Fonts, Colors
-# import logging
+import logging
 
 
 class Container:
@@ -29,6 +29,8 @@ class DynamicContainer(Container):
 
     def _update_timer(self):
         if self._last_update < Tools.time():
+            target = self.__class__.__name__
+            logging.debug("Update triggered from: %s", target)
             self._last_update = Tools.time() + self._timeout
             return True
         return False
