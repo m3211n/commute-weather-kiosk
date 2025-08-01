@@ -43,7 +43,7 @@ class Screen:
                 self.output.save("__preview/output.png", format="PNG")
 
     async def _decode_and_write(self, widget: ColorWidget):
-        x, y, w, h = (*widget.position, *widget.size)
+        x, y, w, h = (*widget.xy, *widget.size)
         elapsed = time.perf_counter()
         buf = await convert(widget.image)
         fb_offset = (y * SCREEN_WIDTH + x) * BYTES_PER_PIXEL
