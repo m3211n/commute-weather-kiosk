@@ -9,24 +9,33 @@ class Departures(Widget):
             position=position,
             size=(1160, 368),
             timeout=60)
-        self.labelDestination = Label(
-            xy=(64, 64),
-            fill=Colors.DEFAULT,
-            font=Fonts.TITLE
-        )
         self.content = [
-            self.labelDestination
+            Label(
+                update_callback=self._title,
+                xy=(32, 32),
+                fill=Colors.TITLE,
+                font=Fonts.LABEL_SMALL
+            )
         ]
+
+    @staticmethod
+    def _title():
+        return "Default Destination"
 
 
 class Trains(Departures):
     def __init__(self):
         super().__init__(position=(24, 376))
-        self.labelDestination.text = "Stockholm City"
+
+    @staticmethod
+    def _title():
+        return "Train Destination"
 
 
 class Busses(Departures):
     def __init__(self):
         super().__init__(position=(24, 768))
-        self.labelDestination.text = "Jakobsbergs Station"
-        # self.labelDestination.text = "Handen Station"
+
+    @staticmethod
+    def _title():
+        return "Bus Destination"

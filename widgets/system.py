@@ -56,39 +56,34 @@ class Clock(Widget):
             size=(1160, 328)
             )
         self.current_time_ref = "--:--"
-        self.labelTime = Label(
-            update_callback=self._get_time,
-            xy=(90, 90),
-            font=Fonts.CLOCK,
-            anchor="lt"
-
-        )
-        self.labelWeekday = Label(
-            update_callback=self._get_weekday,
-            xy=(1070, 90),
-            fill=Colors.SECONDARY,
-            font=Fonts.TITLE,
-            anchor="rt"
-        )
-        self.labelDate = Label(
-            update_callback=self._get_day,
-            xy=(1070, 134),
-            fill=Colors.SECONDARY,
-            font=Fonts.TITLE,
-            anchor="rt"
-        )
-        self.labelYear = Label(
-            update_callback=self._get_year,
-            xy=(1070, 178),
-            fill=Colors.SECONDARY,
-            font=Fonts.VALUE,
-            anchor="rt"
-        )
         self.content = [
-            self.labelTime,
-            self.labelDate,
-            self.labelWeekday,
-            self.labelYear
+            Label(
+                update_callback=self._get_time,
+                xy=(90, 90),
+                font=Fonts.CLOCK,
+                anchor="lt"
+            ),
+            Label(
+                update_callback=self._get_weekday,
+                xy=(1070, 90),
+                fill=Colors.SECONDARY,
+                font=Fonts.LABEL_SMALL,
+                anchor="rt"
+            ),
+            Label(
+                update_callback=self._get_day,
+                xy=(1070, 142),
+                fill=Colors.SECONDARY,
+                font=Fonts.LABEL_SMALL,
+                anchor="rt"
+            ),
+            Label(
+                update_callback=self._get_year,
+                xy=(1070, 194),
+                fill=Colors.DEFAULT,
+                font=Fonts.LABEL_LARGE,
+                anchor="rt"
+            )
         ]
 
     def _update_timeout(self):
