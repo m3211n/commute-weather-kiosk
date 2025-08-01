@@ -1,6 +1,7 @@
 from core.data_sources import Local
 from core.ui import Widget, Label
 from shared.styles import Fonts, Colors
+from PIL import Image
 
 
 class Info(Widget):
@@ -55,6 +56,7 @@ class Clock(Widget):
             position=(24, 24),
             size=(1160, 328)
             )
+        self.image = Image.open("./shared/images/clock-bg.png")
         self.current_time_ref = "--:--"
         self.content = [
             Label(
