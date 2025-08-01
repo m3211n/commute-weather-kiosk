@@ -54,8 +54,7 @@ class Screen:
             self.output.seek(offset)
             self.output.write(buf[start:end])
         elapsed = time.perf_counter() - elapsed
-        msg = f"Widget {widget.__class__.__name__} rendered updated content."
-        logging.info(msg)
+        msg = f"Widget {widget.__class__.__name__} updated."
         logging.debug(f"{msg} Render time: {elapsed:.3f} s.")
 
     async def refresh(self, only_dirty=True):
