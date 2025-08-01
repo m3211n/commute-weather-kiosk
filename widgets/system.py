@@ -53,7 +53,7 @@ class Clock(ImageWidget):
         super().__init__(
             xy=(24, 24),
             size=(1160, 328),
-            img_url="./shared/images/clock-bg.png",
+            img_url="./shared/images/clock-bg-morning.png",
             timeout=0
         )
         self.current_time_ref = "--:--"
