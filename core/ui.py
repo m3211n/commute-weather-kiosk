@@ -32,7 +32,7 @@ class DynamicContainer(Container):
             target = self.__class__.__name__
             logging.debug(" >>> Update triggered from: %s", target)
             self._next_update = Tools.time() + self._timeout
-            logging.debug(" *** Next update is in: %d", self._next_update)
+            logging.debug(" *** Next update is in: %d", self._timeout)
             return True
         return False
 
