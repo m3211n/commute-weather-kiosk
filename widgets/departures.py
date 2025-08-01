@@ -4,9 +4,9 @@ from shared.styles import Fonts, Colors
 
 
 class Departures(ColorWidget):
-    def __init__(self, position):
+    def __init__(self, xy):
         super().__init__(
-            xy=position,
+            xy=xy,
             size=(1160, 368),
             timeout=60)
         self.children = [
@@ -25,7 +25,7 @@ class Departures(ColorWidget):
 
 class Trains(Departures):
     def __init__(self):
-        super().__init__(position=(24, 376))
+        super().__init__(xy=(24, 376))
 
     @staticmethod
     def _title():
@@ -34,7 +34,7 @@ class Trains(Departures):
 
 class Busses(Departures):
     def __init__(self):
-        super().__init__(position=(24, 768))
+        super().__init__(xy=(24, 768))
 
     @staticmethod
     def _title():
