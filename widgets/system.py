@@ -67,21 +67,18 @@ class Clock(ImageWidget):
             Label(
                 callback=self._get_weekday,
                 xy=(1070, 90),
-                fill=Colors.SECONDARY,
                 font=Fonts.LABEL_SMALL,
                 anchor="rt"
             ),
             Label(
                 callback=self._get_day,
                 xy=(1070, 142),
-                fill=Colors.SECONDARY,
                 font=Fonts.LABEL_SMALL,
                 anchor="rt"
             ),
             Label(
                 callback=self._get_year,
                 xy=(1070, 194),
-                fill=Colors.DEFAULT,
                 font=Fonts.LABEL_LARGE,
                 anchor="rt"
             )
