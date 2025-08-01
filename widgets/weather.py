@@ -5,7 +5,7 @@ from shared.styles import Colors, Fonts
 class Weather(ColorWidget):
     def __init__(self, timeout):
         super().__init__(
-            xy=(1208, 24), size=(688, 1112), timeout=timeout, radius=100
+            xy=(1208, 24), size=(688, 1112), timeout=timeout
         )
         self.children = [
             Label(
