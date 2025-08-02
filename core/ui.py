@@ -40,7 +40,7 @@ class Widget:
         for child in self.children:
             child.draw(children_img)
             child_img: Image.Image = await child.render()
-            children_img.paste(child_img, child.xy, mask=child_img.split()[3])
+            img.paste(child_img, child.xy, mask=child_img.split()[3])
         # Merging image with children to background layer
         img.paste(children_img, (0, 0), mask=children_img.split()[3])
         return img
