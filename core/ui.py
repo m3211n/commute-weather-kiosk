@@ -135,7 +135,7 @@ class ColorFill(Widget):
         self.radius = radius
         self.fill = color
 
-    def render(self):
+    async def render(self):
         img = Image.new("RGBA", self.size, (0, 0, 0, 0))
         ImageDraw.Draw(img).rounded_rectangle(
             (0, 0, *self.size),
