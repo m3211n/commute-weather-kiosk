@@ -10,7 +10,7 @@ class Widget:
     def __init__(
             self, position=(0, 0),
             size=(100, 100),
-            fill=Colors.PANEL_BG,
+            fill=(0, 0, 0, 255),
             update_callback=None,
             interval=1):
         self.xy = position
@@ -35,7 +35,7 @@ class Widget:
         pass
 
     async def render(self) -> Image.Image:
-        img = Image.new("RGBA", self.size, color=(0, 0, 0, 255))
+        img = Image.new("RGBA", self.size, color=self.fill)
         children_img = Image.new("RGBA", self.size, color=(0, 0, 0, 0))
         for child in self.children:
             child.draw(children_img)
