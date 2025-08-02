@@ -45,7 +45,7 @@ class Screen:
     async def _decode_and_write(self, widget: ColorWidget):
         x, y, w, h = (*widget.xy, *widget.size)
         elapsed = time.perf_counter()
-        buf = await convert(await widget._image)
+        buf = await convert(await widget.image)
         fb_offset = (y * SCREEN_WIDTH + x) * BYTES_PER_PIXEL
         for row in range(h):
             offset = fb_offset + row * SCREEN_WIDTH * BYTES_PER_PIXEL
