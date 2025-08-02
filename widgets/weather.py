@@ -1,6 +1,6 @@
 from core.ui import Widget, ImageWidget, TextWidget
 from core.styles import Colors, Fonts
-from core.data_sources import Local, WeatherData
+from core.data_sources import WeatherData
 
 
 class Weather(Widget):
