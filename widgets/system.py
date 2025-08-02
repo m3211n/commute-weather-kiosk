@@ -1,6 +1,6 @@
 from core.data_sources import Local
 from core.ui import (
-    Widget, TextWidget, ImageWidget, DrawGroup
+    Widget, TextWidget, ImageWidget
 )
 from core.styles import Fonts, Colors
 # import logging
@@ -16,14 +16,14 @@ class Info(Widget):
             )
         self.children = [
             TextWidget(
-                position=(16, 24),
+                position=(16, 32),
                 color=Colors.TITLE,
                 font=Fonts.STATUS,
                 anchor="lm",
                 update_callback=self._host_info,
             ),
             TextWidget(
-                position=(1888, 24),
+                position=(1888, 32),
                 color=Colors.TITLE,
                 font=Fonts.STATUS,
                 anchor="rm",
@@ -65,32 +65,26 @@ class Clock(Widget):
                 color=Colors.DEFAULT,
                 update_callback=self._get_time
             ),
-            DrawGroup(
-                position=(702, 90),
-                size=(368, 148),
-                children=[
-                    TextWidget(
-                        position=(368, 0),
-                        font=Fonts.LABEL_SMALL,
-                        color=Colors.SECONDARY,
-                        anchor="rt",
-                        update_callback=self._get_weekday
-                    ),
-                    TextWidget(
-                        position=(368, 52),
-                        font=Fonts.LABEL_SMALL,
-                        color=Colors.SECONDARY,
-                        anchor="rt",
-                        update_callback=self._get_day
-                    ),
-                    TextWidget(
-                        position=(368, 104),
-                        font=Fonts.LABEL_LARGE,
-                        color=Colors.SECONDARY,
-                        anchor="rt",
-                        update_callback=self._get_year
-                    )
-                ]
+            TextWidget(
+                position=(1070, 90),
+                font=Fonts.LABEL_SMALL,
+                color=Colors.SECONDARY,
+                anchor="rt",
+                update_callback=self._get_weekday
+            ),
+            TextWidget(
+                position=(1070, 142),
+                font=Fonts.LABEL_SMALL,
+                color=Colors.SECONDARY,
+                anchor="rt",
+                update_callback=self._get_day
+            ),
+            TextWidget(
+                position=(1070, 194),
+                font=Fonts.LABEL_LARGE,
+                color=Colors.SECONDARY,
+                anchor="rt",
+                update_callback=self._get_year
             )
         ]
 
