@@ -10,7 +10,7 @@ class Widget:
     def __init__(
             self, position=(0, 0),
             size=(100, 100),
-            fill=Colors.PANEL_BG,
+            fill=(0, 0, 0, 255),
             update_callback=None,
             interval=1):
         self.xy = position
