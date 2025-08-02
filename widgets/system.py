@@ -11,7 +11,7 @@ class Info(Widget):
         super().__init__(
             position=(0, 1136),
             size=(1920, 64),
-            fill=Colors.PANEL_BG,
+            fill=(0, 0, 0, 255),
             interval=interval
             )
         self.children = [
