@@ -27,7 +27,7 @@ class Info(Widget):
                 color=Colors.TITLE,
                 font=Fonts.STATUS,
                 anchor="rm",
-                callback=self._hw_stats,
+                update_callback=self._hw_stats,
             )
         ]
 
