@@ -7,12 +7,12 @@ from core.styles import Fonts, Colors
 
 
 class Info(Widget):
-    def __init__(self, timeout=1):
+    def __init__(self, interval=1):
         super().__init__(
             position=(8, 1144),
             size=(1904, 48),
             fill=Colors.NONE,
-            timeout=timeout
+            interval=interval
             )
         self.children = [
             TextWidget(
