@@ -10,12 +10,14 @@ class Widget:
     def __init__(
             self, position=(0, 0),
             size=(100, 100),
-            fill=(0, 0, 0, 255),
+            fill=Colors.PANEL_BG,
+            radius=24,
             update_callback=None,
             interval=1):
         self.xy = position
         self.size = size
         self.fill = fill
+        self.radius = radius
         self.children: List[Widget] = []
         self.update = update_callback if update_callback else self._dummy
         self.timer = IntervalLoop(interval=interval)
@@ -35,7 +37,10 @@ class Widget:
         pass
 
     async def render(self) -> Image.Image:
-        img = Image.new("RGBA", self.size, color=self.fill)
+        img = Image.new("RGBA", self.size, color=(0, 0, 0, 255))
+        ImageDraw.Draw(img).rounded_rectangle(
+            (0, 0, *self.size), radius=self.radius
+            )
         children_img = Image.new("RGBA", self.size, color=(0, 0, 0, 0))
         for child in self.children:
             child.draw(children_img)
