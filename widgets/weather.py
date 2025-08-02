@@ -4,11 +4,12 @@ from core.data_sources import WeatherData
 
 
 class Weather(Widget):
-    def __init__(self):
+    def __init__(self, interval=900):
         super().__init__(
             position=(1208, 24),
             size=(688, 1112),
-            fill=Colors.NONE
+            fill=Colors.NONE,
+            interval=interval
             )
         self.children = [
             ImageWidget(
