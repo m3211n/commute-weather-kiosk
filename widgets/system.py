@@ -1,33 +1,34 @@
 from core.data_sources import Local
 from core.ui import (
-    ColorWidget, Label, Widget, TextWidget, ImageWidget, DrawGroup
+    Widget, TextWidget, ImageWidget, DrawGroup
 )
 from core.styles import Fonts, Colors
 # import logging
 
 
-class Info(ColorWidget):
+class Info(Widget):
     def __init__(self, timeout=1):
         super().__init__(
-            xy=(8, 1144), size=(1904, 48), fill=Colors.NONE, timeout=timeout
+            position=(8, 1144),
+            size=(1904, 48),
+            fill=Colors.NONE,
+            timeout=timeout
             )
-        self.labelLeft = Label(
-            callback=self._host_info,
-            xy=(16, 24),
-            fill=Colors.TITLE,
-            font=Fonts.STATUS,
-            anchor="lm"
-        )
-        self.labelRight = Label(
-            callback=self._hw_stats,
-            xy=(1888, 24),
-            fill=Colors.TITLE,
-            font=Fonts.STATUS,
-            anchor="rm"
-        )
         self.children = [
-            self.labelLeft,
-            self.labelRight
+            TextWidget(
+                position=(16, 24),
+                color=Colors.TITLE,
+                font=Fonts.STATUS,
+                anchor="lm",
+                update_callback=self._host_info,
+            ),
+            TextWidget(
+                position=(1888, 24),
+                color=Colors.TITLE,
+                font=Fonts.STATUS,
+                anchor="rm",
+                callback=self._hw_stats,
+            )
         ]
 
     def _host_info(self):
@@ -47,7 +48,7 @@ class Info(ColorWidget):
         return " | ".join(hw_info)
 
 
-class TestClock(Widget):
+class Clock(Widget):
     def __init__(self):
         super().__init__(
             position=(24, 24),

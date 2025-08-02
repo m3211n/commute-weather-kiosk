@@ -11,8 +11,7 @@ async def main(using_fb=True):
 
     with Screen(using_fb) as s:
         s.widgets = [
-            # system.Clock(),
-            system.TestClock(),
+            system.Clock(),
             weather.Weather(900),
             system.Info(),
             departures.Trains(),
