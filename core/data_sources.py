@@ -3,8 +3,7 @@ from time import time
 from locale import setlocale, LC_ALL
 import subprocess as s
 
-from core.links import SL_ENDPOINT, SL_TRAINS, WEATHER_ENDPOINT, WEATHER_HOURLY
-
+from core.links import SL_TRAINS, WEATHER_HOURLY
 
 setlocale(LC_ALL, "sv_SE.UTF-8")
 
@@ -24,6 +23,28 @@ class Local:
     @staticmethod
     def hours() -> int:
         return datetime.now().hour
+
+    @staticmethod
+    def daytime() -> str:
+        h = datetime.now().hour
+        if 6 <= h < 11:
+            daytime_str = "morning"
+        elif 11 <= h < 15:
+            daytime_str = "day"
+        elif 15 <= h < 20:
+            daytime_str = "evening"
+        else:
+            daytime_str = "night"
+        return daytime_str
+
+    @staticmethod
+    def day_night() -> str:
+        h = datetime.now().hour
+        if 6 <= h < 18:
+            daytime_str = "day"
+        else:
+            daytime_str = "night"
+        return daytime_str
 
     @staticmethod
     def hostname(flags="") -> str:
@@ -61,17 +82,11 @@ class Local:
 
 
 class Commute:
-    def __init__(self, endpoint=SL_ENDPOINT):
-        self.endpoint = endpoint
-        pass
-
     def get_trains(self, url=SL_TRAINS):
         pass
 
 
-class Weather:
-    def __init__(self, endpoint=WEATHER_ENDPOINT):
-        self.endpoint = endpoint
-
-    def get_current(self, url=WEATHER_HOURLY):
-        pass
+class WeatherData:
+    @staticmethod
+    def get_current(url=WEATHER_HOURLY):
+        return "24", "Clear"

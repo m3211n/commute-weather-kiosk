@@ -50,15 +50,7 @@ class Clock(ImageWidget):
     TIME_FORMAT = "%H:%M"
 
     def __init__(self):
-        h = Local.hours()
-        if 4 <= h < 11:
-            daytime_str = "morning"
-        elif 11 <= h < 15:
-            daytime_str = "day"
-        elif 15 <= h < 20:
-            daytime_str = "evening"
-        else:
-            daytime_str = "night"
+        daytime_str = Local.daytime()
         super().__init__(
             xy=(24, 24),
             size=(1160, 328),
