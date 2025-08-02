@@ -22,6 +22,10 @@ class Local:
         return datetime.now().strftime(format)
 
     @staticmethod
+    def hours() -> int:
+        return datetime.now().hour
+
+    @staticmethod
     def hostname(flags="") -> str:
         if len(flags) > 0:
             flags = " " + flags
