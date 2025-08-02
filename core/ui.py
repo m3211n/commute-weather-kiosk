@@ -1,23 +1,153 @@
 from typing import List
+from core.tools import IntervalLoop
 from core.data_sources import Tools
 from PIL import Image, ImageDraw
-from shared.styles import Fonts, Colors
+from core.styles import Fonts, Colors
 import logging
+
+
+class Widget:
+    def __init__(
+            self, position=(0, 0),
+            size=(100, 100),
+            fill=Colors.PANEL_BG,
+            update_callback=None,
+            interval=1):
+        self.xy = position
+        self.size = size
+        self.fill = fill
+        self.children: List[Widget] = []
+        self.update = update_callback if update_callback else self._dummy
+        self.timer = IntervalLoop(interval=interval)
+
+    def _dummy(self):
+        logging.debug("Default update method triggered")
+        return None
+
+    async def maybe_update(self):
+        if self.timer.done():
+            for child in self.children:
+                child.update() if hasattr(child, "update") else None
+            return True
+        return False
+
+    def draw(self, img):
+        pass
+
+    async def render(self) -> Image.Image:
+        img = Image.new("RGBA", self.size, color=self.fill)
+        for child in self.children:
+            child.draw(img)
+            child_img: Image.Image = await child.render()
+            img.paste(child_img, child.xy, mask=child_img.split()[3])
+        return img
+
+    @property
+    async def image(self):
+        return await self.render()
+
+
+class DrawGroup(Widget):
+    def __init__(
+            self, position=(0, 0),
+            size=(100, 100),
+            fill=Colors.NONE,
+            children: List[Widget] = []
+            ):
+        super().__init__(
+            position=position,
+            size=size,
+            fill=fill
+        )
+        self.children = children
+
+    def update(self):
+        for child in self.children:
+            child.update() if hasattr(child, "update") else None
+
+    async def render(self):
+        img = Image.new("RGBA", size=self.size, color=self.fill)
+        for child in self.children:
+            child.draw(img)
+        return img
+
+
+class TextWidget(Widget):
+    def __init__(
+            self, position=(0, 0),
+            font=Fonts.VALUE,
+            color=Colors.DEFAULT,
+            fill=Colors.NONE,
+            anchor="lt",
+            update_callback=None,
+            interval=1
+            ):
+        self._callback = update_callback
+        self.font = font
+        self.text = self._callback()
+        bbox = self.font.getbbox(self.text)
+        size = (bbox[2] - bbox[0], bbox[3] - bbox[1])
+        super().__init__(
+            position=position,
+            size=size,
+            interval=interval,
+            fill=fill
+        )
+        self.color = color
+        self.anchor = anchor
+
+    def draw(self, img):
+        ImageDraw.Draw(img).text(
+            xy=self.xy,
+            text=self.text,
+            fill=self.color,
+            font=self.font,
+            anchor=self.anchor
+        )
+
+    def update(self):
+        self.text = self._callback()
+
+
+class ImageWidget(Widget):
+    def __init__(
+            self, url,
+            position=(0, 0),
+            update_callback=None,
+            interval=0
+            ):
+        self.url = url
+        super().__init__(
+            position=position,
+            update_callback=update_callback,
+            interval=interval
+        )
+
+    async def render(self):
+        return Image.open(self.url)
 
 
 class Container:
     def __init__(self, xy=(0, 0), size=(100, 100)):
         self.xy = xy
         self.size = size
-        self.image = Image.new("RGB", self.size)
-        self.draw_context = ImageDraw.Draw(self.image)
+        self._image = Image.new("RGBA", self.size)
+        self.draw_context = ImageDraw.Draw(self._image)
 
     def _clear(self):
-        self.image.paste(Colors.NONE, self.box)
+        self._image.paste(Colors.NONE, self.box)
 
     @property
     def box(self):
         return (*self.xy, self.xy[0] + self.size[0], self.xy[1] + self.size[1])
+
+    @property
+    async def image(self):
+        return self._image
+
+    @image.setter
+    def image(self, new_image):
+        self._image = new_image
 
 
 class DynamicContainer(Container):
@@ -52,14 +182,14 @@ class DynamicContainer(Container):
             except ValueError as e:
                 raise e
 
-    async def maybe_render(self) -> bool:
+    async def maybe_update(self) -> bool:
         if await self.update_children():
             await self.render()
             return True
         return False
 
 
-class DynamicText:
+class DynamicTextLabel:
     def __init__(self, xy, size, callback=None):
         self.xy = xy
         self.size = size
@@ -74,7 +204,7 @@ class DynamicText:
         self.text = self.do_update()
 
 
-class Label(DynamicText):
+class Label(DynamicTextLabel):
     """Generic label class.
     Uses the same attributes as PIL.ImageDraw.Draw.text"""
 
@@ -111,11 +241,11 @@ class ColorWidget(DynamicContainer):
         )
 
 
-class ImageWidget(DynamicContainer):
+class DynamicImage(DynamicContainer):
     def __init__(self, xy, size, img_url, timeout):
         super().__init__(xy, size, timeout)
         self.bg = Image.open(img_url)
 
     def _clear(self):
         super()._clear()
-        self.image.paste(self.bg)
+        self._image.paste(self.bg)

@@ -1,5 +1,5 @@
 from core.ui import ColorWidget, Label
-from shared.styles import Fonts, Colors
+from core.styles import Fonts, Colors
 # from core.data_sources import Commute
 
 

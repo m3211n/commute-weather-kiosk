@@ -1,9 +1,9 @@
-from core.ui import ImageWidget, Label
-from shared.styles import Colors, Fonts
+from core.ui import DynamicImage, Label
+from core.styles import Colors, Fonts
 from core.data_sources import Local, WeatherData
 
 
-class Weather(ImageWidget):
+class Weather(DynamicImage):
     def __init__(self, timeout):
         day_night = Local.day_night()
         condition = "clear" if self._conditions() == "Clear" else "cloudy"

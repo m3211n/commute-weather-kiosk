@@ -1,7 +1,9 @@
 from core.data_sources import Local
-from core.ui import ColorWidget, Label, ImageWidget
-from shared.styles import Fonts, Colors
-import logging
+from core.ui import (
+    ColorWidget, Label, Widget, TextWidget, ImageWidget, DrawGroup
+)
+from core.styles import Fonts, Colors
+# import logging
 
 
 class Info(ColorWidget):
@@ -45,63 +47,55 @@ class Info(ColorWidget):
         return " | ".join(hw_info)
 
 
-class Clock(ImageWidget):
-
-    TIME_FORMAT = "%H:%M"
-
+class TestClock(Widget):
     def __init__(self):
-        daytime_str = Local.daytime()
         super().__init__(
-            xy=(24, 24),
+            position=(24, 24),
             size=(1160, 328),
-            img_url=f"./shared/images/clock-bg-{daytime_str}.png",
-            timeout=0
-        )
-        self.current_time_ref = "--:--"
+            fill=Colors.NONE
+            )
         self.children = [
-            Label(
-                callback=self._get_time,
-                xy=(90, 90),
+            ImageWidget(
+                url="./shared/images/clock-bg-night.png"
+            ),
+            TextWidget(
+                position=(90, 90),
                 font=Fonts.CLOCK,
-                anchor="lt"
+                color=Colors.DEFAULT,
+                update_callback=self._get_time
             ),
-            Label(
-                callback=self._get_weekday,
-                xy=(1070, 90),
-                font=Fonts.LABEL_SMALL,
-                anchor="rt"
-            ),
-            Label(
-                callback=self._get_day,
-                xy=(1070, 142),
-                font=Fonts.LABEL_SMALL,
-                anchor="rt"
-            ),
-            Label(
-                callback=self._get_year,
-                xy=(1070, 194),
-                font=Fonts.LABEL_LARGE,
-                anchor="rt"
+            DrawGroup(
+                position=(702, 90),
+                size=(368, 148),
+                children=[
+                    TextWidget(
+                        position=(368, 0),
+                        font=Fonts.LABEL_SMALL,
+                        color=Colors.SECONDARY,
+                        anchor="rt",
+                        update_callback=self._get_weekday
+                    ),
+                    TextWidget(
+                        position=(368, 52),
+                        font=Fonts.LABEL_SMALL,
+                        color=Colors.SECONDARY,
+                        anchor="rt",
+                        update_callback=self._get_day
+                    ),
+                    TextWidget(
+                        position=(368, 104),
+                        font=Fonts.LABEL_LARGE,
+                        color=Colors.SECONDARY,
+                        anchor="rt",
+                        update_callback=self._get_year
+                    )
+                ]
             )
         ]
 
-    def _update_timer(self):
-        current_time = self._get_time()
-        if self.current_time_ref != current_time:
-            debug_msg = " ".join(
-                (
-                    "Clock updating got triggered:",
-                    f"{current_time} != {self.current_time_ref}"
-                )
-            )
-            logging.debug(debug_msg)
-            self.current_time_ref = current_time
-            return True
-        return False
-
     @staticmethod
     def _get_time():
-        return Local.time(Clock.TIME_FORMAT)
+        return Local.time("%H:%M")
 
     @staticmethod
     def _get_weekday():
