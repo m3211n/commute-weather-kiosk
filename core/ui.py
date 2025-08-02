@@ -36,7 +36,7 @@ class Widget:
 
     async def render(self) -> Image.Image:
         img = Image.new("RGBA", self.size, color=self.fill)
-        children_img = Image.new("RGBA", self.size)
+        children_img = Image.new("RGBA", self.size, color=(0, 0, 0, 0))
         for child in self.children:
             child.draw(children_img)
             child_img: Image.Image = await child.render()
