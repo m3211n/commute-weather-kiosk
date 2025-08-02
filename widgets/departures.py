@@ -1,4 +1,4 @@
-from core.ui import Widget, TextWidget
+from core.ui import Widget, TextWidget, ColorFill
 from core.styles import Fonts, Colors
 # from core.data_sources import Commute
 
@@ -10,6 +10,7 @@ class Departures(Widget):
             size=(1160, 368),
             interval=60)
         self.children = [
+            ColorFill(self),
             TextWidget(
                 update_callback=self._title,
                 position=(32, 32),
