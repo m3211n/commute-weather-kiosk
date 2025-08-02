@@ -39,7 +39,7 @@ class Widget:
     async def render(self) -> Image.Image:
         img = Image.new("RGBA", self.size, color=(0, 0, 0, 255))
         ImageDraw.Draw(img).rounded_rectangle(
-            (0, 0, *self.size), radius=self.radius
+            (0, 0, *self.size), fill=self.fill, radius=self.radius
             )
         children_img = Image.new("RGBA", self.size, color=(0, 0, 0, 0))
         for child in self.children:
