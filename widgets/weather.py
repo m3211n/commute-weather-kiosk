@@ -1,30 +1,30 @@
-from core.ui import DynamicImage, Label
+from core.ui import Widget, ImageWidget, TextWidget
 from core.styles import Colors, Fonts
 from core.data_sources import Local, WeatherData
 
 
-class Weather(DynamicImage):
-    def __init__(self, timeout):
-        day_night = Local.day_night()
-        condition = "clear" if self._conditions() == "Clear" else "cloudy"
+class Weather(Widget):
+    def __init__(self):
         super().__init__(
-            xy=(1208, 24), size=(688, 1112), timeout=timeout,
-            img_url=f"./shared/images/weather-{condition}-{day_night}.png"
-        )
+            position=(1208, 24),
+            size=(688, 1112),
+            fill=Colors.NONE
+            )
         self.children = [
-            Label(
-                callback=self._temperature,
-                xy=(90, 90),
-                font=Fonts.WEATHER_TODAY,
-                fill=Colors.DEFAULT,
-                anchor="lt"
+            ImageWidget(
+                url="./shared/images/weather-clear-night.png"
             ),
-            Label(
-                callback=self._conditions,
-                xy=(90, 210),
+            TextWidget(
+                update_callback=self._temperature,
+                position=(90, 90),
+                font=Fonts.WEATHER_TODAY,
+                color=Colors.DEFAULT
+            ),
+            TextWidget(
+                update_callback=self._conditions,
+                position=(90, 210),
                 font=Fonts.LABEL_SMALL,
-                fill=Colors.SECONDARY,
-                anchor="lt"
+                color=Colors.SECONDARY
             )
         ]
 
