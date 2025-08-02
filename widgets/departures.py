@@ -1,19 +1,19 @@
-from core.ui import ColorWidget, Label
+from core.ui import Widget, TextWidget
 from core.styles import Fonts, Colors
 # from core.data_sources import Commute
 
 
-class Departures(ColorWidget):
-    def __init__(self, xy):
+class Departures(Widget):
+    def __init__(self, position):
         super().__init__(
-            xy=xy,
+            position=position,
             size=(1160, 368),
-            timeout=60)
+            interval=60)
         self.children = [
-            Label(
-                callback=self._title,
-                xy=(32, 32),
-                fill=Colors.TITLE,
+            TextWidget(
+                update_callback=self._title,
+                position=(32, 32),
+                color=Colors.TITLE,
                 font=Fonts.LABEL_SMALL
             )
         ]
@@ -25,7 +25,7 @@ class Departures(ColorWidget):
 
 class Trains(Departures):
     def __init__(self):
-        super().__init__(xy=(24, 376))
+        super().__init__(position=(24, 376))
 
     @staticmethod
     def _title():
@@ -34,7 +34,7 @@ class Trains(Departures):
 
 class Busses(Departures):
     def __init__(self):
-        super().__init__(xy=(24, 768))
+        super().__init__(position=(24, 768))
 
     @staticmethod
     def _title():

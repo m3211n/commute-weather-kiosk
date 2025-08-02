@@ -62,7 +62,7 @@ class Clock(Widget):
             TextWidget(
                 position=(90, 90),
                 font=Fonts.CLOCK,
-                color=Colors.DEFAULT,
+                color=Colors.TITLE,
                 update_callback=self._get_time
             ),
             TextWidget(
