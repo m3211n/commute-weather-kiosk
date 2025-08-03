@@ -33,7 +33,7 @@ class Weather(Widget):
 
     @staticmethod
     def _get_image():
-        return "./shared/images/weather-cloudy-day.png"
+        return "./shared/images/weather-clear-day.png"
 
     @staticmethod
     def _temperature():
