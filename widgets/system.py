@@ -60,7 +60,8 @@ class Clock(Widget):
             )
         self.children = [
             ImageWidget(
-                url="./shared/images/clock-bg-night.png"
+                url="./shared/images/clock-bg-night.png",
+                update_callback=self._get_image
             ),
             TextWidget(
                 update_callback=self._get_time,
@@ -106,3 +107,15 @@ class Clock(Widget):
     @staticmethod
     def _get_year():
         return Local.time("%Y")
+
+    @staticmethod
+    def _get_image():
+        hours = Local.hours()
+        if 6 <= hours < 11:
+            return "./shared/images/clock-bg-morning.png"
+        elif 11 <= hours < 17:
+            return "./shared/images/clock-bg-day.png"
+        elif 17 <= hours < 23:
+            return "./shared/images/clock-bg-evening.png"
+        else:
+            return "./shared/images/clock-bg-night.png"
