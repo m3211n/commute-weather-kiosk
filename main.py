@@ -13,7 +13,7 @@ async def main(using_fb=True):
         s.widgets = [
             system.Clock(),
             weather.Weather(900),
-            system.Info(),
+            system.Info(5),
             departures.Trains(60),
             departures.Busses(60)
         ]
