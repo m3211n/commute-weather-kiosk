@@ -43,7 +43,7 @@ class Info(Widget):
         cpu = Local.cpu()
         ram = Local.ram()
         hw_info = [
-            f"Available RAM: {ram} MB"
+            f"Available RAM: {ram} MB",
             f"CPU Temp: {cpu[0]:.1f}°C",
             f"CPU Load: {round(cpu[1] * 100, 1)}%"
         ]
