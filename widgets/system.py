@@ -111,7 +111,7 @@ class Clock(Widget):
     @staticmethod
     def _get_image():
         hours = Local.hours()
-        if 4 <= hours < 11:
+        if 5 <= hours < 11:
             return "./shared/images/clock-bg-morning.png"
         elif 11 <= hours < 17:
             return "./shared/images/clock-bg-day.png"
