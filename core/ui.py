@@ -123,6 +123,7 @@ class ImageWidget(Widget):
         if new_url and (len(new_url) > 0) and (self.url != new_url):
             self.url = new_url
             self.image_cache = Image.open(self.url)
+            logging.debug("Loaded new image")
             return True
         return False
 

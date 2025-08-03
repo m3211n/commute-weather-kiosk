@@ -78,7 +78,7 @@ class Local:
                     break
                 else:
                     pass
-        return f"{ram} MB"
+        return ram
 
 
 class Commute:
