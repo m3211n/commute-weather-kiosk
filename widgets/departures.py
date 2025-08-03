@@ -4,11 +4,11 @@ from core.styles import Fonts, Colors
 
 
 class Departures(Widget):
-    def __init__(self, position):
+    def __init__(self, position, interval):
         super().__init__(
             position=position,
             size=(1160, 368),
-            interval=1)
+            interval=interval)
         self.children = [
             ColorFill(self),
             TextWidget(
