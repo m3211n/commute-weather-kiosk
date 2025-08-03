@@ -13,7 +13,7 @@ class Weather(Widget):
             )
         self.children = [
             ImageWidget(
-                url="./shared/images/weather-clear-night.png"
+                update_callback=self._get_image
             ),
             TextWidget(
                 update_callback=self._temperature,
@@ -28,6 +28,10 @@ class Weather(Widget):
                 color=Colors.SECONDARY
             )
         ]
+
+    @staticmethod
+    def _get_image():
+        return "./shared/images/weather-cloudy-day.png"
 
     @staticmethod
     def _temperature():
