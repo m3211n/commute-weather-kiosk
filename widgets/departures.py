@@ -8,7 +8,7 @@ class Departures(Widget):
         super().__init__(
             position=position,
             size=(1160, 368),
-            interval=60)
+            interval=1)
         self.children = [
             ColorFill(self),
             TextWidget(

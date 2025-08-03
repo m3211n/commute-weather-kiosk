@@ -1,4 +1,5 @@
 from time import time
+import logging
 
 
 def ticks(shift=0):
@@ -12,6 +13,7 @@ class IntervalLoop:
 
     def done(self):
         if time() > self.next_loop:
+            logging.debug("Loop done!")
             self.next_loop = ticks(self.interval)
             return True
         return False

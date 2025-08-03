@@ -60,17 +60,17 @@ class Clock(Widget):
                 url="./shared/images/clock-bg-night.png"
             ),
             TextWidget(
+                update_callback=self._get_time,
                 position=(90, 90),
                 font=Fonts.CLOCK,
-                color=Colors.DEFAULT,
-                update_callback=self._get_time
+                color=Colors.DEFAULT
             ),
             TextWidget(
+                update_callback=self._get_weekday,
                 position=(1070, 90),
                 font=Fonts.LABEL_SMALL,
                 color=Colors.SECONDARY,
-                anchor="rt",
-                update_callback=self._get_weekday
+                anchor="rt"
             ),
             TextWidget(
                 position=(1070, 142),

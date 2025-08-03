@@ -7,21 +7,25 @@ import logging
 
 class Widget:
     def __init__(
-            self, position=(0, 0),
+            self,
+            update_callback=None,
+            position=(0, 0),
             size=(100, 100),
             fill=(0, 0, 0, 255),
-            update_callback=None,
             interval=1):
         self.xy = position
         self.size = size
         self.fill = fill
         self.children: List[Widget] = []
-        self.update = update_callback if update_callback else self._dummy
+        self._callback = update_callback if update_callback else self._dummy
         self.timer = IntervalLoop(interval=interval)
 
     def _dummy(self):
         logging.debug("Default update method triggered")
         return None
+
+    def update(self):
+        self._callback()
 
     async def maybe_update(self):
         if self.timer.done():
@@ -84,12 +88,13 @@ class TextWidget(Widget):
             update_callback=None,
             interval=1
             ):
-        self._callback = update_callback
         self.font = font
-        self.text = self._callback()
-        bbox = self.font.getbbox(self.text)
+        self._callback = update_callback
+        self.text = self._callback() if self._callback else ""
+        bbox = self.font.getbbox(self.text) if self.text else (0, 0, 100, 20)
         size = (bbox[2] - bbox[0], bbox[3] - bbox[1])
         super().__init__(
+            update_callback=update_callback,
             position=position,
             size=size,
             interval=interval,
@@ -99,16 +104,25 @@ class TextWidget(Widget):
         self.anchor = anchor
 
     def draw(self, img):
-        ImageDraw.Draw(img).text(
-            xy=self.xy,
-            text=self.text,
-            fill=self.color,
-            font=self.font,
-            anchor=self.anchor
-        )
+        logging.debug("Drawing text %s", self.text)
+        if self.text and len(self.text) > 0:
+            ImageDraw.Draw(img).text(
+                xy=self.xy,
+                text=self.text,
+                fill=self.color,
+                font=self.font,
+                anchor=self.anchor
+            )
+        else:
+            logging.debug("Got None instead of text!")
+            # raise ValueError("Got None instead of text!")
 
     def update(self):
         self.text = self._callback()
+        logging.debug(
+            "Text label updated by %s to %s",
+            self.text, self._callback
+        )
 
 
 class ImageWidget(Widget):
