@@ -120,7 +120,7 @@ class ImageWidget(Widget):
 
     def update(self):
         new_url = self._callback()
-        if self.url != new_url:
+        if new_url and (len(new_url) > 0) and (self.url != new_url):
             self.url = new_url
             self.image_cache = Image.open(self.url)
             return True
