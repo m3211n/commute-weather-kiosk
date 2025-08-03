@@ -51,6 +51,7 @@ class Info(Widget):
 class Clock(Widget):
     def __init__(self):
         super().__init__(
+            update_callback=None,
             position=(24, 24),
             size=(1160, 328),
             fill=Colors.NONE

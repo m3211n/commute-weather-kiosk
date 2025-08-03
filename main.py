@@ -19,13 +19,9 @@ async def main(using_fb=True):
         ]
         await s.refresh(only_dirty=False)
         while True:
-            # Check if any widget needs updating before refreshing
-            widget_updates = [
-                await widget.maybe_update() for widget in s.widgets
-            ]
-            if any(widget_updates):
-                await s.refresh()
-            await asyncio.sleep(0.1)  # Reduced sleep for responsiveness
+            # on = time.time()
+            await s.refresh()
+            await asyncio.sleep(1)
 
 if __name__ == "__main__":
 

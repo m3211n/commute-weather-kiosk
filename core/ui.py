@@ -118,24 +118,14 @@ class TextWidget(Widget):
             # raise ValueError("Got None instead of text!")
 
     def update(self):
-        old_text = self.text
-        self.text = self._callback() if self._callback else ""
-        # Only recalculate size if text changed
-        if old_text != self.text:
-            if self.text:
-                bbox = self.font.getbbox(self.text)
-            else:
-                bbox = (0, 0, 100, 20)
-            self.size = (bbox[2] - bbox[0], bbox[3] - bbox[1])
+        self.text = self._callback()
         logging.debug(
-            "Text label updated to: %s",
-            self.text
+            "Text label updated by %s to %s",
+            self.text, self._callback
         )
 
 
 class ImageWidget(Widget):
-    _image_cache = {}  # Class-level cache for loaded images
-
     def __init__(
             self, url,
             position=(0, 0),
@@ -143,9 +133,6 @@ class ImageWidget(Widget):
             interval=0
             ):
         self.url = url
-        # Pre-load and cache the image
-        if url not in ImageWidget._image_cache:
-            ImageWidget._image_cache[url] = Image.open(url)
         super().__init__(
             position=position,
             update_callback=update_callback,
@@ -153,7 +140,7 @@ class ImageWidget(Widget):
         )
 
     async def render(self):
-        return ImageWidget._image_cache[self.url].copy()
+        return Image.open(self.url)
 
 
 class ColorFill(Widget):
