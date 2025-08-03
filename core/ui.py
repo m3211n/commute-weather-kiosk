@@ -31,7 +31,8 @@ class Widget:
         widget_dirty = False
         if self.timer.done():
             for child in self.children:
-                widget_dirty = (not widget_dirty) and child.update()
+                child_dirty = child.update()
+                widget_dirty = widget_dirty or child_dirty
         return widget_dirty
 
     def draw(self, img):
