@@ -28,11 +28,11 @@ class Widget:
         self._callback()
 
     async def maybe_update(self):
+        widget_dirty = False
         if self.timer.done():
             for child in self.children:
-                child.update() if hasattr(child, "update") else None
-            return True
-        return False
+                widget_dirty = (not widget_dirty) and child.update()
+        return widget_dirty
 
     def draw(self, img):
         pass
@@ -51,31 +51,6 @@ class Widget:
     @property
     async def image(self):
         return await self.render()
-
-
-class DrawGroup(Widget):
-    def __init__(
-            self, position=(0, 0),
-            size=(100, 100),
-            fill=Colors.NONE,
-            children: List[Widget] = []
-            ):
-        super().__init__(
-            position=position,
-            size=size,
-            fill=fill
-        )
-        self.children = children
-
-    def update(self):
-        for child in self.children:
-            child.update() if hasattr(child, "update") else None
-
-    async def render(self):
-        img = Image.new("RGBA", size=self.size, color=self.fill)
-        for child in self.children:
-            child.draw(img)
-        return img
 
 
 class TextWidget(Widget):
@@ -118,11 +93,11 @@ class TextWidget(Widget):
             # raise ValueError("Got None instead of text!")
 
     def update(self):
-        self.text = self._callback()
-        logging.debug(
-            "Text label updated by %s to %s",
-            self.text, self._callback
-        )
+        new_text = self._callback()
+        if self.text != new_text:
+            self.text = new_text
+            return True
+        return False
 
 
 class ImageWidget(Widget):

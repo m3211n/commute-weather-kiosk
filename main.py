@@ -7,15 +7,15 @@ from core.screen import Screen
 
 
 async def main(using_fb=True):
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
 
     with Screen(using_fb) as s:
         s.widgets = [
             system.Clock(),
             weather.Weather(900),
-            system.Info(),
-            departures.Trains(),
-            departures.Busses()
+            system.Info(5),
+            departures.Trains(60),
+            departures.Busses(60)
         ]
         await s.refresh(only_dirty=False)
         while True:

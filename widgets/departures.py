@@ -25,8 +25,8 @@ class Departures(Widget):
 
 
 class Trains(Departures):
-    def __init__(self):
-        super().__init__(position=(24, 376))
+    def __init__(self, interval):
+        super().__init__(position=(24, 376), interval=interval)
 
     @staticmethod
     def _title():
@@ -34,8 +34,8 @@ class Trains(Departures):
 
 
 class Busses(Departures):
-    def __init__(self):
-        super().__init__(position=(24, 768))
+    def __init__(self, interval):
+        super().__init__(position=(24, 768), interval=interval)
 
     @staticmethod
     def _title():
