@@ -14,7 +14,8 @@ class Weather(Widget):
         self.children = [
             ImageWidget(
                 url="./shared/images/weather-clear-night.png",
-                update_callback=self._get_image
+                update_callback=self._get_image,
+                interval=interval
             ),
             TextWidget(
                 update_callback=self._temperature,
