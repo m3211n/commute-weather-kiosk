@@ -102,12 +102,12 @@ class TextWidget(Widget):
 
 class ImageWidget(Widget):
     def __init__(
-            self, url,
+            self,
             position=(0, 0),
             update_callback=None,
             interval=0
             ):
-        self.url = url
+        self.url = self._callback()
         super().__init__(
             position=position,
             update_callback=update_callback,
