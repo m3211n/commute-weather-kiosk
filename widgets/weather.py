@@ -13,6 +13,7 @@ class Weather(Widget):
             )
         self.children = [
             ImageWidget(
+                url="./shared/images/weather-clear-night.png",
                 update_callback=self._get_image
             ),
             TextWidget(

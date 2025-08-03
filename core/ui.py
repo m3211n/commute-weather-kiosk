@@ -102,12 +102,13 @@ class TextWidget(Widget):
 
 class ImageWidget(Widget):
     def __init__(
-            self,
+            self, url,
             position=(0, 0),
             update_callback=None,
             interval=0
             ):
-        self.url = self._callback()
+        self.url = url
+        self.image_cache = Image.open(self.url)
         super().__init__(
             position=position,
             update_callback=update_callback,
@@ -115,7 +116,15 @@ class ImageWidget(Widget):
         )
 
     async def render(self):
-        return Image.open(self.url)
+        return self.image_cache
+
+    def update(self):
+        new_url = self._callback()
+        if self.url != new_url:
+            self.url = new_url
+            self.image_cache = Image.open(self.url)
+            return True
+        return False
 
 
 class ColorFill(Widget):
