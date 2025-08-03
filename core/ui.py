@@ -105,7 +105,7 @@ class ImageWidget(Widget):
             self, url,
             position=(0, 0),
             update_callback=None,
-            interval=0
+            interval=1
             ):
         self.url = url
         self.image_cache = Image.open(self.url)
