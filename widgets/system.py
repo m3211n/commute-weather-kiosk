@@ -60,7 +60,7 @@ class Clock(Widget):
             )
         self.children = [
             ImageWidget(
-                url="./shared/images/clock-bg-night.png",
+                url="./shared/images/clock/night.png",
                 update_callback=self._get_image
             ),
             TextWidget(
