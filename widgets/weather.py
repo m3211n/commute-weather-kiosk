@@ -1,10 +1,10 @@
 from core.ui import Widget, ImageWidget, TextWidget
 from core.styles import Colors, Fonts
-from core.data_sources import WeatherData
+from core.data_sources import WeatherData, Local
 
 
 class Weather(Widget):
-    def __init__(self, interval=900):
+    async def __init__(self, interval=900):
         super().__init__(
             position=(1208, 24),
             size=(688, 1112),
@@ -13,7 +13,7 @@ class Weather(Widget):
             )
         self.children = [
             ImageWidget(
-                url="./shared/images/weather/clear-night.png",
+                url="./shared/images/weather/clear-day.png",
                 update_callback=self._get_image,
                 interval=interval
             ),
@@ -30,17 +30,20 @@ class Weather(Widget):
                 color=Colors.SECONDARY
             )
         ]
+        self.current_data = await WeatherData.fetch()
+        self.hourly_data = await WeatherData.fetch(False)
 
-    @staticmethod
-    def _get_image():
-        return "./shared/images/weather-clear-day.png"
+    def _get_image(self):
+        weather = self.current_data["weather"]
+        c = "clear" if weather["main"] == "Clear" else "clouds"
+        d = Local.day_or_night()
+        # icon = weather["icon"]
+        return f"./shared/images/weather/{c}-{d}.png"
 
-    @staticmethod
-    def _temperature():
-        temp = WeatherData.get_current()[0]
-        return f"{temp}°C"
+    def _temperature(self):
+        main = self.current_data["main"]
+        temp = round(main["temp"], 1)
+        return f"{temp}°"
 
-    @staticmethod
-    def _conditions():
-        cond = WeatherData.get_current()[1]
-        return cond
+    def _conditions(self):
+        return self.current_data["weather"]["main"]
