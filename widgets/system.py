@@ -110,13 +110,5 @@ class Clock(Widget):
 
     @staticmethod
     def _get_image():
-        hours = Local.hours()
-        if hours in range(5, 11):
-            str = "morning"
-        elif hours in range(11, 17):
-            str = "day"
-        elif hours in range(17, 23):
-            str = "evening"
-        else:
-            str = "night"
-        return f"./shared/images/clock-bg-{str}.png"
+        str = Local.daytime()
+        return f"./shared/images/clock/{str}.png"

@@ -1,20 +1,49 @@
+import os
 from datetime import datetime
-from time import time
 from locale import setlocale, LC_ALL
-import subprocess as s
 
-from core.links import SL_TRAINS, WEATHER_HOURLY
+import logging
+import aiohttp
+import async_timeout
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+OWM_API_KEY = os.environ.get("OWM_API_KEY")
+SL_API_KEY = os.environ.get("SL_API_KEY")
 
 setlocale(LC_ALL, "sv_SE.UTF-8")
 
+DEFAULT_TIMEOUT = 15  # seconds
+
+
+async def fetch_json(url, params=None, headers=None, timeout=DEFAULT_TIMEOUT):
+    try:
+        async with aiohttp.ClientSession() as session:
+            with async_timeout.timeout(timeout):
+                async with session.get(
+                    url, params=params, headers=headers
+                ) as resp:
+                    resp.raise_for_status()
+                    return await resp.json()
+    except Exception as e:
+        logging.warning(f"[aiorequests] Failed to fetch {url}: {e}")
+        return None
+
 
 class Tools:
+    import time as t
+
     @staticmethod
     def time():
-        return time()
+        return Tools.t.time()
 
 
 class Local:
+    from subprocess import check_output
 
     @staticmethod
     def time(format) -> str:
@@ -27,18 +56,17 @@ class Local:
     @staticmethod
     def daytime() -> str:
         h = datetime.now().hour
-        if 6 <= h < 11:
-            daytime_str = "morning"
-        elif 11 <= h < 15:
-            daytime_str = "day"
-        elif 15 <= h < 20:
-            daytime_str = "evening"
+        if h in range(5, 11):
+            return "morning"
+        elif h in range(11, 17):
+            return "day"
+        elif h in range(17, 22):
+            return "evening"
         else:
-            daytime_str = "night"
-        return daytime_str
+            return "night"
 
     @staticmethod
-    def day_night() -> str:
+    def day_or_night() -> str:
         h = datetime.now().hour
         if 6 <= h < 18:
             daytime_str = "day"
@@ -50,13 +78,13 @@ class Local:
     def hostname(flags="") -> str:
         if len(flags) > 0:
             flags = " " + flags
-        return s.check_output(
+        return Local.check_output(
             f"hostname{flags}", shell=True, encoding="utf-8"
         ).split()[0]
 
     @staticmethod
     def ssid() -> str:
-        return s.check_output(
+        return Local.check_output(
             "iwgetid -r", shell=True, encoding="utf-8"
         ).strip()
 
@@ -82,11 +110,39 @@ class Local:
 
 
 class Commute:
-    def get_trains(self, url=SL_TRAINS):
+    def get_trains():
         pass
 
 
 class WeatherData:
+    API = {
+        "current": {
+            "url": "https://api.openweathermap.org/data/2.5/weather",
+            "params": {
+                "units": "metric",
+                "lat": 59.421491,
+                "lon": 17.819238,
+                "appid": OWM_API_KEY
+            }
+        },
+        "hourly": {
+            "url": "https://api.openweathermap.org/data/2.5/forecast",
+            "params": {
+                "cnt": 4,
+                "units": "metric",
+                "lat": 59.421491,
+                "lon": 17.819238,
+                "appid": OWM_API_KEY
+            }
+        }
+    }
+
     @staticmethod
-    def get_current(url=WEATHER_HOURLY):
-        return "24", "Clear"
+    async def fetch(current=True):
+        segment = "current" if current else "hourly"
+        API_REF = WeatherData.API[segment]
+        data = await fetch_json(
+            url=API_REF["url"],
+            params=API_REF["params"]
+        )
+        return data
