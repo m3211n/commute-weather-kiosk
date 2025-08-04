@@ -4,7 +4,7 @@ from core.data_sources import WeatherData, Local
 
 
 class Weather(Widget):
-    async def __init__(self, interval=900):
+    def __init__(self, interval=900):
         super().__init__(
             position=(1208, 24),
             size=(688, 1112),
@@ -30,20 +30,24 @@ class Weather(Widget):
                 color=Colors.SECONDARY
             )
         ]
-        self.current_data = await WeatherData.fetch()
-        self.hourly_data = await WeatherData.fetch(False)
+        self.current_data = {}
+        self.hourly_data = {}
 
-    def _get_image(self):
+    async def _get_image(self):
         weather = self.current_data["weather"]
         c = "clear" if weather["main"] == "Clear" else "clouds"
         d = Local.day_or_night()
         # icon = weather["icon"]
         return f"./shared/images/weather/{c}-{d}.png"
 
-    def _temperature(self):
+    async def _temperature(self):
         main = self.current_data["main"]
         temp = round(main["temp"], 1)
         return f"{temp}°"
 
-    def _conditions(self):
+    async def _conditions(self):
         return self.current_data["weather"]["main"]
+
+    async def update(self):
+        self.current_data = await WeatherData.fetch()
+        self.hourly_data = await WeatherData.fetch(False)

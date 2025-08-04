@@ -24,8 +24,8 @@ class Widget:
         logging.debug("Default update method triggered")
         return None
 
-    def update(self):
-        self._callback()
+    async def update(self):
+        await self._callback()
 
     async def maybe_update(self):
         widget_dirty = False
@@ -93,8 +93,8 @@ class TextWidget(Widget):
             logging.debug("Got None instead of text!")
             # raise ValueError("Got None instead of text!")
 
-    def update(self):
-        new_text = self._callback()
+    async def update(self):
+        new_text = await self._callback()
         if self.text != new_text:
             self.text = new_text
             return True
@@ -119,8 +119,8 @@ class ImageWidget(Widget):
     async def render(self):
         return self.image_cache
 
-    def update(self):
-        new_url = self._callback()
+    async def update(self):
+        new_url = await self._callback()
         if new_url and (len(new_url) > 0) and (self.url != new_url):
             self.url = new_url
             self.image_cache = Image.open(self.url)

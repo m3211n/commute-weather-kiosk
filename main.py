@@ -12,7 +12,7 @@ async def main(using_fb=True):
     with Screen(using_fb) as s:
         s.widgets = [
             system.Clock(),
-            await weather.Weather(5),
+            weather.Weather(5),
             system.Info(5),
             departures.Trains(60),
             departures.Busses(60)
