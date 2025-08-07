@@ -1,4 +1,4 @@
-from core.ui import ColorWidget, Label
+from core.widget import ColorWidget, Label
 
 
 class Dummy(ColorWidget):

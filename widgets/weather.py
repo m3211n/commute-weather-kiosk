@@ -1,4 +1,4 @@
-from core.ui import Widget, ImageWidget, TextWidget
+from core.widget import Widget, ImageWidget, TextWidget
 from core.styles import Colors, Fonts
 from core.data_sources import WeatherData, Local
 
@@ -11,43 +11,48 @@ class Weather(Widget):
             fill=Colors.NONE,
             interval=interval
             )
-        self.children = [
-            ImageWidget(
+        self.current_data = {
+            "main": {
+                "temp": 24.55
+            },
+            "weather": {
+                "main": "Clear"
+            }
+        }
+        self.hourly_data = {}
+        self.background = ImageWidget(
                 url="./shared/images/weather/clear-day.png",
                 update_callback=self._get_image,
                 interval=interval
-            ),
-            TextWidget(
+            )
+        self.temp = TextWidget(
                 update_callback=self._temperature,
                 position=(90, 90),
                 font=Fonts.WEATHER_TODAY,
                 color=Colors.DEFAULT
-            ),
-            TextWidget(
+            )
+        self.contitions = TextWidget(
                 update_callback=self._conditions,
                 position=(90, 210),
                 font=Fonts.LABEL_SMALL,
                 color=Colors.SECONDARY
             )
-        ]
-        self.current_data = {}
-        self.hourly_data = {}
 
-    async def _get_image(self):
+    def _get_image(self):
         weather = self.current_data["weather"]
         c = "clear" if weather["main"] == "Clear" else "clouds"
         d = Local.day_or_night()
         # icon = weather["icon"]
         return f"./shared/images/weather/{c}-{d}.png"
 
-    async def _temperature(self):
-        main = self.current_data["main"]
-        temp = round(main["temp"], 1)
+    def _temperature(self):
+        temp = round(self.current_data["main"]["temp"], 1)
         return f"{temp}°"
 
-    async def _conditions(self):
+    def _conditions(self):
         return self.current_data["weather"]["main"]
 
     async def update(self):
+        self.background.render()
         self.current_data = await WeatherData.fetch()
         self.hourly_data = await WeatherData.fetch(False)

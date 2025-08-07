@@ -1,5 +1,5 @@
 from core.data_sources import Local
-from core.ui import (
+from core.widget import (
     Widget, TextWidget, ImageWidget
 )
 from core.styles import Fonts, Colors

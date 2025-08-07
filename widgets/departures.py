@@ -1,4 +1,4 @@
-from core.ui import Widget, TextWidget, ColorFill
+from core.widget import Widget, TextWidget, ColorFill
 from core.styles import Fonts, Colors
 # from core.data_sources import Commute
 

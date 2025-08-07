@@ -4,7 +4,7 @@ import time
 from typing import List
 from core.rgb565 import rgb888_to_rgb565_numpy as convert, clear, clear_rgb
 from core.rgb565 import Image
-from core.ui import Widget
+from core.widget import Widget
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
