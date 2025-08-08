@@ -21,7 +21,7 @@ async def main(using_fb=True):
         while True:
             # on = time.time()
             await s.refresh()
-            await asyncio.sleep(1)
+            await asyncio.sleep(5)
 
 if __name__ == "__main__":
 
