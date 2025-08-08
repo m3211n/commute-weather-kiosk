@@ -97,7 +97,6 @@ class TextLabel(Widget):
 
         if not text == self.text:
             self.text = text
-            await self.render()
             return True
         return False
 
@@ -118,7 +117,6 @@ class Icon(Widget):
     async def update(self, url):
         if not self.url == url:
             self.url = url
-            await self.render()
             return True
         return False
 
