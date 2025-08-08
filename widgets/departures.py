@@ -4,7 +4,7 @@ from core.styles import Fonts, Colors
 
 
 class Departures(Widget):
-    def __init__(self, xy, title="Departures"):
+    async def __init__(self, xy, title="Departures"):
         super().__init__(
             xy=xy,
             size=(1160, 368))
@@ -17,6 +17,7 @@ class Departures(Widget):
         self.children = [
             self.title
         ]
+        await self.title.render()
 
     async def maybe_update(self):
         await self.render()
@@ -25,9 +26,9 @@ class Departures(Widget):
 
 class Trains(Departures):
     def __init__(self):
-        super().__init__(xy=(24, 376), title="Trains")
+        super().__init__(xy=(24, 376), title="Pendeltåg mot City")
 
 
 class Busses(Departures):
     def __init__(self):
-        super().__init__(xy=(24, 768), title="Bus")
+        super().__init__(xy=(24, 768), title="Buss mot Jakobsberg Stn.")
