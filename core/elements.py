@@ -52,9 +52,9 @@ class Widget(Container):
         for child in self._children:
             await child.render()
             self._canvas.paste(
-                child.canvas,
+                child._canvas,
                 (0, 0),
-                mask=child.canvas.split()[3]
+                mask=child._canvas.split()[3]
             )
 
     async def update(self):
@@ -120,6 +120,6 @@ class Icon(Widget):
             return True
         return False
 
-    async def render(self) -> Image.Image:
+    async def render(self):
         self._canvas = self._clear()
         self._canvas.paste(Image.open(self.url), self.xy)
