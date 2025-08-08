@@ -49,9 +49,8 @@ class Widget(Container):
     async def render(self):
         self._canvas = self._clear() if self._parent else self._clear(True)
         self._canvas.paste(self.bg, mask=self.bg.split()[3])
+        logging.debug("Rendering %s", self.__class__.__name__)
         for child in self._children:
-            logging.debug("Rendering %s", child.__class__.__name__)
-            await child.render()
             self._canvas.paste(
                 child.canvas,
                 (0, 0),
@@ -90,25 +89,20 @@ class TextLabel(Widget):
         self.anchor = anchor
         self.text = text
 
-    def update(self, text: str):
+    async def update(self, text: str):
         """
         Changes the text of the label if new value is different from the
         current one. Returns True if text was updated and False if it wasn't.
         """
-
-        if text == self.text:
-            return False
-
-        self.text = text
-        return True
-
-    async def render(self):
-        """Renders the image based on the current text unconditionally."""
-        self._canvas = self._clear()
-        logging.debug("Rendering text: %s", self.text)
-        ImageDraw.Draw(self.canvas).text(
-            self.xy, self.text, font=self.font, fill=self.color,
-            anchor=self.anchor)
+        if not text == self.text:
+            self.text = text
+            self._canvas = self._clear()
+            logging.debug("Rendering text: %s", self.text)
+            ImageDraw.Draw(self.canvas).text(
+                self.xy, self.text, font=self.font, fill=self.color,
+                anchor=self.anchor)
+            return True
+        return False
 
 
 class Icon(Widget):
@@ -116,12 +110,10 @@ class Icon(Widget):
         super().__init__(xy=xy)
         self.url = url
 
-    def update(self, url):
-        if self.url == url:
-            return False
-        self.url = url
-        return True
-
-    async def render(self) -> Image.Image:
-        self._canvas = self._clear()
-        self._canvas.paste(Image.open(self.url), self.xy)
+    async def update(self, url):
+        if not self.url == url:
+            self.url = url
+            self._canvas = self._clear()
+            self._canvas.paste(Image.open(self.url), self.xy)
+            return True
+        return False
