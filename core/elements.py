@@ -51,6 +51,7 @@ class Widget(Container):
         self._canvas.paste(self.bg, mask=self.bg.split()[3])
         logging.debug("Rendering %s", self.__class__.__name__)
         for child in self._children:
+            await child.render()
             self._canvas.paste(
                 child.canvas,
                 (0, 0),
@@ -94,15 +95,19 @@ class TextLabel(Widget):
         Changes the text of the label if new value is different from the
         current one. Returns True if text was updated and False if it wasn't.
         """
+
         if not text == self.text:
             self.text = text
-            self._canvas = self._clear()
-            logging.debug("Rendering text: %s", self.text)
-            ImageDraw.Draw(self.canvas).text(
-                self.xy, self.text, font=self.font, fill=self.color,
-                anchor=self.anchor)
             return True
         return False
+
+    async def render(self):
+        """Renders the image based on the current text unconditionally."""
+        self._canvas = self._clear()
+        logging.debug("Rendering text: %s", self.text)
+        ImageDraw.Draw(self.canvas).text(
+            self.xy, self.text, font=self.font, fill=self.color,
+            anchor=self.anchor)
 
 
 class Icon(Widget):
@@ -113,7 +118,9 @@ class Icon(Widget):
     async def update(self, url):
         if not self.url == url:
             self.url = url
-            self._canvas = self._clear()
-            self._canvas.paste(Image.open(self.url), self.xy)
             return True
         return False
+
+    async def render(self) -> Image.Image:
+        self._canvas = self._clear()
+        self._canvas.paste(Image.open(self.url), self.xy)
