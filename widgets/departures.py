@@ -5,12 +5,12 @@ from core.styles import Fonts, Colors
 
 class Departures(Widget):
     def __init__(self, xy, title="Departures"):
+        self.title_text = title
         super().__init__(
             xy=xy,
             size=(1160, 368))
         self.title = TextLabel(
             xy=(32, 32),
-            text=title,
             color=Colors.TITLE,
             font=Fonts.LABEL_SMALL
         )
@@ -19,7 +19,8 @@ class Departures(Widget):
         ]
 
     async def maybe_update(self):
-        await self.render()
+        if self.title.update(text=self.title_text):
+            await self.render()
         return False
 
 
