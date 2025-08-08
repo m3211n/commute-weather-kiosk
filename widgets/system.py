@@ -1,37 +1,42 @@
 from core.data_sources import Local
-from core.widget import (
-    Widget, TextWidget, ImageWidget
-)
+from core.elements import Widget, TextLabel
 from core.styles import Fonts, Colors
 # import logging
 
 
 class Info(Widget):
-    def __init__(self, interval=1):
+    def __init__(self):
         super().__init__(
-            position=(0, 1136),
+            xy=(0, 1136),
             size=(1920, 64),
-            fill=(0, 0, 0, 255),
-            interval=interval
+            fill=(0, 0, 0, 0)
             )
+        self.hostinfo = TextLabel(
+            xy=(16, 32),
+            color=Colors.TITLE,
+            font=Fonts.STATUS,
+            anchor="lm"
+        )
+        self.sysinfo = TextLabel(
+            xy=(1888, 32),
+            color=Colors.TITLE,
+            font=Fonts.STATUS,
+            anchor="rm"
+        )
         self.children = [
-            TextWidget(
-                position=(16, 32),
-                color=Colors.TITLE,
-                font=Fonts.STATUS,
-                anchor="lm",
-                update_callback=self._host_info,
-            ),
-            TextWidget(
-                position=(1888, 32),
-                color=Colors.TITLE,
-                font=Fonts.STATUS,
-                anchor="rm",
-                update_callback=self._hw_stats,
-            )
+            self.hostinfo,
+            self.sysinfo
         ]
 
-    def _host_info(self):
+    async def maybe_update(self):
+        hostinfo_dirty = self.hostinfo.update(self._get_hostinfo())
+        sysinfo_dirty = self.sysinfo.update(self._get_sysinfo())
+        if any((hostinfo_dirty, sysinfo_dirty)):
+            await self.render()
+            return True
+        return False
+
+    def _get_hostinfo(self):
         host_info = [
             f"WI-FI SSID: {Local.ssid()}",
             f"IPv4: {Local.hostname('-I')}",
@@ -39,7 +44,7 @@ class Info(Widget):
         ]
         return " | ".join(host_info)
 
-    def _hw_stats(self):
+    def _get_sysinfo(self):
         cpu = Local.cpu()
         ram = Local.ram()
         hw_info = [
@@ -52,63 +57,54 @@ class Info(Widget):
 
 class Clock(Widget):
     def __init__(self):
+        self.bg_url = "./shared/images/clock/night.png"
         super().__init__(
-            update_callback=None,
-            position=(24, 24),
+            xy=(24, 24),
             size=(1160, 328),
-            fill=Colors.NONE
+            bg_url=self.bg_url
             )
+        self.time = TextLabel(
+            xy=(90, 90),
+            font=Fonts.CLOCK,
+            color=Colors.DEFAULT
+        )
+        self.date_0 = TextLabel(
+            xy=(1070, 90),
+            font=Fonts.LABEL_SMALL,
+            color=Colors.SECONDARY,
+            anchor="rt"
+        )
+        self.date_1 = TextLabel(
+            xy=(1070, 142),
+            font=Fonts.LABEL_SMALL,
+            color=Colors.SECONDARY,
+            anchor="rt"
+        )
+        self.date_2 = TextLabel(
+            xy=(1070, 194),
+            font=Fonts.LABEL_LARGE,
+            color=Colors.SECONDARY,
+            anchor="rt"
+        )
         self.children = [
-            ImageWidget(
-                url="./shared/images/clock/night.png",
-                update_callback=self._get_image
-            ),
-            TextWidget(
-                update_callback=self._get_time,
-                position=(90, 90),
-                font=Fonts.CLOCK,
-                color=Colors.DEFAULT
-            ),
-            TextWidget(
-                update_callback=self._get_weekday,
-                position=(1070, 90),
-                font=Fonts.LABEL_SMALL,
-                color=Colors.SECONDARY,
-                anchor="rt"
-            ),
-            TextWidget(
-                position=(1070, 142),
-                font=Fonts.LABEL_SMALL,
-                color=Colors.SECONDARY,
-                anchor="rt",
-                update_callback=self._get_day
-            ),
-            TextWidget(
-                position=(1070, 194),
-                font=Fonts.LABEL_LARGE,
-                color=Colors.SECONDARY,
-                anchor="rt",
-                update_callback=self._get_year
-            )
+            self.time,
+            self.date_0,
+            self.date_1,
+            self.date_2
         ]
 
-    @staticmethod
-    def _get_time():
-        return Local.time("%H:%M")
-
-    @staticmethod
-    def _get_weekday():
-        return Local.time("%A")
-
-    @staticmethod
-    def _get_day():
-        return Local.time("%B %d")
-
-    @staticmethod
-    def _get_year():
-        return Local.time("%Y")
-
-    @staticmethod
-    def _get_image():
-        str = Local.daytime()
-        return f"./shared/images/clock/{str}.png"
+    async def maybe_update(self):
+        time = self.time.update(Local.time("%H:%M"))
+        date_0 = self.date_0.update(Local.time("%A"))
+        date_1 = self.date_1.update(Local.time("%B %d"))
+        date_2 = self.date_2.update(Local.time("%Y"))
+        # Update image if needed
+        s = f"./shared/images/clock/{Local.daytime()}.png"
+        bg_url = (not self.bg_url == s)
+        if bg_url:
+            self.bg_url = s
+            self.bg = self._get_image(self.bg_url)
+        if any((time, date_0, date_1, date_2, bg_url)):
+            await self.render()
+            return True
+        return False

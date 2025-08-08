@@ -1,42 +1,33 @@
-from core.widget import Widget, TextWidget, ColorFill
+from core.elements import Widget, TextLabel
 from core.styles import Fonts, Colors
 # from core.data_sources import Commute
 
 
 class Departures(Widget):
-    def __init__(self, position, interval):
+    def __init__(self, xy, title="Departures"):
         super().__init__(
-            position=position,
-            size=(1160, 368),
-            interval=interval)
+            xy=xy,
+            size=(1160, 368))
+        self.title = TextLabel(
+            xy=(32, 32),
+            text=title,
+            color=Colors.TITLE,
+            font=Fonts.LABEL_SMALL
+        )
         self.children = [
-            ColorFill(self),
-            TextWidget(
-                update_callback=self._title,
-                position=(32, 32),
-                color=Colors.TITLE,
-                font=Fonts.LABEL_SMALL
-            )
+            self.title
         ]
 
-    @staticmethod
-    def _title():
-        return "Default Destination"
+    async def maybe_update(self):
+        await self.render()
+        return False
 
 
 class Trains(Departures):
-    def __init__(self, interval):
-        super().__init__(position=(24, 376), interval=interval)
-
-    @staticmethod
-    def _title():
-        return "Train Destination"
+    def __init__(self):
+        super().__init__(xy=(24, 376), title="Trains")
 
 
 class Busses(Departures):
-    def __init__(self, interval):
-        super().__init__(position=(24, 768), interval=interval)
-
-    @staticmethod
-    def _title():
-        return "Bus Destination"
+    def __init__(self):
+        super().__init__(xy=(24, 768), title="Bus")

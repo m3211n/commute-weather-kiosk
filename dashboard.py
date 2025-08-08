@@ -15,18 +15,18 @@ class Clock(Widget):
             bg_img="./shared/images/clock/morning.png"
         )
         self.time_label = TextLabel(
-            xy=(90, 90), fill=Colors.DEFAULT, font=Fonts.CLOCK
+            xy=(90, 90), color=Colors.DEFAULT, font=Fonts.CLOCK
         )
         self.day = TextLabel(
-            xy=(90, 90), fill=Colors.DEFAULT, font=Fonts.LABEL_SMALL,
+            xy=(90, 90), color=Colors.DEFAULT, font=Fonts.LABEL_SMALL,
             anchor="rt"
         )
         self.month_date = TextLabel(
-            xy=(142, 90), fill=Colors.DEFAULT, font=Fonts.LABEL_SMALL,
+            xy=(142, 90), color=Colors.DEFAULT, font=Fonts.LABEL_SMALL,
             anchor="rt"
         )
         self.year = TextLabel(
-            xy=(194, 90), fill=Colors.DEFAULT, font=Fonts.LABEL_LARGE,
+            xy=(194, 90), color=Colors.DEFAULT, font=Fonts.LABEL_LARGE,
             anchor="rt"
         )
 

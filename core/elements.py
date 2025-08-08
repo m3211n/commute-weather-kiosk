@@ -1,52 +1,103 @@
 from core.styles import Fonts, Colors
 from PIL import Image, ImageDraw
+from typing import List
+import logging
 
 
-DEFAULT_SIZE = 100
+DEFAULT_SIZE = (100, 100)
 DEFAULT_RADIUS = 24
 
 
-class Widget:
+class Container:
+    def __init__(self, size):
+        self.size = size
+        self._parent = None
+        self._children = []
+
+
+class Widget(Container):
     def __init__(
-            self, xy=(0, 0), size=(DEFAULT_SIZE, DEFAULT_SIZE),
-            bg_color=Colors.PANEL_BG, bg_img=None
+            self, size=DEFAULT_SIZE, xy=(0, 0),
+            fill=Colors.PANEL_BG, bg_url=None
             ):
         """Initializes widget. If image is provided, then background color
         is ignored."""
-
+        super().__init__(size=size)
         self.xy = xy
-        self.size = size
-        self.bg: Image.Image = (
-            self._load_img(bg_img) if bg_img else self._draw_r_rect(bg_color)
-        )
-        self.children = []
-        self._image: Image.Image = None
+        self._parent: Widget = None
+        self._children: List[Widget] = []
+        self._canvas: Image.Image = None
+        self.bg = self._get_image(bg_url) if bg_url else self._get_color(fill)
 
-    def _draw_r_rect(self, color) -> Image.Image:
-        self._image = Image.new("RGBA", self.size)
-        ImageDraw.Draw(self._image).rounded_rectangle(
-            self.xy, DEFAULT_RADIUS, fill=color)
-        return self._image
+    @property
+    def children(self):
+        return self._children
 
-    def _load_img(self, url) -> Image.Image:
-        self._image = Image.open(url)
-        return self._image
+    @children.setter
+    def children(self, new_children: List[Container] = []):
+        self._children = []
+        if len(new_children) > 0:
+            for child in new_children:
+                child._parent = self
+                child.size = self.size
+                self._children.append(child)
 
-    def update(self, data):
-        raise NotImplementedError
+    @property
+    def canvas(self) -> Image.Image:
+        return self._canvas
 
-    def render(self):
-        raise NotImplementedError
+    async def render(self):
+        self._canvas = self._clear() if self._parent else self._clear(True)
+        self._canvas.paste(self.bg, mask=self.bg.split()[3])
+        logging.debug("Rendering %d children", len(self.children))
+        for child in self.children:
+            logging.debug("Rendering and pasting %s", child.__class__.__name__)
+            await child.render()
+            self._canvas.paste(
+                child.canvas,
+                (0, 0),
+                mask=child.canvas.split()[3]
+            )
+
+    async def maybe_update(self):
+        widget_dirty = False
+        for child in self.children:
+            child_dirty = await child.update()
+            if child_dirty:
+                await child.render()
+            widget_dirty = widget_dirty or child_dirty
+        if widget_dirty:
+            await self.render()
+        return widget_dirty
+
+    def _get_color(self, fill) -> Image.Image:
+        img = Image.new("RGBA", self.size)
+        draw = ImageDraw.Draw(img)
+        draw.rounded_rectangle(
+            [0, 0, *self.size], radius=DEFAULT_RADIUS, fill=fill
+            )
+        return img
+
+    def _get_image(self, url) -> Image.Image:
+        img = Image.open(url, mode="r")
+        return img
+
+    def _clear(self, solid=False):
+        color = (0, 0, 0, 255) if solid else (0, 0, 0, 0)
+        return Image.new("RGBA", self.size, color=color)
 
 
 class TextLabel(Widget):
-    def __init__(self, xy, fill=Colors.DEFAULT, font=Fonts.VALUE, anchor="lt"):
-        super().__init__(xy=xy)
-        self.fill = fill
+    def __init__(
+            self, xy, text="", color=Colors.DEFAULT,
+            font=Fonts.VALUE, anchor="lt"
+            ):
+        super().__init__(xy=xy, fill=(0, 0, 0, 0))
+        # Draws text on transparent image of same size as parent widget
+        self.color = color
         self.font = font
         self.anchor = anchor
-        self.text = ""
-        self._image = None
+        self.text = text
 
     def update(self, text: str):
         """
@@ -54,30 +105,32 @@ class TextLabel(Widget):
         current one. Returns True if text was updated and False if it wasn't.
         """
 
-        if not text == self.text:
-            self.text = text
-            bbox = self.font.getbbox(self.text)
-            self.size = (bbox[2] - bbox[0], bbox[3] - bbox[1])
-            return True
-        return False
+        if text == self.text:
+            return False
 
-    def render(self):
+        self.text = text
+        return True
+
+    async def render(self):
         """Renders the image based on the current text unconditionally."""
-        self._image = Image.new("RGBA", self.size, (0, 0, 0, 0))
-        draw = ImageDraw.Draw(self._image)
-        draw.text(
-            (0, 0), self.text, font=self.font, fill=self.fill,
+        self._canvas = self._clear()
+        logging.debug("Rendering text: %s", self.text)
+        ImageDraw.Draw(self.canvas).text(
+            self.xy, self.text, font=self.font, fill=self.color,
             anchor=self.anchor)
-        return self._image
 
 
 class Icon(Widget):
     def __init__(self, url, xy=(0, 0)):
         super().__init__(xy=xy)
-        self._image: Image.Image = self._load_img(url)
+        self.url = url
 
-    def _load_img(self, url) -> Image.Image:
-        self._image = Image.open(url)
+    def update(self, url):
+        if self.url == url:
+            return False
+        self.url = url
+        return True
 
-    def render(self) -> Image.Image:
-        return self._image
+    async def render(self) -> Image.Image:
+        self._canvas = self._clear()
+        self._canvas.paste(Image.open(self.url), self.xy)

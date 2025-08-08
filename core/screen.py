@@ -2,9 +2,10 @@ import logging
 import time
 
 from typing import List
-from core.rgb565 import rgb888_to_rgb565_numpy as convert, clear, clear_rgb
-from core.rgb565 import Image
-from core.widget import Widget
+from core.rgb565 import (
+    rgb888_to_rgb565_numpy as convert, clear, clear_rgb, Image
+)
+from core.elements import Widget
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
@@ -30,7 +31,7 @@ class Screen:
             self.output.seek(0)
             self.output.write(clear(self.size))
         else:
-            self.output: Image = clear_rgb(self.size)
+            self.output: Image.Image = clear_rgb(self.size)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -45,7 +46,7 @@ class Screen:
     async def _decode_and_write(self, widget: Widget):
         x, y, w, h = (*widget.xy, *widget.size)
         elapsed = time.perf_counter()
-        buf = await convert(await widget.image)
+        buf = await convert(widget.canvas)
         fb_offset = (y * SCREEN_WIDTH + x) * BYTES_PER_PIXEL
         for row in range(h):
             offset = fb_offset + row * SCREEN_WIDTH * BYTES_PER_PIXEL
@@ -62,14 +63,18 @@ class Screen:
         elapsed = time.perf_counter()
         dirty = False
         for widget in self.widgets:
+            logging.debug(f"Updating {widget.__class__.__name__}")
             widget_is_dirty = await widget.maybe_update()
             if (only_dirty and widget_is_dirty) or (not only_dirty):
                 dirty = True
                 if self._using_fb:
                     await self._decode_and_write(widget)
                 else:
-                    img: Image.Image = await widget.image
-                    self.output.paste(img, widget.xy, mask=img.split()[3])
+                    self.output.paste(
+                        widget.canvas,
+                        widget.xy,
+                        mask=widget.canvas.split()[3]
+                    )
 
         if dirty and not self._using_fb:
             self.output.save("__preview/output.png", format="PNG")
