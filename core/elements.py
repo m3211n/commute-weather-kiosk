@@ -49,7 +49,6 @@ class Widget(Container):
     async def render(self):
         self._canvas = self._clear() if self._parent else self._clear(True)
         self._canvas.paste(self.bg, mask=self.bg.split()[3])
-        logging.debug("Rendering %s", self.__class__.__name__)
         for child in self._children:
             await child.render()
             self._canvas.paste(
@@ -98,6 +97,7 @@ class TextLabel(Widget):
 
         if not text == self.text:
             self.text = text
+            await self.render()
             return True
         return False
 
@@ -118,6 +118,7 @@ class Icon(Widget):
     async def update(self, url):
         if not self.url == url:
             self.url = url
+            await self.render()
             return True
         return False
 
