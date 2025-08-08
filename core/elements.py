@@ -104,7 +104,7 @@ class TextLabel(Widget):
         """Renders the image based on the current text unconditionally."""
         self._canvas = self._clear()
         logging.debug("Rendering text: %s", self.text)
-        ImageDraw.Draw(self.canvas).text(
+        ImageDraw.Draw(self._canvas).text(
             self.xy, self.text, font=self.font, fill=self.color,
             anchor=self.anchor)
 
