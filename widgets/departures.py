@@ -18,7 +18,7 @@ class Departures(Widget):
             self.title
         ]
 
-    async def maybe_update(self):
+    async def update(self):
         if self.title.update(text=self.title_text):
             await self.render()
         return False

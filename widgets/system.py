@@ -28,7 +28,7 @@ class Info(Widget):
             self.sysinfo
         ]
 
-    async def maybe_update(self):
+    async def update(self):
         hostinfo_dirty = self.hostinfo.update(self._get_hostinfo())
         sysinfo_dirty = self.sysinfo.update(self._get_sysinfo())
         if any((hostinfo_dirty, sysinfo_dirty)):
@@ -93,7 +93,7 @@ class Clock(Widget):
             self.date_2
         ]
 
-    async def maybe_update(self):
+    async def update(self):
         time = self.time.update(Local.time("%H:%M"))
         date_0 = self.date_0.update(Local.time("%A"))
         date_1 = self.date_1.update(Local.time("%B %d"))

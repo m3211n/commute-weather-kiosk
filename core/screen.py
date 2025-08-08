@@ -63,7 +63,7 @@ class Screen:
         elapsed = time.perf_counter()
         dirty = False
         for widget in self.widgets:
-            widget_is_dirty = await widget.maybe_update()
+            widget_is_dirty = await widget.update()
             if (only_dirty and widget_is_dirty) or (not only_dirty):
                 logging.debug(f"{widget.__class__.__name__} has updates")
                 dirty = True

@@ -57,7 +57,7 @@ class Weather(Widget):
     def _conditions(self):
         return self.current_data["weather"]["main"]
 
-    async def maybe_update(self):
+    async def update(self):
         # Updating background image if needed
         # self.current_data = await WeatherData.fetch()
         # self.hourly_data = await WeatherData.fetch(False)

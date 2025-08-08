@@ -50,7 +50,7 @@ class Widget(Container):
         self._canvas = self._clear() if self._parent else self._clear(True)
         self._canvas.paste(self.bg, mask=self.bg.split()[3])
         for child in self._children:
-            logging.debug("Rendering and pasting %s", child.__class__.__name__)
+            logging.debug("Rendering %s", child.__class__.__name__)
             await child.render()
             self._canvas.paste(
                 child.canvas,
@@ -58,21 +58,8 @@ class Widget(Container):
                 mask=child.canvas.split()[3]
             )
 
-    async def maybe_update(self):
-        widget_dirty = False
-        for child in self._children:
-            child_dirty = await child.update()
-            if child_dirty:
-                await child.render()
-            widget_dirty = widget_dirty or child_dirty
-        if widget_dirty:
-            logging.debug(
-                "Rendering %s with %d children",
-                self.__class__.__name__,
-                len(self._children)
-                )
-            await self.render()
-        return widget_dirty
+    async def update(self):
+        raise NotImplementedError
 
     def _get_color(self, fill) -> Image.Image:
         img = Image.new("RGBA", self.size)
