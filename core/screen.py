@@ -63,9 +63,9 @@ class Screen:
         elapsed = time.perf_counter()
         dirty = False
         for widget in self.widgets:
-            logging.debug(f"Updating {widget.__class__.__name__}")
             widget_is_dirty = await widget.maybe_update()
             if (only_dirty and widget_is_dirty) or (not only_dirty):
+                logging.debug(f"{widget.__class__.__name__} has updates")
                 dirty = True
                 if self._using_fb:
                     await self._decode_and_write(widget)
