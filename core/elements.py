@@ -30,7 +30,7 @@ class Widget(Container):
         self.bg = self._get_image(bg_url) if bg_url else self._get_color(fill)
 
     @property
-    def children(self):
+    def children(self) -> List[Container]:
         return self._children
 
     @children.setter
@@ -49,8 +49,7 @@ class Widget(Container):
     async def render(self):
         self._canvas = self._clear() if self._parent else self._clear(True)
         self._canvas.paste(self.bg, mask=self.bg.split()[3])
-        logging.debug("Rendering %d children", len(self.children))
-        for child in self.children:
+        for child in self._children:
             logging.debug("Rendering and pasting %s", child.__class__.__name__)
             await child.render()
             self._canvas.paste(
@@ -61,12 +60,17 @@ class Widget(Container):
 
     async def maybe_update(self):
         widget_dirty = False
-        for child in self.children:
+        for child in self._children:
             child_dirty = await child.update()
             if child_dirty:
                 await child.render()
             widget_dirty = widget_dirty or child_dirty
         if widget_dirty:
+            logging.debug(
+                "Rendering %s with %d children",
+                self.__class__.__name__,
+                len(self._children)
+                )
             await self.render()
         return widget_dirty
 
