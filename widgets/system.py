@@ -6,35 +6,19 @@ from shared.styles import Fonts, Colors
 
 class Info(Widget):
     def __init__(self):
-        super().__init__(
-            xy=(0, 1136),
-            size=(1920, 64),
-            fill=(0, 0, 0, 255)
-            )
+        super().__init__(xy=(0, 1136), size=(1920, 64), fill=(0, 0, 0, 255))
         self.hostinfo = TextLabel(
-            xy=(16, 32),
-            color=Colors.TITLE,
-            font=Fonts.STATUS,
-            anchor="lm"
+            xy=(16, 32), color=Colors.TITLE, font=Fonts.STATUS, anchor="lm",
+            callback=self._get_hostinfo
         )
         self.sysinfo = TextLabel(
-            xy=(1888, 32),
-            color=Colors.TITLE,
-            font=Fonts.STATUS,
-            anchor="rm"
+            xy=(1888, 32), color=Colors.TITLE, font=Fonts.STATUS, anchor="rm",
+            callback=self._get_sysinfo
         )
         self.children = [
             self.hostinfo,
             self.sysinfo
         ]
-
-    async def update(self):
-        hostinfo_dirty = self.hostinfo.set_value(self._get_hostinfo())
-        sysinfo_dirty = self.sysinfo.set_value(self._get_sysinfo())
-        if any((hostinfo_dirty, sysinfo_dirty)):
-            await self.render()
-            return True
-        return False
 
     def _get_hostinfo(self):
         host_info = [
@@ -58,21 +42,25 @@ class Info(Widget):
 class Clock(Widget):
     def __init__(self):
         super().__init__(xy=(24, 24), size=(1160, 328))
-        self.bg = Img(self._get_time_image())
+        self.bg = Img(callback=self._get_time_image)
         self.time = TextLabel(
-            xy=(90, 90), font=Fonts.CLOCK, color=Colors.DEFAULT
+            xy=(90, 90), font=Fonts.CLOCK, color=Colors.DEFAULT,
+            callback=lambda: Local.time("%H:%M")
         )
         self.date_0 = TextLabel(
             xy=(1070, 90), font=Fonts.LABEL_SMALL, color=Colors.SECONDARY,
-            anchor="rt"
+            anchor="rt",
+            callback=lambda: Local.time("%A")
         )
         self.date_1 = TextLabel(
             xy=(1070, 142), font=Fonts.LABEL_SMALL, color=Colors.SECONDARY,
-            anchor="rt"
+            anchor="rt",
+            callback=lambda: Local.time("%B %d")
         )
         self.date_2 = TextLabel(
             xy=(1070, 194), font=Fonts.LABEL_LARGE, color=Colors.SECONDARY,
-            anchor="rt"
+            anchor="rt",
+            callback=lambda: Local.time("%Y")
         )
         self.children = [
             self.bg,
@@ -82,20 +70,6 @@ class Clock(Widget):
             self.date_2
         ]
 
-    def _get_time_image(self):
+    async def _get_time_image(self):
         daytime = Local.daytime()
         return f"./shared/images/clock/{daytime}.png"
-
-    async def update(self):
-        bg_dirty = self.bg.set_value(self._get_time_image())
-        time_dirty = self.time.set_value(Local.time("%H:%M"))
-        date_0_dirty = self.date_0.set_value(Local.time("%A"))
-        date_1_dirty = self.date_1.set_value(Local.time("%B %d"))
-        date_2_dirty = self.date_2.set_value(Local.time("%Y"))
-        # Update image if needed
-        if any((
-            time_dirty, date_0_dirty, date_1_dirty, date_2_dirty, bg_dirty
-        )):
-            await self.render()
-            return True
-        return False

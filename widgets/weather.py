@@ -21,18 +21,23 @@ class Weather(Widget):
         self.hourly_data = {}
         self.time_cond = ""
         super().__init__(xy=(1208, 24), size=(688, 1112))
-        self.bg = Img(self._weather_image())
+        self.bg = Img(callback=self._weather_image)
         self.temp = TextLabel(
             xy=(90, 90),
             font=Fonts.WEATHER_TODAY,
-            color=Colors.DEFAULT
+            color=Colors.DEFAULT,
+            callback=self._temperature
         )
-        self.contitions = TextLabel(
+        self.feels_like = TextLabel(
             xy=(90, 278),
             font=Fonts.LABEL_SMALL,
-            color=Colors.SECONDARY
+            color=Colors.SECONDARY,
+            callback=self._feels_like
         )
-        self.cond_icon = Img(self._current_icon(), xy=(470, 100))
+        self.cond_icon = Img(
+            xy=(470, 100),
+            callback=self._current_icon
+        )
         self.hourly = Widget(
             size=(588, 640),
             xy=(50, 400),
@@ -44,10 +49,10 @@ class Weather(Widget):
             self.hourly,
             self.temp,
             self.cond_icon,
-            self.contitions
+            self.feels_like
         ]
 
-    def _weather_image(self):
+    async def _weather_image(self):
         clouds = self.current_data["clouds"]["all"]
         if clouds in range(0, 33):
             c = "clear"
@@ -59,29 +64,14 @@ class Weather(Widget):
         # icon = weather["icon"]
         return f"./shared/images/weather/{c}-{d}.png"
 
-    def _temperature(self):
+    async def _temperature(self):
         temp = round(self.current_data["main"]["temp"])
         return f"{temp}°"
 
-    def _current_icon(self):
+    async def _current_icon(self):
         icon = self.current_data["weather"]["icon"]
         return f"./shared/icons/weather/{icon}.png"
 
-    def _feels_like(self):
+    async def _feels_like(self):
         temp = round(self.current_data["main"]["feels_like"])
         return f"Känner som {temp}°C"
-
-    async def update(self):
-        # Updating background image if needed
-        # self.current_data = await WeatherData.fetch()
-        # self.hourly_data = await WeatherData.fetch(False)
-
-        bg_dirty = self.bg.set_value(self._weather_image())
-        icon_dirty = self.cond_icon.set_value(self._current_icon())
-        temp_dirty = self.temp.set_value(self._temperature())
-        cond_dirty = self.contitions.set_value(self._feels_like())
-
-        if any((bg_dirty, icon_dirty, temp_dirty, cond_dirty)):
-            await self.render()
-            return True
-        return False

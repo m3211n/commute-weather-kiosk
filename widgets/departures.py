@@ -14,17 +14,12 @@ class Departures(Widget):
         self.title = TextLabel(
             xy=(32, 32),
             color=Colors.TITLE,
-            font=Fonts.LABEL_SMALL
+            font=Fonts.LABEL_SMALL,
+            callback=lambda: self.title_text
         )
         self.children = [
             self.title
         ]
-
-    async def update(self):
-        if self.title.set_value(self.title_text):
-            await self.render()
-            return True
-        return False
 
 
 class Trains(Departures):
