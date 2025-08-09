@@ -1,5 +1,5 @@
 from shared.styles import Fonts, Colors
-from core.render import Canvas, Fill, Image
+from core.render import Canvas, Image
 from typing import List, Union
 
 
@@ -17,7 +17,7 @@ class Container:
 class Widget(Container):
     def __init__(
             self, size=DEFAULT_SIZE, xy=(0, 0),
-            fill=Colors.PANEL_BG, bg_url=None
+            bg: Image.Image = None
             ):
         """Initializes widget. If image is provided, then background color
         is ignored."""
@@ -26,17 +26,16 @@ class Widget(Container):
         self.children: List[Union[Widget, Content]] = []
         self._canvas: Canvas = Canvas(size, MODE)
         self._draw_canvas: Canvas = Canvas(size, MODE)
-        if bg_url:
-            self.bg = Image.open(bg_url)
-        else:
-            self.bg = Fill.color(self.size, mode=MODE, color=fill, radius=24)
+        self.bg = bg
 
     @property
     def canvas(self):
         return self._canvas()
 
     async def render(self):
-        self._canvas.clear().paste(self.bg)
+        self._canvas.clear()
+        if self.bg:
+            self._canvas.paste(self.bg)
         self._draw_canvas.clear()
         for child in self.children:
             if isinstance(child, Widget):
@@ -107,3 +106,23 @@ class Icon(Content):
             self.attr["img"] = Image.open(self.url)
             return True
         return False
+
+
+class Fill:
+    @staticmethod
+    def color(
+        size, mode="RGBA", color=Colors.PANEL_BG, radius: int = 0
+            ) -> Image.Image:
+        if radius <= 0:
+            return Image.new(mode=mode, size=size, color=color)
+        img = Canvas(mode=mode, size=size)
+        img.draw.rounded_rectangle(
+            xy=[0, 0, *size],
+            radius=radius,
+            fill=color
+        )
+        return img()
+
+    @staticmethod
+    def image(url) -> Image.Image:
+        return Image.open(url)
