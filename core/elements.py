@@ -33,7 +33,7 @@ class Widget(Container):
         return self._canvas()
 
     async def render(self):
-        self._canvas.clear()
+        self._canvas.fill(self.fill, self.radius)
         self._draw_canvas.clear()
         for child in self.children:
             if isinstance(child, Widget):
