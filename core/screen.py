@@ -46,7 +46,7 @@ class Screen:
     async def _decode_and_write(self, widget: Widget):
         x, y, w, h = (*widget.xy, *widget.size)
         elapsed = time.perf_counter()
-        buf = await convert(widget._canvas)
+        buf = await convert(widget.canvas)
         fb_offset = (y * SCREEN_WIDTH + x) * BYTES_PER_PIXEL
         for row in range(h):
             offset = fb_offset + row * SCREEN_WIDTH * BYTES_PER_PIXEL
@@ -68,9 +68,9 @@ class Screen:
                     await self._decode_and_write(widget)
                 else:
                     self.output.paste(
-                        widget._canvas,
+                        widget.canvas,
                         widget.xy,
-                        mask=widget._canvas.split()[3]
+                        mask=widget.canvas.split()[3]
                     )
                 logging.info(
                     "Widget <%s> was updated",
