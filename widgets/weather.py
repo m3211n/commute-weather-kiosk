@@ -7,7 +7,8 @@ class Weather(Widget):
     def __init__(self):
         self.current_data = {
             "main": {
-                "temp": 19.81
+                "temp": 19.81,
+                "feels_like": 18.05
             },
             "weather": {
                 "main": "Clear",
@@ -62,8 +63,9 @@ class Weather(Widget):
         icon = self.current_data["weather"]["icon"]
         return f"./shared/icons/weather/{icon}.png"
 
-    def _conditions(self):
-        return self.current_data["weather"]["main"]
+    def _feels_like(self):
+        temp = round(self.current_data["main"]["feels_like"])
+        return f"Känner som {temp}°C"
 
     async def update(self):
         # Updating background image if needed
@@ -80,7 +82,7 @@ class Weather(Widget):
             bg_dirty = True
         icon_dirty = self.icon.set_url(self._current_icon())
         temp_dirty = self.temp.set_text(self._temperature())
-        cond_dirty = self.contitions.set_text(self._conditions())
+        cond_dirty = self.contitions.set_text(self._feels_like())
 
         if any((bg_dirty, icon_dirty, temp_dirty, cond_dirty)):
             await self.render()

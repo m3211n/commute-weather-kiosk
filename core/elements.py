@@ -6,6 +6,7 @@ import logging
 
 DEFAULT_SIZE = (100, 100)
 DEFAULT_RADIUS = 24
+MODE = "RGBA"
 
 
 class Container:
@@ -61,7 +62,7 @@ class Widget(Container):
         raise NotImplementedError
 
     def _get_color(self, fill) -> Image.Image:
-        img = Image.new("RGBA", self.size)
+        img = Image.new(MODE, self.size)
         draw = ImageDraw.Draw(img)
         draw.rounded_rectangle(
             [0, 0, *self.size], radius=DEFAULT_RADIUS, fill=fill
@@ -74,7 +75,7 @@ class Widget(Container):
 
     def _clear(self, solid=False):
         color = (0, 0, 0, 255) if solid else (0, 0, 0, 0)
-        return Image.new("RGBA", self.size, color=color)
+        return Image.new(MODE, self.size, color=color)
 
 
 class TextLabel(Widget):
