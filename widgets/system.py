@@ -9,7 +9,7 @@ class Info(Widget):
         super().__init__(
             xy=(0, 1136),
             size=(1920, 64),
-            fill=(0, 0, 0, 0)
+            fill=(0, 0, 0, 255)
             )
         self.hostinfo = TextLabel(
             xy=(16, 32),
