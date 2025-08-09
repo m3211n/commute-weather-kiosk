@@ -49,9 +49,8 @@ class Widget(Container):
     def _get_color(self, fill) -> Image.Image:
         img = Image.new(MODE, self.size)
         draw = ImageDraw.Draw(img)
-        xy = self.xy if self._parent else (0, 0)
         draw.rounded_rectangle(
-            [*xy, *self.size], radius=DEFAULT_RADIUS, fill=fill
+            [(0, 0), *self.size], radius=DEFAULT_RADIUS, fill=fill
             )
         return img
 
