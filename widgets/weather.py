@@ -44,7 +44,8 @@ class Weather(Widget):
         self.children = [
             self.temp,
             self.icon,
-            self.contitions
+            self.contitions,
+            self.hourly
         ]
 
     def _weather_image(self):
