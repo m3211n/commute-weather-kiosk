@@ -34,7 +34,7 @@ class Widget(Container):
         for child in self.children:
             if isinstance(child, Widget):
                 await child.render()
-                self.canvas.paste(child.canvas, child.xy)
+                self.canvas.paste(child.canvas(), child.xy)
             elif isinstance(child, Icon):
                 self.canvas.paste(**child.attr)
             elif isinstance(child, TextLabel):

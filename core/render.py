@@ -28,6 +28,12 @@ def clear(block, mode=0):
     return img
 
 
+def clear_bytes(block):
+    """Returns block of transparent pixels (mode=0), black pixels (mode=1) or
+    zeros (mode=2). Default mode is 0"""
+    return np.zeros(block, dtype="<u2")
+
+
 class Canvas:
     def __init__(self, size, mode="RGBA"):
         self._mode = mode

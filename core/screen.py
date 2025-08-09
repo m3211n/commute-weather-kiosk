@@ -3,7 +3,7 @@ import time
 
 from typing import List
 from core.render import (
-    rgb888_to_rgb565_numpy as convert, clear, Image
+    rgb888_to_rgb565_numpy as convert, clear, clear_bytes, Image
 )
 from core.elements import Widget
 
@@ -29,7 +29,7 @@ class Screen:
         if self._using_fb:
             self.output = open(FB_PATH, "r+b", buffering=0)
             self.output.seek(0)
-            self.output.write(clear(self.size, 2))
+            self.output.write(clear_bytes(self.size))
         else:
             self.output: Image.Image = clear(self.size, 1)
         return self
