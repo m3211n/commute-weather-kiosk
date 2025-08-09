@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw
+from shared.styles import Colors
 import numpy as np
 
 
@@ -54,3 +55,23 @@ class Canvas:
     @property
     def draw(self):
         return ImageDraw.Draw(self._img)
+
+
+class Fill:
+    @staticmethod
+    def color(
+        size, mode="RGBA", color=Colors.PANEL_BG, radius: int = 0
+            ) -> Image.Image:
+        if radius <= 0:
+            return Image.new(mode=mode, size=size, color=color)
+        img = Image.new(mode=mode, size=size)
+        ImageDraw.Draw(img).rounded_rectangle(
+            xy=(0, 0),
+            radius=radius,
+            fill=color
+        )
+        return img
+
+    @staticmethod
+    def image(url) -> Image.Image:
+        return Image.open(url)

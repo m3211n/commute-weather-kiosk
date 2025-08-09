@@ -1,6 +1,5 @@
 from shared.styles import Fonts, Colors
-from core.render import Canvas
-from PIL import Image, ImageDraw
+from core.render import Canvas, Fill, Image, ImageDraw
 from typing import List, Union
 
 
@@ -27,7 +26,10 @@ class Widget(Container):
         self.children: List[Union[Widget, Content]] = []
         self._canvas: Canvas = Canvas(size, MODE)
         self._draw_canvas: Canvas = Canvas(size, MODE)
-        self.bg = self._get_image(bg_url) if bg_url else self._get_color(fill)
+        if bg_url:
+            self.bg = Image.open(bg_url)
+        else:
+            self.bg = Fill.color(self.size, fill, radius=24)
 
     @property
     def canvas(self):
