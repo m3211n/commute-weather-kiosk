@@ -25,23 +25,27 @@ class Widget(Container):
         super().__init__(size=size)
         self.xy = xy
         self.children: List[Union[Widget, Content]] = []
-        self.canvas: Canvas = Canvas(size, MODE)
+        self._canvas: Canvas = Canvas(size, MODE)
         self._draw_canvas: Canvas = Canvas(size, MODE)
         self.bg = self._get_image(bg_url) if bg_url else self._get_color(fill)
 
+    @property
+    def canvas(self):
+        return self._canvas()
+
     async def render(self):
-        self.canvas.clear().paste(self.bg)
+        self._canvas.clear().paste(self.bg)
         for child in self.children:
             if isinstance(child, Widget):
                 await child.render()
-                self.canvas.paste(child.canvas(), child.xy)
+                self._canvas.paste(child.canvas, child.xy)
             elif isinstance(child, Icon):
-                self.canvas.paste(**child.attr)
+                self._canvas.paste(**child.attr)
             elif isinstance(child, TextLabel):
                 self._draw_canvas.draw.text(**child.attr)
             else:
                 pass
-        self.canvas.paste(self._draw_canvas())
+        self._canvas.paste(self._draw_canvas())
 
     def update(self):
         raise NotImplementedError
@@ -57,10 +61,6 @@ class Widget(Container):
     def _get_image(self, url) -> Image.Image:
         img = Image.open(url, mode="r")
         return img
-
-    def _clear(self):
-        self._draw_canvas = Image.new(MODE, self.size)
-        self.canvas = Image.new(MODE, self.size)
 
 
 class Content:
