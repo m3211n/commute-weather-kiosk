@@ -128,4 +128,5 @@ class Icon(Content):
         return False
 
     async def render(self):
-        self._parent._canvas.paste(Image.open(self.url), self.xy)
+        img = Image.open(self.url)
+        self._parent._canvas.paste(img, self.xy, mask=img.split()[3])
