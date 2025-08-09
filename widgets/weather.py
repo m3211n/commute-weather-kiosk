@@ -1,4 +1,4 @@
-from core.elements import Widget, TextLabel, Icon
+from core.elements import Widget, TextLabel, Icon, Fill
 from shared.styles import Colors, Fonts
 from core.data_sources import Local
 
@@ -83,7 +83,7 @@ class Weather(Widget):
             pass
         else:
             self.bg_url = new_url
-            self.bg = self._get_image(self.bg_url)
+            self.bg = Fill.image(self.bg_url)
             bg_dirty = True
         icon_dirty = self.icon.update(self._current_icon())
         temp_dirty = self.temp.update(self._temperature())

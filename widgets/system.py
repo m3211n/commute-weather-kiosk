@@ -1,5 +1,5 @@
 from core.data_sources import Local
-from core.elements import Widget, TextLabel
+from core.elements import Widget, TextLabel, Fill
 from shared.styles import Fonts, Colors
 # import logging
 
@@ -103,7 +103,7 @@ class Clock(Widget):
         bg_url = (not self.bg_url == s)
         if bg_url:
             self.bg_url = s
-            self.bg = self._get_image(self.bg_url)
+            self.bg = Fill.image(self.bg_url)
         if any((time, date_0, date_1, date_2, bg_url)):
             await self.render()
             return True
