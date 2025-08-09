@@ -55,8 +55,6 @@ class Screen:
             self.output.seek(offset)
             self.output.write(buf[start:end])
         elapsed = time.perf_counter() - elapsed
-        msg = f"Widget {widget.__class__.__name__} updated."
-        logging.debug(f"{msg} Render time: {elapsed:.3f} s.")
 
     async def refresh(self, only_dirty=True):
         """Render and output all layers"""
@@ -65,7 +63,6 @@ class Screen:
         for widget in self.widgets:
             widget_is_dirty = await widget.update()
             if (only_dirty and widget_is_dirty) or (not only_dirty):
-                logging.debug(f"{widget.__class__.__name__} has updates")
                 dirty = True
                 if self._using_fb:
                     await self._decode_and_write(widget)
@@ -75,9 +72,13 @@ class Screen:
                         widget.xy,
                         mask=widget.canvas.split()[3]
                     )
+                logging.info(
+                    "Widget <%s> was updated",
+                    widget.__class__.__name__
+                    )
 
         if dirty and not self._using_fb:
             self.output.save("__preview/output.png", format="PNG")
 
         elapsed = time.perf_counter() - elapsed
-        logging.debug(f"Refresh routine complete in: {elapsed:.3f} s.")
+        logging.info(f"Refresh routine complete in: {elapsed:.3f} s.")

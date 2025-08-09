@@ -7,7 +7,7 @@ from core.screen import Screen
 
 
 async def main(using_fb=True):
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
 
     with Screen(using_fb) as s:
         s.widgets = [
