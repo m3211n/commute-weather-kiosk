@@ -47,7 +47,7 @@ class Weather(Widget):
         return f"./shared/images/weather/{c}-{d}.png"
 
     def _temperature(self):
-        temp = round(self.current_data["main"]["temp"], 1)
+        temp = round(self.current_data["main"]["temp"])
         return f"{temp}°"
 
     def _current_icon(self):
