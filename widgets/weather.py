@@ -36,7 +36,11 @@ class Weather(Widget):
             color=Colors.SECONDARY
         )
         self.icon = Icon(xy=(470, 100), url="./shared/icons/weather/04d.png")
-        self.hourly = Widget()
+        self.hourly = Widget(
+            size=(588, 640),
+            xy=(50, 400),
+            fill=(0, 0, 0, 80)
+        )
         self.children = [
             self.temp,
             self.icon,
