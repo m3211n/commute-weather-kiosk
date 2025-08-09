@@ -6,8 +6,7 @@ async def convert(image: Image.Image):
     """Convert image from RGB888 to RGB565
     for /dev/fb0 on Pi Zero 2W"""
     # Flatten RGBA image
-    image = image.convert(
-        "RGB", dither=Image.Dither.FLOYDSTEINBERG, palette=Image.Palette.WEB)
+    image = image.convert("RGB")
     arr = np.asarray(image)
     arr16 = arr.astype(np.uint16)
     r = (arr16[:, :, 0] & 0xF8) << 8         # 5 bits
