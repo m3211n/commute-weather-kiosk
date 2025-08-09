@@ -1,5 +1,5 @@
 from shared.styles import Fonts, Colors
-from core.render import Canvas, Fill, Image, ImageDraw
+from core.render import Canvas, Fill, Image
 from typing import List, Union
 
 
@@ -53,23 +53,11 @@ class Widget(Container):
     def update(self):
         raise NotImplementedError
 
-    def _get_color(self, fill) -> Image.Image:
-        img = Image.new(MODE, self.size)
-        draw = ImageDraw.Draw(img)
-        draw.rounded_rectangle(
-            [0, 0, *self.size], radius=DEFAULT_RADIUS, fill=fill
-            )
-        return img
-
-    def _get_image(self, url) -> Image.Image:
-        img = Image.open(url, mode="r")
-        return img
-
 
 class Content:
-    def __init__(self, xy):
+    def __init__(self, xy, attr):
         self.xy = xy
-        self.attr = {}
+        self.attr = attr
 
     def update(self):
         raise NotImplementedError
@@ -80,15 +68,16 @@ class TextLabel(Content):
             self, xy=(0, 0), text="", color=Colors.DEFAULT,
             font=Fonts.VALUE, anchor="lt"
             ):
-        super().__init__(xy=xy)
-        # Draws text on transparent image of same size as parent widget
-        self.attr = {
-            "xy": xy,
-            "text": text,
-            "font": font,
-            "fill": color,
-            "anchor": anchor
-        }
+        super().__init__(
+            xy=xy,
+            attr={
+                "xy": xy,
+                "text": text,
+                "font": font,
+                "fill": color,
+                "anchor": anchor
+            }
+        )
 
     def update(self, text: str):
         """
@@ -103,14 +92,16 @@ class TextLabel(Content):
 
 class Icon(Content):
     def __init__(self, url, xy=(0, 0)):
-        super().__init__(xy=xy)
         self.url = url
-        self.attr = {
-            "xy": xy,
-            "img": Image.open(self.url)
-        }
+        super().__init__(
+            xy=xy,
+            attr={
+                "xy": xy,
+                "img": Image.open(self.url),
+            }
+        )
 
-    def update(self, url):
+    def update(self, url: str):
         if not self.url == url:
             self.url = url
             self.attr["img"] = Image.open(self.url)
