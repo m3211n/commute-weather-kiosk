@@ -30,7 +30,7 @@ class Fonts:
 
 class Colors:
     """Color palette for the UI."""
-    PANEL_BG = (72, 72, 72, 255)
+    PANEL_BG = (255, 255, 255, 16)
     TITLE = (255, 255, 255, 88)
     DEPARTURE_TIMES = (216, 216, 0)
     DEFAULT = (255, 255, 255, 255)
