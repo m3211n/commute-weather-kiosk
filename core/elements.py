@@ -57,7 +57,7 @@ class Widget(Container):
                 mask=child._canvas.split()[3]
             )
 
-    async def update(self):
+    def update(self):
         raise NotImplementedError
 
     def _get_color(self, fill) -> Image.Image:
@@ -89,7 +89,7 @@ class TextLabel(Widget):
         self.anchor = anchor
         self.text = text
 
-    async def update(self, text: str):
+    def update(self, text: str):
         """
         Changes the text of the label if new value is different from the
         current one. Returns True if text was updated and False if it wasn't.
