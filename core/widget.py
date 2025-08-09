@@ -1,7 +1,7 @@
 from typing import List
 from core.tools import IntervalLoop
 from PIL import Image, ImageDraw
-from core.styles import Fonts, Colors
+from shared.styles import Fonts, Colors
 import logging
 
 

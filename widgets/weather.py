@@ -1,5 +1,5 @@
 from core.elements import Widget, TextLabel, Icon
-from core.styles import Colors, Fonts
+from shared.styles import Colors, Fonts
 from core.data_sources import Local
 
 

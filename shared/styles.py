@@ -33,6 +33,6 @@ class Colors:
     PANEL_BG = (255, 255, 255, 16)
     TITLE = (255, 255, 255, 88)
     DEPARTURE_TIMES = (216, 216, 0)
-    DEFAULT = (255, 255, 255, 216)
+    DEFAULT = (255, 255, 255, 255)
     SECONDARY = (255, 255, 255, 160)
     NONE = (0, 0, 0, 0)

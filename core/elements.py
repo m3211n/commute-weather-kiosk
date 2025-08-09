@@ -1,4 +1,4 @@
-from core.styles import Fonts, Colors
+from shared.styles import Fonts, Colors
 from PIL import Image, ImageDraw
 from typing import List
 import logging

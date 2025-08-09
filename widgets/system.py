@@ -1,6 +1,6 @@
 from core.data_sources import Local
 from core.elements import Widget, TextLabel
-from core.styles import Fonts, Colors
+from shared.styles import Fonts, Colors
 # import logging
 
 
