@@ -42,7 +42,7 @@ class Widget(Container):
             elif isinstance(child, Icon):
                 self._canvas.paste(**child.attr)
             elif isinstance(child, TextLabel):
-                self._draw_canvas.draw.text(**child.attr)
+                self._draw_canvas.clear().draw.text(**child.attr)
             else:
                 pass
         self._canvas.paste(self._draw_canvas())
