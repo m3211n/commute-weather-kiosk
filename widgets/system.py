@@ -57,7 +57,7 @@ class Info(Widget):
 
 class Clock(Widget):
     def __init__(self):
-        self.bg_url = "./shared/images/clock/night.png"
+        self.bg = Fill.image("./shared/images/clock/night.png")
         super().__init__(
             xy=(24, 24),
             size=(1160, 328),
