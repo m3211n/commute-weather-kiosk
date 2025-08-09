@@ -18,7 +18,7 @@ class Fonts:
     VALUE = get_font(FONT_PATHS["regular"], 86)
     LABEL_SMALL = get_font(FONT_PATHS["regular"], 40)
     LABEL_LARGE = get_font(FONT_PATHS["regular"], 63)
-    WEATHER_TODAY = get_font(FONT_PATHS["regular"], 120)
+    WEATHER_TODAY = get_font(FONT_PATHS["regular"], 211)
     CLOCK = get_font(FONT_PATHS["bold"], 211)
     STATUS = get_font(FONT_PATHS["mono"], 20)
 

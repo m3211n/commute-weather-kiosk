@@ -27,7 +27,7 @@ class Weather(Widget):
             color=Colors.DEFAULT
         )
         self.contitions = TextLabel(
-            xy=(90, 210),
+            xy=(90, 278),
             font=Fonts.LABEL_SMALL,
             color=Colors.SECONDARY
         )
