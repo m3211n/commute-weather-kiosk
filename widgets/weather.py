@@ -12,6 +12,9 @@ class Weather(Widget):
             "weather": {
                 "main": "Clear",
                 "icon": "01d"
+            },
+            "clouds": {
+                "all": 34
             }
         }
         self.hourly_data = {}
@@ -40,8 +43,13 @@ class Weather(Widget):
         ]
 
     def _weather_image(self):
-        cond = self.current_data["weather"]["main"]
-        c = "clear" if cond == "Clear" else "clouds"
+        clouds = self.current_data["clouds"]["all"]
+        if clouds in range(0, 33):
+            c = "clear"
+        elif clouds in range(33, 66):
+            c = "cloudy"
+        else:
+            c = "rainy"
         d = Local.day_or_night()
         # icon = weather["icon"]
         return f"./shared/images/weather/{c}-{d}.png"
