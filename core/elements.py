@@ -79,12 +79,18 @@ class Widget(Container):
         return Image.new(MODE, self.size, color=color)
 
 
-class TextLabel(Widget):
+class Content:
+    def __init__(self, xy):
+        self.xy = xy
+        self._parent: Widget = None
+
+
+class TextLabel(Content):
     def __init__(
             self, xy, text="", color=Colors.DEFAULT,
             font=Fonts.VALUE, anchor="lt"
             ):
-        super().__init__(xy=xy, fill=(0, 0, 0, 0))
+        super().__init__(xy=xy)
         # Draws text on transparent image of same size as parent widget
         self.color = color
         self.font = font
@@ -105,12 +111,12 @@ class TextLabel(Widget):
         """Renders the image based on the current text unconditionally."""
         self._canvas = self._clear()
         logging.debug("Rendering text: %s", self.text)
-        ImageDraw.Draw(self._canvas).text(
+        ImageDraw.Draw(self._parent._canvas).text(
             self.xy, self.text, font=self.font, fill=self.color,
             anchor=self.anchor)
 
 
-class Icon(Widget):
+class Icon(Content):
     def __init__(self, url, xy=(0, 0)):
         super().__init__(xy=xy)
         self.url = url
@@ -122,5 +128,4 @@ class Icon(Widget):
         return False
 
     async def render(self):
-        self._canvas = self._clear()
-        self._canvas.paste(Image.open(self.url), self.xy)
+        self._parent._canvas.paste(Image.open(self.url), self.xy)
