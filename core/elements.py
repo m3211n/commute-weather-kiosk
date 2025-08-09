@@ -29,7 +29,7 @@ class Widget(Container):
         if bg_url:
             self.bg = Image.open(bg_url)
         else:
-            self.bg = Fill.color(self.size, fill, radius=24)
+            self.bg = Fill.color(self.size, mode=MODE, color=fill, radius=24)
 
     @property
     def canvas(self):
