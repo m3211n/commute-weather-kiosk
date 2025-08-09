@@ -85,9 +85,9 @@ class Weather(Widget):
             self.bg_url = new_url
             self.bg = self._get_image(self.bg_url)
             bg_dirty = True
-        icon_dirty = self.icon.set_url(self._current_icon())
-        temp_dirty = self.temp.set_text(self._temperature())
-        cond_dirty = self.contitions.set_text(self._feels_like())
+        icon_dirty = self.icon.update(self._current_icon())
+        temp_dirty = self.temp.update(self._temperature())
+        cond_dirty = self.contitions.update(self._feels_like())
 
         if any((bg_dirty, icon_dirty, temp_dirty, cond_dirty)):
             await self.render()

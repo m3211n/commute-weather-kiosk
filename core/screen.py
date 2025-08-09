@@ -2,8 +2,8 @@ import logging
 import time
 
 from typing import List
-from core.rgb565 import (
-    rgb888_to_rgb565_numpy as convert, clear, clear_rgb, Image
+from core.render import (
+    rgb888_to_rgb565_numpy as convert, clear, Image
 )
 from core.elements import Widget
 
@@ -29,9 +29,9 @@ class Screen:
         if self._using_fb:
             self.output = open(FB_PATH, "r+b", buffering=0)
             self.output.seek(0)
-            self.output.write(clear(self.size))
+            self.output.write(clear(self.size, 2))
         else:
-            self.output: Image.Image = clear_rgb(self.size)
+            self.output: Image.Image = clear(self.size, 1)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):

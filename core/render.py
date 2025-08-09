@@ -1,0 +1,50 @@
+from PIL import Image, ImageDraw
+import numpy as np
+
+
+async def rgb888_to_rgb565_numpy(image: Image.Image):
+    """Convert image from RGB888 to RGB565
+    for /dev/fb0 on Pi Zero 2W"""
+    arr = np.asarray(image)
+    arr16 = arr.astype(np.uint16)
+    r = (arr16[:, :, 0] & 0xF8) << 8         # 5 bits
+    g = (arr16[:, :, 1] & 0xFC) << 3         # 6 bits
+    b = (arr16[:, :, 2] & 0xF8) >> 3         # 5 bits
+    rgb565 = r | g | b
+    # little-endian for /dev/fb0
+    return rgb565.astype('<u2').tobytes()
+
+
+def clear(block, mode=0):
+    """Returns block of transparent pixels (mode=0), black pixels (mode=1) or
+    zeros (mode=2). Default mode is 0"""
+    match mode:
+        case 0:
+            img = Image.new("RGBA", block)
+        case 1:
+            img = Image.new("RGB", block)
+        case _:
+            img = np.zeros(block, dtype="<u2")
+    return img
+
+
+class Canvas:
+    def __init__(self, size, mode="RGBA"):
+        self._mode = mode
+        self._img = Image.new(mode=self._mode, size=size)
+
+    def __call__(self) -> Image.Image:
+        return self._img
+
+    def clear(self) -> "Canvas":
+        size = self._img.size
+        self._img = Image.new(mode=self._mode, size=size)
+        return self
+
+    def paste(self, img: Image.Image, xy=(0, 0)):
+        mask = img.split()[3] if self._mode == "RGBA" else None
+        self._img.paste(img, xy, mask=mask)
+
+    @property
+    def draw(self):
+        return ImageDraw.Draw(self._img)

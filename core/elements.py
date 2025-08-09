@@ -1,7 +1,7 @@
 from shared.styles import Fonts, Colors
+from core.render import Canvas
 from PIL import Image, ImageDraw
-from typing import List
-import logging
+from typing import List, Union
 
 
 DEFAULT_SIZE = (100, 100)
@@ -12,7 +12,6 @@ MODE = "RGBA"
 class Container:
     def __init__(self, size):
         self.size = size
-        self._parent = None
         self._children = []
 
 
@@ -25,39 +24,24 @@ class Widget(Container):
         is ignored."""
         super().__init__(size=size)
         self.xy = xy
-        self._parent: Widget = None
-        self._children: List[Widget] = []
-        self._canvas: Image.Image = None
+        self.children: List[Union[Widget, Content]] = []
+        self.canvas: Canvas = Canvas(size, MODE)
+        self._draw_canvas: Canvas = Canvas(size, MODE)
         self.bg = self._get_image(bg_url) if bg_url else self._get_color(fill)
 
-    @property
-    def children(self) -> List[Container]:
-        return self._children
-
-    @children.setter
-    def children(self, new_children: List[Container] = []):
-        self._children = []
-        if len(new_children) > 0:
-            for child in new_children:
-                child._parent = self
-                child.size = self.size
-                self._children.append(child)
-
-    @property
-    def canvas(self) -> Image.Image:
-        return self._canvas
-
     async def render(self):
-        self._canvas = self._clear() if self._parent else self._clear(True)
-        self._canvas.paste(self.bg, mask=self.bg.split()[3])
-        for child in self._children:
-            await child.render()
+        self.canvas.clear().paste(self.bg)
+        for child in self.children:
             if isinstance(child, Widget):
-                self._canvas.paste(
-                    child._canvas,
-                    child.xy,
-                    mask=child._canvas.split()[3]
-                )
+                await child.render()
+                self.canvas.paste(child.canvas, child.xy)
+            elif isinstance(child, Icon):
+                self.canvas.paste(**child.attr)
+            elif isinstance(child, TextLabel):
+                self._draw_canvas.draw.text(**child.attr)
+            else:
+                pass
+        self.canvas.paste(self._draw_canvas)
 
     def update(self):
         raise NotImplementedError
@@ -75,58 +59,58 @@ class Widget(Container):
         img = Image.open(url, mode="r")
         return img
 
-    def _clear(self, solid=False):
-        color = (0, 0, 0, 255) if solid else (0, 0, 0, 0)
-        return Image.new(MODE, self.size, color=color)
+    def _clear(self):
+        self._draw_canvas = Image.new(MODE, self.size)
+        self.canvas = Image.new(MODE, self.size)
 
 
 class Content:
     def __init__(self, xy):
         self.xy = xy
-        self._parent: Widget = None
+        self.attr = {}
+
+    def update(self):
+        raise NotImplementedError
 
 
 class TextLabel(Content):
     def __init__(
-            self, xy, text="", color=Colors.DEFAULT,
+            self, xy=(0, 0), text="", color=Colors.DEFAULT,
             font=Fonts.VALUE, anchor="lt"
             ):
         super().__init__(xy=xy)
         # Draws text on transparent image of same size as parent widget
-        self.color = color
-        self.font = font
-        self.anchor = anchor
-        self.text = text
+        self.attr = {
+            "xy": xy,
+            "text": text,
+            "font": font,
+            "fill": color,
+            "anchor": anchor
+        }
 
-    def set_text(self, text: str):
+    def update(self, text: str):
         """
         Changes the text of the label if new value is different from the
         current one. Returns True if text was updated and False if it wasn't.
         """
-        if not text == self.text:
-            self.text = text
+        if not text == self.attr["text"]:
+            self.attr["text"] = text
             return True
         return False
-
-    async def render(self):
-        """Renders the image based on the current text unconditionally."""
-        logging.debug("Rendering text: %s", self.text)
-        ImageDraw.Draw(self._parent._canvas).text(
-            self.xy, self.text, font=self.font, fill=self.color,
-            anchor=self.anchor)
 
 
 class Icon(Content):
     def __init__(self, url, xy=(0, 0)):
         super().__init__(xy=xy)
         self.url = url
+        self.attr = {
+            "xy": xy,
+            "img": Image.open(self.url)
+        }
 
-    def set_url(self, url):
+    def update(self, url):
         if not self.url == url:
             self.url = url
+            self.attr["img"] = Image.open(self.url)
             return True
         return False
-
-    async def render(self):
-        img = Image.open(self.url)
-        self._parent._canvas.paste(img, self.xy, mask=img.split()[3])

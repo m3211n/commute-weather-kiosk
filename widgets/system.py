@@ -29,8 +29,8 @@ class Info(Widget):
         ]
 
     async def update(self):
-        hostinfo_dirty = self.hostinfo.set_text(self._get_hostinfo())
-        sysinfo_dirty = self.sysinfo.set_text(self._get_sysinfo())
+        hostinfo_dirty = self.hostinfo.update(self._get_hostinfo())
+        sysinfo_dirty = self.sysinfo.update(self._get_sysinfo())
         if any((hostinfo_dirty, sysinfo_dirty)):
             await self.render()
             return True
@@ -94,10 +94,10 @@ class Clock(Widget):
         ]
 
     async def update(self):
-        time = self.time.set_text(Local.time("%H:%M"))
-        date_0 = self.date_0.set_text(Local.time("%A"))
-        date_1 = self.date_1.set_text(Local.time("%B %d"))
-        date_2 = self.date_2.set_text(Local.time("%Y"))
+        time = self.time.update(Local.time("%H:%M"))
+        date_0 = self.date_0.update(Local.time("%A"))
+        date_1 = self.date_1.update(Local.time("%B %d"))
+        date_2 = self.date_2.update(Local.time("%Y"))
         # Update image if needed
         s = f"./shared/images/clock/{Local.daytime()}.png"
         bg_url = (not self.bg_url == s)
