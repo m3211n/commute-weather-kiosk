@@ -30,11 +30,11 @@ class Clock(Widget):
             anchor="rt"
         )
 
-    def update(self, time_data):
-        self.time_label.update("12:34")
-        self.day.update("måndag")
-        self.month_date.update("september, 31")
-        self.year.update("2025")
+    def set_text(self, time_data):
+        self.time_label.set_text("12:34")
+        self.day.set_text("måndag")
+        self.month_date.set_text("september, 31")
+        self.year.set_text("2025")
 
 
 class Dashboard(Widget):

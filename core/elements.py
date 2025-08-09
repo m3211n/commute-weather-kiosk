@@ -89,7 +89,7 @@ class TextLabel(Widget):
         self.anchor = anchor
         self.text = text
 
-    def update(self, text: str):
+    def set_text(self, text: str):
         """
         Changes the text of the label if new value is different from the
         current one. Returns True if text was updated and False if it wasn't.
@@ -114,7 +114,7 @@ class Icon(Widget):
         super().__init__(xy=xy)
         self.url = url
 
-    async def update(self, url):
+    def set_url(self, url):
         if not self.url == url:
             self.url = url
             return True
