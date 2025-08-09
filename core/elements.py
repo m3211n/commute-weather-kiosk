@@ -16,13 +16,13 @@ class Container:
 
 class Widget(Container):
     def __init__(
-            self, size=DEFAULT_SIZE, xy=(0, 0), fill=None, radius=0
+            self, size=DEFAULT_SIZE, xy=(0, 0), fill=(0, 0, 0, 0), radius=0
             ):
         """Initializes widget. If image is provided, then background color
         is ignored."""
         super().__init__(size=size)
         self.xy = xy
-        self.fill = fill if fill else (0, 0, 0, 0)
+        self.fill = fill
         self.radius = radius
         self.children: List[Union[Widget, Content]] = []
         self._canvas: Canvas = Canvas(size, MODE)
@@ -33,7 +33,7 @@ class Widget(Container):
         return self._canvas()
 
     async def render(self):
-        self._canvas.fill(self.fill, self.radius)
+        self._canvas.clear()
         self._draw_canvas.clear()
         for child in self.children:
             if isinstance(child, Widget):

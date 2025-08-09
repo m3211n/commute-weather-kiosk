@@ -2,9 +2,7 @@ import logging
 import time
 
 from typing import List
-from core.render import (
-    rgb888_to_rgb565_numpy as convert, clear, clear_bytes, Image
-)
+from core.render import convert, clear, clear_bytes, Image
 from core.elements import Widget
 
 SCREEN_WIDTH = 1920
