@@ -52,11 +52,12 @@ class Widget(Container):
         self._canvas.paste(self.bg, mask=self.bg.split()[3])
         for child in self._children:
             await child.render()
-            self._canvas.paste(
-                child._canvas,
-                (0, 0),
-                mask=child._canvas.split()[3]
-            )
+            if isinstance(child, Widget):
+                self._canvas.paste(
+                    child._canvas,
+                    child.xy,
+                    mask=child._canvas.split()[3]
+                )
 
     def update(self):
         raise NotImplementedError
