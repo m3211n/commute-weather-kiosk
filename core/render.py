@@ -66,7 +66,7 @@ class Fill:
             return Image.new(mode=mode, size=size, color=color)
         img = Image.new(mode=mode, size=size)
         ImageDraw.Draw(img).rounded_rectangle(
-            xy=(0, 0),
+            xy=[0, 0, *size],
             radius=radius,
             fill=color
         )
