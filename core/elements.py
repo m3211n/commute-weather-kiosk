@@ -50,7 +50,7 @@ class Widget(Container):
         img = Image.new(MODE, self.size)
         draw = ImageDraw.Draw(img)
         draw.rounded_rectangle(
-            [(0, 0), *self.size], radius=DEFAULT_RADIUS, fill=fill
+            [0, 0, *self.size], radius=DEFAULT_RADIUS, fill=fill
             )
         return img
 
