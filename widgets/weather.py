@@ -42,10 +42,10 @@ class Weather(Widget):
             fill=(0, 0, 0, 80)
         )
         self.children = [
+            self.hourly,
             self.temp,
             self.icon,
-            self.contitions,
-            self.hourly
+            self.contitions
         ]
 
     def _weather_image(self):
