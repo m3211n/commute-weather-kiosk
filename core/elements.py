@@ -41,7 +41,7 @@ class Widget(Container):
                 self._draw_canvas.draw.text(**child.attr)
             else:
                 pass
-        self.canvas.paste(self._draw_canvas)
+        self.canvas.paste(self._draw_canvas())
 
     def update(self):
         raise NotImplementedError
