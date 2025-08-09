@@ -75,5 +75,6 @@ class Weather(Widget):
         cond_dirty = self.contitions.update(self._conditions())
 
         if any((bg_dirty, icon_dirty, temp_dirty, cond_dirty)):
+            await self.render()
             return True
         return False
