@@ -19,7 +19,7 @@ class Weather(Widget):
             }
         }
         self.hourly_data = {}
-        self.bg_url = "./shared/images/weather/clear-day.png"
+        self.bg = Fill.image("./shared/images/weather/clear-day.png")
         super().__init__(
             xy=(1208, 24),
             size=(688, 1112),
