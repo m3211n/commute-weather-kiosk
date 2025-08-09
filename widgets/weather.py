@@ -11,10 +11,10 @@ class Weather(Widget):
             },
             "weather": {
                 "main": "Clear",
-                "icon": "01d"
+                "icon": "09d"
             },
             "clouds": {
-                "all": 34
+                "all": 67
             }
         }
         self.hourly_data = {}
