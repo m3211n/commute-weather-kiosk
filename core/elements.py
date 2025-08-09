@@ -109,7 +109,6 @@ class TextLabel(Content):
 
     async def render(self):
         """Renders the image based on the current text unconditionally."""
-        self._canvas = self._clear()
         logging.debug("Rendering text: %s", self.text)
         ImageDraw.Draw(self._parent._canvas).text(
             self.xy, self.text, font=self.font, fill=self.color,
