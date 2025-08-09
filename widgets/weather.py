@@ -7,14 +7,14 @@ class Weather(Widget):
     def __init__(self):
         self.current_data = {
             "main": {
-                "temp": 24.55
+                "temp": 19.81
             },
             "weather": {
                 "main": "Clear",
-                "icon": "09d"
+                "icon": "01d"
             },
             "clouds": {
-                "all": 67
+                "all": 0
             }
         }
         self.hourly_data = {}
