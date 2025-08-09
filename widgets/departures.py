@@ -8,7 +8,9 @@ class Departures(Widget):
         self.title_text = title
         super().__init__(
             xy=xy,
-            size=(1160, 368))
+            size=(1160, 368),
+            fill=Colors.PANEL_BG,
+            radius=24)
         self.title = TextLabel(
             xy=(32, 32),
             color=Colors.TITLE,
@@ -19,7 +21,7 @@ class Departures(Widget):
         ]
 
     async def update(self):
-        if self.title.update(self.title_text):
+        if self.title.set_value(self.title_text):
             await self.render()
             return True
         return False

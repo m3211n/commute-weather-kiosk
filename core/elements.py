@@ -16,33 +16,32 @@ class Container:
 
 class Widget(Container):
     def __init__(
-            self, size=DEFAULT_SIZE, xy=(0, 0),
-            bg: Image.Image = None
+            self, size=DEFAULT_SIZE, xy=(0, 0), fill=None, radius=0
             ):
         """Initializes widget. If image is provided, then background color
         is ignored."""
         super().__init__(size=size)
         self.xy = xy
+        self.fill = fill if fill else (0, 0, 0, 0)
+        self.radius = radius
         self.children: List[Union[Widget, Content]] = []
         self._canvas: Canvas = Canvas(size, MODE)
         self._draw_canvas: Canvas = Canvas(size, MODE)
-        self.bg = bg
 
     @property
     def canvas(self):
         return self._canvas()
 
     async def render(self):
-        self._canvas.clear()
-        if self.bg:
-            self._canvas.paste(self.bg)
+        self._canvas.fill(self.fill, self.radius)
         self._draw_canvas.clear()
         for child in self.children:
             if isinstance(child, Widget):
                 await child.render()
                 self._canvas.paste(child.canvas, child.xy)
-            elif isinstance(child, Icon):
-                self._canvas.paste(**child.attr)
+            elif isinstance(child, Img):
+                img = Image.open(child.attr[child.value_key])
+                self._canvas.paste(img, child.xy)
             elif isinstance(child, TextLabel):
                 self._draw_canvas.draw.text(**child.attr)
             else:
@@ -54,12 +53,20 @@ class Widget(Container):
 
 
 class Content:
-    def __init__(self, xy, attr):
+    def __init__(self, xy, value_key, value):
         self.xy = xy
-        self.attr = attr
+        self.value = value
+        self.value_key = value_key
+        self.attr = {
+            "xy": self.xy,
+            self.value_key: self.value
+        }
 
-    def update(self):
-        raise NotImplementedError
+    def set_value(self, new_value):
+        if not self.attr[self.value_key] == new_value:
+            self.attr[self.value_key] = new_value
+            return True
+        return False
 
 
 class TextLabel(Content):
@@ -69,60 +76,18 @@ class TextLabel(Content):
             ):
         super().__init__(
             xy=xy,
-            attr={
-                "xy": xy,
-                "text": text,
-                "font": font,
-                "fill": color,
-                "anchor": anchor
-            }
+            value=text,
+            value_key="text"
         )
-
-    def update(self, text: str):
-        """
-        Changes the text of the label if new value is different from the
-        current one. Returns True if text was updated and False if it wasn't.
-        """
-        if not text == self.attr["text"]:
-            self.attr["text"] = text
-            return True
-        return False
+        self.attr["font"] = font
+        self.attr["fill"] = color
+        self.attr["anchor"] = anchor
 
 
-class Icon(Content):
+class Img(Content):
     def __init__(self, url, xy=(0, 0)):
-        self.url = url
         super().__init__(
             xy=xy,
-            attr={
-                "xy": xy,
-                "img": Image.open(self.url),
-            }
+            value=url,
+            value_key="url"
         )
-
-    def update(self, url: str):
-        if not self.url == url:
-            self.url = url
-            self.attr["img"] = Image.open(self.url)
-            return True
-        return False
-
-
-class Fill:
-    @staticmethod
-    def color(
-        size, mode="RGBA", color=Colors.PANEL_BG, radius: int = 0
-            ) -> Image.Image:
-        if radius <= 0:
-            return Image.new(mode=mode, size=size, color=color)
-        img = Canvas(mode=mode, size=size)
-        img.draw.rounded_rectangle(
-            xy=[0, 0, *size],
-            radius=radius,
-            fill=color
-        )
-        return img()
-
-    @staticmethod
-    def image(url) -> Image.Image:
-        return Image.open(url)

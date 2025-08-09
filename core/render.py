@@ -47,6 +47,14 @@ class Canvas:
         self._img = Image.new(mode=self._mode, size=size)
         return self
 
+    def fill(self, color=(0, 0, 0, 0), radius=0) -> "Canvas":
+        self.draw.rounded_rectangle(
+            [0, 0, *self._img.size],
+            radius=radius,
+            fill=color
+        )
+        return self
+
     def paste(self, img: Image.Image, xy=(0, 0)):
         mask = img.split()[3] if self._mode == "RGBA" else None
         self._img.paste(img, xy, mask=mask)

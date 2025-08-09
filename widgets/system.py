@@ -1,5 +1,5 @@
 from core.data_sources import Local
-from core.elements import Widget, TextLabel, Fill
+from core.elements import Widget, TextLabel, Img
 from shared.styles import Fonts, Colors
 # import logging
 
@@ -29,8 +29,8 @@ class Info(Widget):
         ]
 
     async def update(self):
-        hostinfo_dirty = self.hostinfo.update(self._get_hostinfo())
-        sysinfo_dirty = self.sysinfo.update(self._get_sysinfo())
+        hostinfo_dirty = self.hostinfo.set_value(self._get_hostinfo())
+        sysinfo_dirty = self.sysinfo.set_value(self._get_sysinfo())
         if any((hostinfo_dirty, sysinfo_dirty)):
             await self.render()
             return True
@@ -57,54 +57,45 @@ class Info(Widget):
 
 class Clock(Widget):
     def __init__(self):
-        self.bg = Fill.image("./shared/images/clock/night.png")
-        super().__init__(
-            xy=(24, 24),
-            size=(1160, 328),
-            bg_url=self.bg_url
-            )
+        super().__init__(xy=(24, 24), size=(1160, 328))
+        self.bg = Img(self._get_time_image())
         self.time = TextLabel(
-            xy=(90, 90),
-            font=Fonts.CLOCK,
-            color=Colors.DEFAULT
+            xy=(90, 90), font=Fonts.CLOCK, color=Colors.DEFAULT
         )
         self.date_0 = TextLabel(
-            xy=(1070, 90),
-            font=Fonts.LABEL_SMALL,
-            color=Colors.SECONDARY,
+            xy=(1070, 90), font=Fonts.LABEL_SMALL, color=Colors.SECONDARY,
             anchor="rt"
         )
         self.date_1 = TextLabel(
-            xy=(1070, 142),
-            font=Fonts.LABEL_SMALL,
-            color=Colors.SECONDARY,
+            xy=(1070, 142), font=Fonts.LABEL_SMALL, color=Colors.SECONDARY,
             anchor="rt"
         )
         self.date_2 = TextLabel(
-            xy=(1070, 194),
-            font=Fonts.LABEL_LARGE,
-            color=Colors.SECONDARY,
+            xy=(1070, 194), font=Fonts.LABEL_LARGE, color=Colors.SECONDARY,
             anchor="rt"
         )
         self.children = [
+            self.bg,
             self.time,
             self.date_0,
             self.date_1,
             self.date_2
         ]
 
+    def _get_time_image(self):
+        daytime = Local.daytime()
+        return f"./shared/images/clock/{daytime}.png"
+
     async def update(self):
-        time = self.time.update(Local.time("%H:%M"))
-        date_0 = self.date_0.update(Local.time("%A"))
-        date_1 = self.date_1.update(Local.time("%B %d"))
-        date_2 = self.date_2.update(Local.time("%Y"))
+        bg_dirty = self.bg.set_value(self._get_time_image())
+        time_dirty = self.time.set_value(Local.time("%H:%M"))
+        date_0_dirty = self.date_0.set_value(Local.time("%A"))
+        date_1_dirty = self.date_1.set_value(Local.time("%B %d"))
+        date_2_dirty = self.date_2.set_value(Local.time("%Y"))
         # Update image if needed
-        s = f"./shared/images/clock/{Local.daytime()}.png"
-        bg_url = (not self.bg_url == s)
-        if bg_url:
-            self.bg_url = s
-            self.bg = Fill.image(self.bg_url)
-        if any((time, date_0, date_1, date_2, bg_url)):
+        if any((
+            time_dirty, date_0_dirty, date_1_dirty, date_2_dirty, bg_dirty
+        )):
             await self.render()
             return True
         return False

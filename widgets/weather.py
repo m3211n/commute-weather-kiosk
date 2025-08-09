@@ -1,4 +1,4 @@
-from core.elements import Widget, TextLabel, Icon, Fill
+from core.elements import Widget, TextLabel, Img
 from shared.styles import Colors, Fonts
 from core.data_sources import Local
 
@@ -19,12 +19,9 @@ class Weather(Widget):
             }
         }
         self.hourly_data = {}
-        self.bg = Fill.image("./shared/images/weather/clear-day.png")
-        super().__init__(
-            xy=(1208, 24),
-            size=(688, 1112),
-            bg_url=self.bg_url
-            )
+        self.time_cond = ""
+        super().__init__(xy=(1208, 24), size=(688, 1112))
+        self.bg = Img(self._weather_image())
         self.temp = TextLabel(
             xy=(90, 90),
             font=Fonts.WEATHER_TODAY,
@@ -35,16 +32,18 @@ class Weather(Widget):
             font=Fonts.LABEL_SMALL,
             color=Colors.SECONDARY
         )
-        self.icon = Icon(xy=(470, 100), url="./shared/icons/weather/04d.png")
+        self.cond_icon = Img(self._current_icon(), xy=(470, 100))
         self.hourly = Widget(
             size=(588, 640),
             xy=(50, 400),
-            fill=(0, 0, 0, 80)
+            fill=(0, 0, 0, 80),
+            radius=48
         )
         self.children = [
+            self.bg,
             self.hourly,
             self.temp,
-            self.icon,
+            self.cond_icon,
             self.contitions
         ]
 
@@ -77,17 +76,10 @@ class Weather(Widget):
         # self.current_data = await WeatherData.fetch()
         # self.hourly_data = await WeatherData.fetch(False)
 
-        new_url = self._weather_image()
-        bg_dirty = False
-        if new_url == self.bg_url:
-            pass
-        else:
-            self.bg_url = new_url
-            self.bg = Fill.image(self.bg_url)
-            bg_dirty = True
-        icon_dirty = self.icon.update(self._current_icon())
-        temp_dirty = self.temp.update(self._temperature())
-        cond_dirty = self.contitions.update(self._feels_like())
+        bg_dirty = self.bg.set_value(self._weather_image())
+        icon_dirty = self.cond_icon.set_value(self._current_icon())
+        temp_dirty = self.temp.set_value(self._temperature())
+        cond_dirty = self.contitions.set_value(self._feels_like())
 
         if any((bg_dirty, icon_dirty, temp_dirty, cond_dirty)):
             await self.render()
