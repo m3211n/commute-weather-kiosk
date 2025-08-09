@@ -94,7 +94,6 @@ class TextLabel(Widget):
         Changes the text of the label if new value is different from the
         current one. Returns True if text was updated and False if it wasn't.
         """
-        logging.debug("Received text: %s", text)
         if not text == self.text:
             self.text = text
             return True
