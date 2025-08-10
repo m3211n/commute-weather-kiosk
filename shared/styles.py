@@ -34,5 +34,5 @@ class Colors:
     TITLE = (255, 255, 255, 88)
     DEPARTURE_TIMES = (216, 216, 0)
     DEFAULT = (255, 255, 255, 255)
-    SECONDARY = (255, 255, 255, 160)
+    SECONDARY = (255, 255, 255, 200)
     NONE = (0, 0, 0, 0)
