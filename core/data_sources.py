@@ -23,7 +23,7 @@ DEFAULT_TIMEOUT = 15  # seconds
 async def fetch_json(url, params=None, headers=None, timeout=DEFAULT_TIMEOUT):
     try:
         async with aiohttp.ClientSession() as session:
-            with async_timeout.timeout(timeout):
+            async with async_timeout.timeout(timeout):
                 async with session.get(
                     url, params=params, headers=headers
                 ) as resp:
@@ -34,19 +34,11 @@ async def fetch_json(url, params=None, headers=None, timeout=DEFAULT_TIMEOUT):
         return None
 
 
-class Tools:
-    import time as t
-
-    @staticmethod
-    def time():
-        return Tools.t.time()
-
-
 class Local:
     from subprocess import check_output
 
     @staticmethod
-    def time(format) -> str:
+    def time_f(format) -> str:
         return datetime.now().strftime(format)
 
     @staticmethod
@@ -55,7 +47,7 @@ class Local:
 
     @staticmethod
     def daytime() -> str:
-        h = datetime.now().hour
+        h = Local.hours()
         if h in range(5, 11):
             return "morning"
         elif h in range(11, 17):
@@ -67,12 +59,9 @@ class Local:
 
     @staticmethod
     def day_or_night() -> str:
-        h = datetime.now().hour
-        if 6 <= h < 18:
-            daytime_str = "day"
-        else:
-            daytime_str = "night"
-        return daytime_str
+        if Local.hours() in range(6, 18):
+            return "day"
+        return "night"
 
     @staticmethod
     def hostname(flags="") -> str:
@@ -113,9 +102,11 @@ class Commute:
     def get_trains():
         pass
 
+# Weather data
 
-class WeatherData:
-    API = {
+
+async def fetch_weather(segment="current"):
+    WEATHER_API = {
         "current": {
             "url": "https://api.openweathermap.org/data/2.5/weather",
             "params": {
@@ -136,13 +127,9 @@ class WeatherData:
             }
         }
     }
-
-    @staticmethod
-    async def fetch(current=True):
-        segment = "current" if current else "hourly"
-        API_REF = WeatherData.API[segment]
-        data = await fetch_json(
-            url=API_REF["url"],
-            params=API_REF["params"]
-        )
-        return data
+    API_REF = WEATHER_API[segment]
+    data = await fetch_json(
+        url=API_REF["url"],
+        params=API_REF["params"]
+    )
+    return data

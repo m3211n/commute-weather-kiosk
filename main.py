@@ -2,21 +2,18 @@ import logging
 import asyncio
 import argparse
 
-from widgets import weather, system, departures
 from core.screen import Screen
+from dashboard import Dashboard
 
 
 async def main(using_fb=True):
     logging.basicConfig(level=logging.INFO)
 
+    dashboard = Dashboard()
+    asyncio.create_task(dashboard.run_forever())
+
     with Screen(using_fb) as s:
-        s.widgets = [
-            system.Clock(),
-            system.Info(),
-            weather.Weather(),
-            departures.Trains(),
-            departures.Busses()
-        ]
+        s.content = dashboard.widgets
         await s.refresh(only_dirty=False)
         while True:
             # on = time.time()

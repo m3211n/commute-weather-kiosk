@@ -20,6 +20,7 @@ class Fonts:
     LABEL_LARGE = get_font(FONT_PATHS["regular"], 63)
     WEATHER_TODAY = get_font(FONT_PATHS["regular"], 211)
     CLOCK = get_font(FONT_PATHS["bold"], 211)
+    DEPARTURES = get_font(FONT_PATHS["bold"], 40)
     STATUS = get_font(FONT_PATHS["mono"], 20)
 
     @staticmethod
@@ -32,7 +33,7 @@ class Colors:
     """Color palette for the UI."""
     PANEL_BG = (16, 16, 16, 255)
     TITLE = (255, 255, 255, 88)
-    DEPARTURE_TIMES = (216, 216, 0)
+    DEPARTURES = (216, 216, 0, 255)
     DEFAULT = (255, 255, 255, 255)
     SECONDARY = (255, 255, 255, 200)
     NONE = (0, 0, 0, 0)

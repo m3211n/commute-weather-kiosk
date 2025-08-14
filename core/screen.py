@@ -1,9 +1,9 @@
 import logging
 import time
 
-from typing import List
+from typing import Dict
 from core.render import convert, clear, clear_bytes, Image
-from core.elements import Widget
+from core.ui import Widget
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1200
@@ -20,7 +20,7 @@ class Screen:
         self.output = None
         self.size = (SCREEN_WIDTH, SCREEN_HEIGHT)
         self._using_fb = using_fb
-        self.widgets: List[Widget] = []
+        self.content: Dict[str, Widget] = {}
         self._bgcolor = BG_COLOR
 
     def __enter__(self):
@@ -44,7 +44,7 @@ class Screen:
     async def _decode_and_write(self, widget: Widget):
         x, y, w, h = (*widget.xy, *widget.size)
         elapsed = time.perf_counter()
-        buf = await convert(widget.canvas)
+        buf = await convert(widget.image)
         fb_offset = (y * SCREEN_WIDTH + x) * BYTES_PER_PIXEL
         for row in range(h):
             offset = fb_offset + row * SCREEN_WIDTH * BYTES_PER_PIXEL
@@ -58,17 +58,18 @@ class Screen:
         """Render and output all layers"""
         elapsed = time.perf_counter()
         dirty = False
-        for widget in self.widgets:
+        for widget in self.content.values():
             widget_is_dirty = await widget.update()
             if (only_dirty and widget_is_dirty) or (not only_dirty):
                 dirty = True
                 if self._using_fb:
                     await self._decode_and_write(widget)
                 else:
+                    print(widget.xy)
                     self.output.paste(
-                        widget.canvas,
-                        widget.xy,
-                        mask=widget.canvas.split()[3]
+                        im=widget.image,
+                        box=tuple(widget.xy),
+                        mask=widget.image.split()[3]
                     )
                 logging.info(
                     "Widget <%s> was updated",

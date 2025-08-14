@@ -62,6 +62,16 @@ class Canvas:
         mask = img.split()[3] if self._mode == "RGBA" else None
         self._img.paste(img, xy, mask=mask)
 
+    def copy(self) -> "Canvas":
+        copy = Canvas(self._img.size, self._mode)
+        copy._img = self._img.copy()
+        return copy
+
+    def load(self, url, xy=(0, 0)) -> "Canvas":
+        img = Image.open(url)
+        self._img.paste(img, xy)
+        return self
+
     @property
     def draw(self):
         return ImageDraw.Draw(self._img)

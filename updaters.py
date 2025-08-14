@@ -1,0 +1,82 @@
+from core.data_sources import Local, fetch_weather
+
+
+# Run every 1 sec
+def time_date() -> dict:
+    return {
+        "clock_image": f"./shared/images/clock/{Local.daytime()}.png",
+        "time": Local.time_f("%H:%M"),
+        "date_0": Local.time_f("%A"),
+        "date_1": Local.time_f("%B %d"),
+        "date_2": Local.time_f("%Y")
+    }
+
+
+# Run every 1 sec
+def sys_info() -> dict:
+    host_values = [
+        f"WI-FI SSID: {Local.ssid()}",
+        f"IPv4: {Local.hostname('-I')}",
+        Local.hostname()
+    ]
+    sys_values = [
+        f"Available RAM: {Local.ram()} MB",
+        f"CPU Temp: {Local.cpu()[0]:.1f}°C",
+        f"CPU Load: {round(Local.cpu()[1] * 100, 1)}%"
+    ]
+    return {
+        "host_info": " | ".join(host_values),
+        "sys_info": " | ".join(sys_values)
+    }
+
+
+# Run every 15 min
+async def weather() -> dict:
+    async def _weather_image(j):
+        clouds = j["clouds"]["all"]
+        if clouds in range(0, 33):
+            c = "clear"
+        elif clouds in range(33, 66):
+            c = "cloudy"
+        else:
+            c = "rainy"
+        d = Local.day_or_night()
+        # icon = weather["icon"]
+        return f"./shared/images/weather/{c}-{d}.png"
+
+    async def _temperature(j):
+        temp = round(j["main"]["temp"])
+        return f"{temp}°"
+
+    async def _current_icon(j):
+        icon = j["weather"][0]["icon"]
+        return f"./shared/icons/weather/{icon}.png"
+
+    async def _feels_like(j):
+        temp = round(j["main"]["feels_like"])
+        return f"Känner som {temp}°C"
+
+    async def _hourly(j):
+        return ("18:00", "Hello there!")
+
+    data = await fetch_weather()
+    hourly_data = await fetch_weather("hourly")
+    hourly = await _hourly(hourly_data)
+
+    return {
+        "weather_image": await _weather_image(data),
+        "hours": hourly[0],
+        "values": hourly[1],
+        "temp": await _temperature(data),
+        "icon": await _current_icon(data),
+        "feels_like": await _feels_like(data)
+    }
+
+
+# Run every 1 min
+async def trains() -> dict:
+    return {}
+
+
+async def buses() -> dict:
+    return {}
