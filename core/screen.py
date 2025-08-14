@@ -71,10 +71,7 @@ class Screen:
                         box=tuple(widget.xy),
                         mask=widget.image.split()[3]
                     )
-                logging.info(
-                    "Widget <%s> was updated",
-                    widget.__class__.__name__
-                    )
+                logging.info("<%s> updated", widget._name)
 
         if dirty and not self._using_fb:
             self.output.save("__preview/output.png", format="PNG")

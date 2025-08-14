@@ -54,7 +54,7 @@ async def weather() -> dict:
 
     async def _feels_like(j):
         temp = round(j["main"]["feels_like"])
-        return f"Känner som {temp}°C"
+        return f"Känns som {temp}°C"
 
     async def _hourly(j):
         return ("18:00", "Hello there!")

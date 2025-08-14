@@ -12,14 +12,14 @@ class Dashboard:
         self.widgets = {
             "info": Widget(
                 xy=(0, 1136), size=(1920, 64), fill=(0, 0, 0, 255),
-                children={
+                content={
                     "host_info":    labels.status(16, 32),
                     "sys_info":     labels.status(1888, 32, "rm")
                 }
             ),
             "clock": Widget(
                 xy=(24, 24), size=(1160, 328),
-                children={
+                content={
                     "clock_image":  Img(),
                     "time":         labels.clock(90, 90),
                     "date_0":       labels.small(1070, 90),
@@ -29,7 +29,7 @@ class Dashboard:
             ),
             "weather": Widget(
                 xy=(1208, 24), size=(688, 1112),
-                children={
+                content={
                     "weather_image": Img(),
                     "temp":         labels.temp_now(90, 90),
                     "icon":         Img(470, 100),
@@ -43,7 +43,7 @@ class Dashboard:
             "trains": Widget(
                 xy=(24, 376), size=(568, 468), fill=Colors.PANEL_BG,
                 radius=24,
-                children={
+                content={
                     "title":        labels.title(40, 40),
                     "direction":    labels.large(40, 84),
                     "destinations": labels.destination(40, 244),
@@ -53,7 +53,7 @@ class Dashboard:
             "buses": Widget(
                 xy=(616, 376), size=(568, 468), fill=Colors.PANEL_BG,
                 radius=24,
-                children={
+                content={
                     "title":        labels.title(40, 40),
                     "direction":    labels.large(40, 84),
                     "destinations": labels.destination(40, 244),
@@ -61,39 +61,24 @@ class Dashboard:
                 }
             )
         }
-        self.updaters = {
-            "info": updaters.sys_info,
-            "clock": updaters.time_date,
-            "weather": updaters.weather,
-            "trains": updaters.trains,
-            "buses": updaters.buses
-        }
-        self.intervals = {
-            "info": 5,
-            "clock": 1,
-            "weather": 900,
-            "trains": 60,
-            "buses": 60
-        }
+        self.tasks = [
+            self.get_loop("info", updaters.sys_info, 5),
+            self.get_loop("clock", updaters.time_date, 1),
+            self.get_loop("weather", updaters.weather, 900),
+            self.get_loop("trains", updaters.trains, 60),
+            self.get_loop("buses", updaters.buses, 60)
+        ]
 
-    def get_loop(self, key: str, interval_s: int):
+    def get_loop(self, key: str, upd, int_s: int):
         widget = self.widgets[key]
         widget._name = key
-        updater = self.updaters[key]
 
         async def loop():
             while True:
-                if iscoro(updater):
-                    widget.state = await updater()
-                else:
-                    widget.state = updater()
-                await asyncio.sleep(interval_s)
+                widget.state = await upd() if iscoro(upd) else upd()
+                await asyncio.sleep(int_s)
 
         return loop()
 
     async def run_forever(self):
-        tasks = [
-            self.get_loop(key, self.intervals[key])
-            for key in self.widgets
-        ]
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*self.tasks)

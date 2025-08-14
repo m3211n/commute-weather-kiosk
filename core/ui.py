@@ -1,6 +1,6 @@
 from core.render import Canvas
 from shared.styles import Fonts, Colors
-from typing import Dict, Union
+from typing import Dict
 
 DEFAULT_CONTAINER = (100, 100)
 DEFAULT_SCREEN_SIZE = (1920, 1200)
@@ -30,14 +30,14 @@ class Content:
 
 
 class Container:
-    def __init__(self, xy, size, fill, radius, children={}):
+    def __init__(self, xy, size, fill, radius, content={}):
         self.xy = xy
         self.fill = fill
         self.radius = radius
-        self.children: Dict[str, Union[Content, Container]] = children
+        self.content: Dict[str, Content] = content
         self.size = size
         self._canvas: Canvas = Canvas(size, MODE)
-        for k, v in self.children.items():
+        for k, v in self.content.items():
             if not isinstance(v, Content):
                 raise TypeError(
                     "Unexpected type <%s> for child %s",
@@ -47,7 +47,7 @@ class Container:
     def _render(self):
         """Widget renders itself if it is changed"""
         self._canvas.fill(self.fill, self.radius)
-        for child in self.children.values():
+        for child in self.content.values():
             self._canvas.paste(child._canvas(), child.xy)
 
     @property
@@ -97,16 +97,16 @@ class Rect(Content):
 
 
 class Widget(Container):
-    def __init__(self, children={},
+    def __init__(self, content={},
                  size=DEFAULT_CONTAINER, xy=(0, 0),
                  fill=(0, 0, 0, 0), radius=0):
         """Initializes widget. If image is provided, then background color
         is ignored."""
         super().__init__(
-            children=children,
+            content=content,
             xy=xy, size=size, fill=fill, radius=radius)
         self._state = {
-            f"{key}": "" for key in self.children.keys()
+            f"{key}": "" for key in self.content.keys()
         }
         self._name = ""
         self._dirty = False
@@ -121,11 +121,11 @@ class Widget(Container):
             if not (k in self._state.keys()):
                 raise ValueError(
                     f"Widget <{self._name}> got unknown key <{k}>",
-                    )
+                )
             if not isinstance(v, str):
                 raise TypeError(
-                    "Expected <str>. Got <%s>",
-                    type(v).__name__)
+                    f"Expected <str>. Got <{type(v).__name__}>",
+                )
             if self._state[k] != new_state[k]:
                 self._state[k] = v
                 self._dirty = True
@@ -134,7 +134,7 @@ class Widget(Container):
         """Polls all children. If any child has outdated content, it renders
         itself with new content."""
         if self._dirty:
-            for key, item in self.children.items():
+            for key, item in self.content.items():
                 if isinstance(item, Rect):
                     continue
                 item.update_value(self._state[key])
