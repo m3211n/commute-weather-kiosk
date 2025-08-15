@@ -55,15 +55,14 @@ class Container:
 
 
 class Text(Content):
-    def __init__(self, xy=(0, 0),
-                 font=Fonts.VALUE, color=Colors.DEFAULT, anchor="lt"):
+    def __init__(self, xy, font, color, anchor=None):
         super().__init__()
         self._args = {
             "xy": xy,
             "font": font,
             "fill": color
         }
-        if anchor != "lt":
+        if anchor:
             self._args["anchor"] = anchor
 
     def _render(self):
