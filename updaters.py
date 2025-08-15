@@ -63,7 +63,7 @@ async def weather() -> dict:
         return f"Känns som {temp}°C"
 
     async def _hourly(j):
-        return ("18:00", "Hello there!")
+        return ("18:00\n21:00\n00:00", "21°C, Rain\n21°C, Rain\n21°C, Rain")
 
     async def _mim_max(j):
         min = round(j["main"]["temp_min"])
