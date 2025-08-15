@@ -77,7 +77,7 @@ async def weather() -> dict:
         min = round(j["main"]["temp_min"])
         max = round(j["main"]["temp_max"])
         wind = j["wind"]["speed"]
-        return f"↓ {min}°C ⋅ ↑ {max}°C ⋅ {wind} m/s"
+        return f"↓ {min}°C · ↑ {max}°C · {wind} m/s"
 
     data = await fetch_weather()
     hourly_data = await fetch_weather("hourly")
