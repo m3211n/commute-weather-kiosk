@@ -39,9 +39,9 @@ class Dashboard:
                         598, 328, "rt", accent=True),
                     "icon":         Img(470, 74),
                     "hours":        labels.small_block(
-                        90, 440, spacing=24),
+                        90, 472, spacing=24),
                     "values":       labels.small_block(
-                        270, 440, accent=True, spacing=24)
+                        270, 472, accent=True, spacing=24)
                 }
             ),
             "trains": Widget(
