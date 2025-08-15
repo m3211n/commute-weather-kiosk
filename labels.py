@@ -15,6 +15,10 @@ def small(x, y, anchor="rt"):
     return Text((x, y), Fonts.LABEL_SMALL, Colors.SECONDARY, anchor)
 
 
+def x_small(x, y, anchor="rt"):
+    return Text((x, y), Fonts.LABEL_XSMALL, Colors.SECONDARY, anchor)
+
+
 def title(x, y):
     return Text((x, y), Fonts.LABEL_SMALL, Colors.TITLE, "lt")
 
