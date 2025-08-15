@@ -5,10 +5,10 @@ from core.data_sources import Local, fetch_weather
 def time_date() -> dict:
     return {
         "clock_image": f"./shared/images/clock/{Local.daytime()}.png",
-        "time": Local.time_f("%H:%M"),
-        "date_0": Local.time_f("%A"),
-        "date_1": Local.time_f("%B %d"),
-        "date_2": Local.time_f("%Y")
+        "time": Local.time("%H:%M"),
+        "date_0": Local.time("%A"),
+        "date_1": Local.time("%B %d"),
+        "date_2": Local.time("%Y")
     }
 
 
@@ -32,6 +32,12 @@ def sys_info() -> dict:
 
 # Run every 15 min
 async def weather() -> dict:
+    async def _day_or_night(j):
+        now = Local.time()
+        if now in range(j["sys"]["sunrise"], j["sys"]["sunset"]):
+            return "day"
+        return "night"
+
     async def _weather_image(j):
         clouds = j["clouds"]["all"]
         if clouds in range(0, 33):
@@ -40,7 +46,7 @@ async def weather() -> dict:
             c = "cloudy"
         else:
             c = "rainy"
-        d = Local.day_or_night()
+        d = _day_or_night(j)
         # icon = weather["icon"]
         return f"./shared/images/weather/{c}-{d}.png"
 

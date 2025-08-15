@@ -38,7 +38,9 @@ class Local:
     from subprocess import check_output
 
     @staticmethod
-    def time_f(format) -> str:
+    def time(format=None) -> str:
+        if not format:
+            return int(datetime.now().timestamp())
         return datetime.now().strftime(format)
 
     @staticmethod
