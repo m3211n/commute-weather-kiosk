@@ -35,6 +35,7 @@ class Dashboard:
                     "icon":         Img(470, 74),
                     "feels_like":   labels.small(90, 210, "lt"),
                     "min_max":      labels.x_small(90, 270, "lt"),
+                    "wind":         labels.x_small(598, 270),
                     "fill":         Rect(xy=(50, 400, 638, 1040),
                                          fill=(0, 0, 0, 63), radius=48),
                     "hours":        labels.small(90, 440, "lt"),

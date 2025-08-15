@@ -70,6 +70,10 @@ async def weather() -> dict:
         max = round(j["main"]["temp_max"])
         return f"↓ {min}°C   ↑ {max}°C"
 
+    async def _wind(j):
+        wind = j["wind"]["speed"]
+        return f"{wind} m/s"
+
     data = await fetch_weather()
     hourly_data = await fetch_weather("hourly")
     hourly = await _hourly(hourly_data)
@@ -81,7 +85,8 @@ async def weather() -> dict:
         "temp": await _temperature(data),
         "icon": await _current_icon(data),
         "feels_like": await _feels_like(data),
-        "min_max": await _mim_max(data)
+        "min_max": await _mim_max(data),
+        "wind": await _wind(data)
     }
 
 
