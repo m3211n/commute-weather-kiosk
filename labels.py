@@ -16,6 +16,11 @@ def small(x, y, anchor="rt", accent=False):
     return Text((x, y), Fonts.LABEL_SMALL, color, anchor)
 
 
+def small_block(x, y, accent=False):
+    color = Colors.DEFAULT if accent else Colors.SECONDARY
+    return Text((x, y), Fonts.LABEL_SMALL, color)
+
+
 def x_small(x, y, anchor="rt", accent=False):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text((x, y), Fonts.LABEL_XSMALL, color, anchor)
