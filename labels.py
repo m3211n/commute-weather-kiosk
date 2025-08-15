@@ -28,13 +28,12 @@ def small(x, y, anchor="rt", accent=False):
         anchor=anchor)
 
 
-def small_block(x, y, accent=False, anchor="lt", **kwargs):
+def small_block(x, y, accent=False, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
         font=Fonts.LABEL_SMALL,
         color=color,
-        anchor=anchor,
         **kwargs)
 
 
