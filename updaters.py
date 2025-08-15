@@ -66,7 +66,7 @@ async def weather() -> dict:
         weather_items = []
         for entry in j["list"]:
             timestamps.append(Local.time(epoch=entry["dt"], format="%H:%M"))
-            temp = entry["main"]["temp"]
+            temp = round(entry["main"]["temp"])
             cond = entry["weather"][0]["main"]
             weather_items.append(
                 f'{temp}°C, {cond}'
