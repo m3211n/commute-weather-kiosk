@@ -4,11 +4,11 @@ from shared.styles import Fonts, Colors
 
 
 def clock(x, y):
-    return Text((x, y), Fonts.CLOCK)
+    return Text((x, y), Fonts.CLOCK, Colors.DEFAULT)
 
 
 def temp_now(x, y):
-    return Text((x, y), Fonts.WEATHER_TODAY)
+    return Text((x, y), Fonts.WEATHER_TODAY, Colors.DEFAULT)
 
 
 def small(x, y, anchor="rt", accent=False):
