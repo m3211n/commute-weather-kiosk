@@ -32,16 +32,16 @@ class Dashboard:
                 content={
                     "weather_image": Img(),
                     "temp":         labels.temp_now(90, 90),
-                    "feels_like":   labels.small(90, 210, "lt"),
+                    "feels_like":   labels.small(90, 218, "lt"),
                     "min_max":      labels.x_small(
-                        90, 328, "lt", accent=True),
+                        90, 270, "lt", accent=True),
                     "wind":         labels.x_small(
-                        598, 328, "rt", accent=True),
+                        598, 270, "rt", accent=True),
                     "icon":         Img(470, 74),
                     "hours":        labels.small_block(
-                        90, 472, spacing=24),
+                        90, 448, spacing=24),
                     "values":       labels.small_block(
-                        270, 472, accent=True, spacing=24)
+                        270, 448, accent=True, spacing=24)
                 }
             ),
             "trains": Widget(
