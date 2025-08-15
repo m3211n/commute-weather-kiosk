@@ -105,7 +105,7 @@ class Commute:
 async def fetch_weather(segment="current"):
     params = {
         "units": "metric",
-        "lang": "se",
+        "lang": "sv",
         "cnt": 8,
         "lat": 59.421491,
         "lon": 17.819238,
