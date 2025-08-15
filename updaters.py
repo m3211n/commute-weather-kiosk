@@ -46,7 +46,7 @@ async def weather() -> dict:
             c = "cloudy"
         else:
             c = "rainy"
-        d = _day_or_night(j)
+        d = await _day_or_night(j)
         # icon = weather["icon"]
         return f"./shared/images/weather/{c}-{d}.png"
 
