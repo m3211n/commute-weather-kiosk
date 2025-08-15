@@ -73,9 +73,6 @@ class Img(Content):
         self._canvas.clear().load(self._value, self._position)
 
 
-class List(Content):
-
-
 class Rect(Content):
     def __init__(self, xy=(0, 0, 0, 0),
                  fill=Colors.PANEL_BG, radius=DEFAULT_RADIUS):
