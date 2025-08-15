@@ -22,8 +22,8 @@ class Dashboard:
                 content={
                     "clock_image":  Img(),
                     "time":         labels.clock(90, 90),
-                    "date_0":       labels.small(730, 90, accent=True),
-                    "date_1":       labels.small(730, 134)
+                    "date_0":       labels.small_b(730, 90, "lt", accent=True),
+                    "date_1":       labels.small(730, 134, "lt", accent=True)
                 }
             ),
             "weather": Widget(
