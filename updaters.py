@@ -72,7 +72,9 @@ async def weather() -> dict:
 
     async def _wind(j):
         wind = j["wind"]["speed"]
-        return f"{wind} m/s"
+        if wind > 0:
+            return f"{wind} m/s"
+        return ""
 
     data = await fetch_weather()
     hourly_data = await fetch_weather("hourly")
