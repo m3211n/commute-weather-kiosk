@@ -5,10 +5,9 @@ from core.data_sources import Local, fetch_weather
 def time_date() -> dict:
     return {
         "clock_image": f"./shared/images/clock/{Local.daytime()}.png",
-        "time": Local.time("%H:%M"),
-        "date_0": Local.time("%A"),
-        "date_1": Local.time("%B %d"),
-        "date_2": Local.time("%Y")
+        "time": Local.time(format="%H:%M"),
+        "date_0": Local.time(format="%A"),
+        "date_1": Local.time(format="%B %d")
     }
 
 
@@ -63,7 +62,16 @@ async def weather() -> dict:
         return f"Känns som {temp}°C"
 
     async def _hourly(j):
-        return ("18:00\n21:00\n00:00", "21°C, Rain\n21°C, Rain\n21°C, Rain")
+        timestamps = []
+        weather_items = []
+        for entry in j["list"]:
+            timestamps.append(Local.time(epoch=entry["dt"], format="%H:%M"))
+            temp = entry["main"]["temp"]
+            cond = entry["weather"][0]["main"]
+            weather_items.append(
+                f'{temp}°C, {cond}'
+            )
+        return ("\n".join(timestamps), "\n".join(weather_items))
 
     async def _mim_max(j):
         min = round(j["main"]["temp_min"])

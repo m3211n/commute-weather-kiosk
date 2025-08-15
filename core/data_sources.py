@@ -1,5 +1,7 @@
-import os
+from subprocess import check_output
 from datetime import datetime
+
+import os
 from locale import setlocale, LC_ALL
 
 import logging
@@ -35,13 +37,12 @@ async def fetch_json(url, params=None, headers=None, timeout=DEFAULT_TIMEOUT):
 
 
 class Local:
-    from subprocess import check_output
 
     @staticmethod
-    def time(format=None) -> str:
+    def time(epoch=int(datetime.now().timestamp()), format=None) -> str:
         if not format:
-            return int(datetime.now().timestamp())
-        return datetime.now().strftime(format)
+            return epoch
+        return datetime.fromtimestamp(epoch).strftime(format)
 
     @staticmethod
     def hours() -> int:
@@ -60,22 +61,16 @@ class Local:
             return "night"
 
     @staticmethod
-    def day_or_night() -> str:
-        if Local.hours() in range(6, 18):
-            return "day"
-        return "night"
-
-    @staticmethod
     def hostname(flags="") -> str:
         if len(flags) > 0:
             flags = " " + flags
-        return Local.check_output(
+        return check_output(
             f"hostname{flags}", shell=True, encoding="utf-8"
         ).split()[0]
 
     @staticmethod
     def ssid() -> str:
-        return Local.check_output(
+        return check_output(
             "iwgetid -r", shell=True, encoding="utf-8"
         ).strip()
 
@@ -108,30 +103,20 @@ class Commute:
 
 
 async def fetch_weather(segment="current"):
-    WEATHER_API = {
-        "current": {
-            "url": "https://api.openweathermap.org/data/2.5/weather",
-            "params": {
-                "units": "metric",
-                "lat": 59.421491,
-                "lon": 17.819238,
-                "appid": OWM_API_KEY
-            }
-        },
-        "hourly": {
-            "url": "https://api.openweathermap.org/data/2.5/forecast",
-            "params": {
-                "cnt": 4,
-                "units": "metric",
-                "lat": 59.421491,
-                "lon": 17.819238,
-                "appid": OWM_API_KEY
-            }
-        }
+    params = {
+        "units": "metric",
+        "lang": "se",
+        "cnt": 8,
+        "lat": 59.421491,
+        "lon": 17.819238,
+        "appid": OWM_API_KEY
     }
-    API_REF = WEATHER_API[segment]
+    url = {
+        "current": "https://api.openweathermap.org/data/2.5/weather",
+        "hourly":  "https://api.openweathermap.org/data/2.5/forecast"
+        }
     data = await fetch_json(
-        url=API_REF["url"],
-        params=API_REF["params"]
+        url=url[segment],
+        params=params
     )
     return data
