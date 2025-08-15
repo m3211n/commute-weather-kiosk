@@ -35,7 +35,7 @@ class Dashboard:
                     "icon":         Img(470, 100),
                     "feels_like":   labels.small(90, 278, "lt"),
                     "fill":         Rect(xy=(50, 400, 638, 1040),
-                                         fill=(0, 0, 0, 80), radius=48),
+                                         fill=(0, 0, 0, 63), radius=48),
                     "hours":        labels.small(90, 440, "lt"),
                     "values":       labels.small(228, 440, "lt")
                 }
