@@ -36,8 +36,9 @@ class Dashboard:
                     "min_max":      labels.x_small(90, 270, "lt"),
                     "wind":         labels.x_small(598, 270),
                     "icon":         Img(470, 74),
-                    "hours":        labels.small_block(90, 462),
-                    "values":       labels.small_block(228, 462, accent=True)
+                    "hours":        labels.small_block(90, 462, spacing=36),
+                    "values":       labels.small_block(
+                        228, 462, accent=True, spacing=36)
                 }
             ),
             "trains": Widget(
