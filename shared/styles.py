@@ -36,5 +36,5 @@ class Colors:
     TITLE = (255, 255, 255, 88)
     DEPARTURES = (216, 216, 0, 255)
     DEFAULT = (255, 255, 255, 255)
-    SECONDARY = (255, 255, 255, 200)
+    SECONDARY = (255, 255, 255, 150)
     NONE = (0, 0, 0, 0)

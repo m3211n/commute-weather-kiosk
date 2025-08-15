@@ -3,7 +3,7 @@ import updaters
 import asyncio
 
 from inspect import iscoroutinefunction as iscoro
-from core.ui import Widget, Img, Rect
+from core.ui import Widget, Img
 from shared.styles import Colors
 
 
@@ -37,7 +37,7 @@ class Dashboard:
                     "wind":         labels.x_small(598, 270),
                     "icon":         Img(470, 74),
                     "hours":        labels.small(90, 462, "lt"),
-                    "values":       labels.small(228, 462, "lt")
+                    "values":       labels.small(228, 462, "lt", accent=True)
                 }
             ),
             "trains": Widget(
