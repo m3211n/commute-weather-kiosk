@@ -55,15 +55,9 @@ class Container:
 
 
 class Text(Content):
-    def __init__(self, xy, font, color, anchor=None):
+    def __init__(self, **kwargs):
         super().__init__()
-        self._args = {
-            "xy": xy,
-            "font": font,
-            "fill": color
-        }
-        if anchor:
-            self._args["anchor"] = anchor
+        self._args = kwargs
 
     def _render(self):
         self._args["text"] = self._value
