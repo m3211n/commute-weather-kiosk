@@ -68,7 +68,7 @@ async def weather() -> dict:
     async def _mim_max(j):
         min = round(j["main"]["temp_min"])
         max = round(j["main"]["temp_max"])
-        return f"↓{min}°C ↑{max}°C"
+        return f"↓ {min}°C   ↑ {max}°C"
 
     data = await fetch_weather()
     hourly_data = await fetch_weather("hourly")
