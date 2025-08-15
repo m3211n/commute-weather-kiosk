@@ -5,7 +5,6 @@ from typing import Dict
 DEFAULT_CONTAINER = (100, 100)
 DEFAULT_SCREEN_SIZE = (1920, 1200)
 DEFAULT_RADIUS = 24
-MODE = "RGBA"
 
 
 class Content:
@@ -22,7 +21,7 @@ class Content:
         return False
 
     def clone_canvas(self, canvas: Canvas):
-        self._canvas = canvas.copy()
+        self._canvas = Canvas(canvas._img.size)
 
     def _render(self) -> Canvas:
         """Renders self at provided canvas (typically at parent's canvas)"""
@@ -36,7 +35,7 @@ class Container:
         self.radius = radius
         self.content: Dict[str, Content] = content
         self.size = size
-        self._canvas: Canvas = Canvas(size, MODE)
+        self._canvas: Canvas = Canvas(size)
         for k, v in self.content.items():
             if not isinstance(v, Content):
                 raise TypeError(
