@@ -61,9 +61,10 @@ class Text(Content):
         self._args = {
             "xy": xy,
             "font": font,
-            "fill": color,
-            "anchor": anchor
+            "fill": color
         }
+        if anchor != "lt":
+            self._args["anchor"] = anchor
 
     def _render(self):
         self._args["text"] = self._value
