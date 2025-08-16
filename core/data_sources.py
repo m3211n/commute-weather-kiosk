@@ -41,7 +41,7 @@ class Local:
     @staticmethod
     def time(epoch=0, format=None) -> str:
         if epoch == 0:
-            epoch = datetime.now()
+            epoch = int(datetime.now())
         if not format:
             return epoch
         return datetime.fromtimestamp(epoch).strftime(format)
