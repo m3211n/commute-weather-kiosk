@@ -64,21 +64,49 @@ async def weather() -> dict:
 
     async def _hourly(j):
         timestamps = []
-        weather_items = []
+        temps = []
+        icons = []
         for entry in j["list"]:
             timestamps.append(Local.time(epoch=entry["dt"], format="%H:%M"))
             temp = round(entry["main"]["temp"])
-            cond = entry["weather"][0]["main"]
-            weather_items.append(
-                f'{temp}°C, {cond}'
+            icon = entry["weather"][0]["icon"]
+            temps.append(
+                f'{temp}°C'
             )
-        return ("\n".join(timestamps), "\n".join(weather_items))
+            icons.append(
+                f"{_weather_icon_font(icon)}"
+            )
+        return ("\n".join(timestamps), "\n".join(temps), "\n".join(icons))
 
     async def _mim_max_wind(j):
         min = round(j["main"]["temp_min"])
         max = round(j["main"]["temp_max"])
         wind = j["wind"]["speed"]
         return f"↓ {min}°C · ↑ {max}°C · {wind} m/s"
+
+    def _weather_icon_font(icon):
+        icon_font = {
+            "01d": "\uf00d",
+            "01n": "\uf02e",
+            "02d": "\uf002",
+            "02n": "\uf086",
+            "03d": "\uf041",
+            "03n": "\uf041",
+            "04d": "\uf013",
+            "04n": "\uf013",
+            "09d": "\uf01a",
+            "09n": "\uf01a",
+            "10d": "\uf019",
+            "10n": "\uf019",
+            "11d": "\uf01d",
+            "11n": "\uf01d",
+            "13d": "\uf01b",
+            "13n": "\uf01b",
+            "50d": "\uf014",
+            "50n": "\uf014"
+
+        }
+        return icon_font[icon]
 
     data = await fetch_weather()
     hourly_data = await fetch_weather("hourly")
@@ -87,7 +115,8 @@ async def weather() -> dict:
     return {
         "weather_image": await _weather_image(data),
         "hours": hourly[0],
-        "values": hourly[1],
+        "temps": hourly[1],
+        "icons": hourly[2],
         "temp": await _temperature(data),
         "icon": await _current_icon(data),
         "feels_like": await _feels_like(data),

@@ -47,6 +47,16 @@ def x_small_block(x, y, accent=False, **kwargs):
         **kwargs)
 
 
+def x_small_block_icons(x, y, accent=False, **kwargs):
+    color = Colors.DEFAULT if accent else Colors.SECONDARY
+    return Text(
+        xy=(x, y),
+        font=Fonts.ICON_XSMALL,
+        fill=color,
+        features=["tnum"],
+        **kwargs)
+
+
 def x_small(x, y, anchor="rt", accent=False):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(

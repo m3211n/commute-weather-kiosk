@@ -37,8 +37,10 @@ class Dashboard:
                     "icon":         Img(470, 74),
                     "hours":        labels.x_small_block(
                         90, 448, spacing=24),
-                    "values":       labels.x_small_block(
-                        270, 448, accent=True, spacing=24)
+                    "icons":        labels.x_small_block_icons(
+                        270, 448, accent=True, spacing=25),
+                    "temps":        labels.x_small_block(
+                        336, 448, accent=True, spacing=24)
                 }
             ),
             "trains": Widget(

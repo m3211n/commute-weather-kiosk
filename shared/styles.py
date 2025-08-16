@@ -9,7 +9,8 @@ FONT_PATHS = {
     "black": "./shared/fonts/MuseoModerno-Black.ttf",
     "bold": "./shared/fonts/MuseoModerno-Bold.ttf",
     "regular": "./shared/fonts/MuseoModerno-Regular.ttf",
-    "mono": "./shared/fonts/RobotoMono-Regular.ttf"
+    "mono": "./shared/fonts/RobotoMono-Regular.ttf",
+    "icon": "./shared/fonts/weathericons-regular-webfont.ttf"
 }
 
 
@@ -18,6 +19,7 @@ class Fonts:
     VALUE = get_font(FONT_PATHS["regular"], 86)
     LABEL_BOLD = get_font(FONT_PATHS["bold"], 40)
     LABEL_SMALL = get_font(FONT_PATHS["regular"], 40)
+    ICON_XSMALL = get_font(FONT_PATHS["icon"], 32)
     LABEL_XSMALL = get_font(FONT_PATHS["regular"], 32)
     LABEL_LARGE = get_font(FONT_PATHS["regular"], 63)
     WEATHER_TODAY = get_font(FONT_PATHS["regular"], 137)
