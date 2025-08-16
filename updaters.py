@@ -69,7 +69,7 @@ async def weather() -> dict:
         temps = []
         icons = []
         for entry in j["list"]:
-            timestamps.append(Local.time(epoch=entry["dt"], format="%H:%M"))
+            timestamps.append(Local.f_epoch(epoch=entry["dt"], format="%H:%M"))
             temp = round(entry["main"]["temp"])
             icon = entry["weather"][0]["icon"]
             temps.append(
