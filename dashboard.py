@@ -21,10 +21,10 @@ class Dashboard:
                 xy=(24, 24), size=(1160, 328),
                 content={
                     "clock_image":  Img(),
-                    "time":         labels.clock(140, 90),
-                    "date_0":       labels.small_b(730, 90, "lt", accent=True),
-                    "date_1":       labels.small(730, 134, "lt", accent=True),
-                    "week_pr":      WeekProgress(730, 218)
+                    "time":         labels.clock(90, 90),
+                    "date_0":       labels.small_b(760, 90, "lt", accent=True),
+                    "date_1":       labels.small(760, 134, "lt", accent=True),
+                    "week_pr":      WeekProgress(760, 218)
                 }
             ),
             "weather": Widget(
