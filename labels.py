@@ -37,11 +37,11 @@ def small_b(x, y, anchor="rt", accent=False):
         anchor=anchor)
 
 
-def small_block(x, y, accent=False, **kwargs):
+def x_small_block(x, y, accent=False, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.LABEL_SMALL,
+        font=Fonts.LABEL_XSMALL,
         fill=color,
         **kwargs)
 

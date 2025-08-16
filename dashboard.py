@@ -35,9 +35,9 @@ class Dashboard:
                     "feels_like":   labels.small(90, 218, "lt", accent=True),
                     "min_max_wind": labels.x_small(90, 270, "lt"),
                     "icon":         Img(470, 74),
-                    "hours":        labels.small_block(
+                    "hours":        labels.x_small_block(
                         90, 448, spacing=24),
-                    "values":       labels.small_block(
+                    "values":       labels.x_small_block(
                         270, 448, accent=True, spacing=24)
                 }
             ),
