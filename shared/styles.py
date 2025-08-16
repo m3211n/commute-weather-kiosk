@@ -21,7 +21,7 @@ class Fonts:
     LABEL_XSMALL = get_font(FONT_PATHS["regular"], 32)
     LABEL_LARGE = get_font(FONT_PATHS["regular"], 63)
     WEATHER_TODAY = get_font(FONT_PATHS["regular"], 137)
-    CLOCK = get_font(FONT_PATHS["bold"], 211)
+    CLOCK = get_font(FONT_PATHS["regular"], 212)
     DEPARTURES = get_font(FONT_PATHS["bold"], 40)
     STATUS = get_font(FONT_PATHS["mono"], 20)
 
