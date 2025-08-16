@@ -61,7 +61,7 @@ class Text(Content):
 
     def _render(self):
         self._args["text"] = self._value
-        self._canvas.clear().draw.text(**self._args, features=["tnum"])
+        self._canvas.clear().draw.text(**self._args)
 
 
 class Img(Content):

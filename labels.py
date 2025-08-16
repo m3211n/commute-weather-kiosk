@@ -43,6 +43,7 @@ def x_small_block(x, y, accent=False, **kwargs):
         xy=(x, y),
         font=Fonts.LABEL_XSMALL,
         fill=color,
+        features=["tnum"],
         **kwargs)
 
 
@@ -52,6 +53,7 @@ def x_small(x, y, anchor="rt", accent=False):
         xy=(x, y),
         font=Fonts.LABEL_XSMALL,
         fill=color,
+        features=["tnum"],
         anchor=anchor)
 
 
