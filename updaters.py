@@ -7,7 +7,8 @@ def time_date() -> dict:
         "clock_image": f"./shared/images/clock/{Local.daytime()}.png",
         "time": Local.time(format="%H:%M"),
         "date_0": Local.time(format="%A"),
-        "date_1": Local.time(format="%B %d")
+        "date_1": Local.time(format="%B %d"),
+        "week_pr": Local.time(format="%w")
     }
 
 

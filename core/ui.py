@@ -135,3 +135,26 @@ class Widget(Container):
             self._dirty = False
             return True
         return False
+
+
+class WeekProgress(Content):
+    def __init__(self, x=0, y=0):
+        super().__init__()
+        self.x = x
+        self.y = y
+        self._value = "0"
+
+    def _render(self):
+        numb = int(self._value)
+        self._canvas.clear()
+        for i in range(7):
+            if numb >= (i + 1):
+                fill = Colors.DEFAULT
+            else:
+                fill = (0, 0, 0, 0)
+            self._canvas.draw.circle(
+                xy=(self.x + 10 + i * 36, self.y + 10),
+                radius=10,
+                fill=fill,
+                outline=Colors.DEFAULT,
+                width=2)

@@ -3,7 +3,7 @@ import updaters
 import asyncio
 
 from inspect import iscoroutinefunction as iscoro
-from core.ui import Widget, Img
+from core.ui import Widget, Img, WeekProgress
 from shared.styles import Colors
 
 
@@ -22,8 +22,9 @@ class Dashboard:
                 content={
                     "clock_image":  Img(),
                     "time":         labels.clock(140, 90),
-                    "date_0":       labels.small_b(780, 90, "lt", accent=True),
-                    "date_1":       labels.small(780, 134, "lt", accent=True)
+                    "date_0":       labels.small_b(730, 90, "lt", accent=True),
+                    "date_1":       labels.small(730, 134, "lt", accent=True),
+                    "week_pr":      WeekProgress(730, 218)
                 }
             ),
             "weather": Widget(
