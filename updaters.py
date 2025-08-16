@@ -63,6 +63,9 @@ async def weather() -> dict:
         return f"Känns som {temp}°C"
 
     async def _hourly(j):
+
+        """ADD SUNSET AND SUNRISE. ADD WIND"""
+
         timestamps = []
         temps = []
         icons = []
