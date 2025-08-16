@@ -32,7 +32,7 @@ def sys_info() -> dict:
 # Run every 15 min
 async def weather() -> dict:
     async def _day_or_night(j):
-        now = Local.time()
+        now = Local.epoch()
         if now in range(j["sys"]["sunrise"], j["sys"]["sunset"]):
             return "day"
         return "night"

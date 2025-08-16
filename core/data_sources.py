@@ -39,12 +39,16 @@ async def fetch_json(url, params=None, headers=None, timeout=DEFAULT_TIMEOUT):
 class Local:
 
     @staticmethod
-    def time(epoch=0, format=None) -> str:
-        if epoch == 0:
-            epoch = int(datetime.now())
-        if not format:
-            return epoch
+    def f_time(format=None) -> str:
+        return datetime.now().strftime(format)
+
+    @staticmethod
+    def f_epoch(epoch, format=None) -> str:
         return datetime.fromtimestamp(epoch).strftime(format)
+
+    @staticmethod
+    def epoch() -> int:
+        return int(datetime.now())
 
     @staticmethod
     def hours() -> int:
