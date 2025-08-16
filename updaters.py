@@ -5,9 +5,9 @@ from core.data_sources import Local, fetch_weather
 def time_date() -> dict:
     return {
         "clock_image": f"./shared/images/clock/{Local.daytime()}.png",
-        "time": Local.time(format="%H:%M"),
-        "date_0": Local.time(format="%A"),
-        "date_1": Local.time(format="%B %d")
+        "time": Local.f_time(format="%H:%M"),
+        "date_0": Local.f_time(format="%A"),
+        "date_1": Local.f_time(format="%B %d")
     }
 
 
