@@ -64,6 +64,17 @@ class Text(Content):
         self._canvas.clear().draw.text(**self._args)
 
 
+class StaticText(Text):
+    def __init__(self, value="", **kwargs):
+        super().__init__(**kwargs)
+        self._value = value
+
+    def clone_canvas(self, canvas: Canvas):
+        """Renders to the cloned canvas immediately"""
+        self._canvas = Canvas(canvas._img.size)
+        self._render()
+
+
 class Img(Content):
     def __init__(self, x=0, y=0):
         super().__init__()
@@ -128,7 +139,7 @@ class Widget(Container):
         itself with new content."""
         if self._dirty:
             for key, item in self.content.items():
-                if isinstance(item, Rect):
+                if isinstance(item, StaticText):
                     continue
                 item.update_value(self._state[key])
             self._render()

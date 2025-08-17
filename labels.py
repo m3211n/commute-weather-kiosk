@@ -1,4 +1,4 @@
-from core.ui import Text
+from core.ui import Text, StaticText
 from shared.styles import Fonts, Colors
 # import logging
 
@@ -6,7 +6,7 @@ from shared.styles import Fonts, Colors
 def time(x, y, anchor="mt"):
     return Text(
         xy=(x, y),
-        font=Fonts.D1,
+        font=Fonts.font("bold", 216),
         fill=Colors.DEFAULT,
         anchor=anchor)
 
@@ -14,25 +14,35 @@ def time(x, y, anchor="mt"):
 def date(x, y, anchor="mt"):
     return Text(
         xy=(x, y),
-        font=Fonts.D4,
+        font=Fonts.font("bold", 40),
         fill=Colors.DEFAULT,
         anchor=anchor)
 
 
-def h1(x, y, anchor="lt", accent=False):
+def temp_now(x, y, anchor="lt", accent=False):
     fill = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.H1,
+        font=Fonts.font("regular", 200),
         fill=fill,
         anchor=anchor)
 
 
-def h2(x, y, anchor="rt", accent=False):
+def feels_like(x, y, anchor="rt", accent=False):
     fill = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.H2,
+        font=Fonts.font("regular", 40),
+        fill=fill,
+        anchor=anchor)
+
+
+def static_icon(x, y, value, anchor="lt", accent=True):
+    fill = Colors.DEFAULT if accent else Colors.SECONDARY
+    return StaticText(
+        value=value,
+        xy=(x, y),
+        font=Fonts.font("icon", 36),
         fill=fill,
         anchor=anchor)
 
@@ -51,7 +61,7 @@ def icons_block(x, y, accent=False, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.ICON_XSMALL,
+        font=Fonts.font("icon", 36),
         fill=color,
         **kwargs)
 

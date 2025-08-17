@@ -32,7 +32,7 @@ class Fonts:
     STATUS = get_font(FONT_PATHS["mono"], 20)
 
     @staticmethod
-    def custom(name: str, size: int):
+    def font(name: str, size: int):
         """Get a custom font by name and size."""
         return get_font(FONT_PATHS[name], size)
 

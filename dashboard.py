@@ -21,31 +21,40 @@ class Dashboard:
                 xy=(24, 24), size=(1160, 328),
                 content={
                     "clock_image":  Img(),
-                    "time":         labels.time(580, 94),
-                    "date":         labels.date(580, 42)
+                    "time":         labels.time(580, 64),
+                    "date":         labels.date(580, 236)
                 }
             ),
             "weather": Widget(
                 xy=(1208, 24), size=(688, 1112),
                 content={
                     "weather_image": Img(),
-                    "temp":         labels.h1(64, 64, accent=True),
-                    "feels_like":   labels.h2(64, 242, "lt", accent=True),
-                    "min_max_wind": labels.h4(64, 298, "lt", accent=True),
+                    "icon_sr":      labels.static_icon(
+                        64, 342, value="\uf051"),
+                    "sunrise":      labels.h3(
+                        128, 350, accent=True, anchor="lt"),
+                    "icon_ss":      labels.static_icon(
+                        286, 342, value="\uf052"),
+                    "sunset":      labels.h3(
+                        350, 350, accent=True, anchor="lt"),
+                    "temp":         labels.temp_now(64, 64, accent=True),
+                    "desc":         labels.feels_like(
+                        64, 240, "lt", accent=True),
+                    "more": labels.h4(64, 292, "lt", accent=True),
                     "icon":         Img(498, 64),
                     "hours":        labels.h3_block(
-                        70, 448, spacing=28),
+                        70, 480, spacing=42),
                     "icons":        labels.icons_block(
-                        196, 444, accent=True, spacing=21),
+                        196, 476, accent=True, spacing=35, align="center"),
                     "temps":        labels.h3_block(
-                        272, 448, accent=True, spacing=28)
+                        276, 480, accent=True, spacing=42)
                 }
             ),
             "trains": Widget(
                 xy=(24, 376), size=(568, 468), fill=Colors.PANEL_BG,
                 radius=24,
                 content={
-                    "title":        labels.h2(40, 40),
+                    "title":        labels.feels_like(40, 40),
                     "direction":    labels.d3(40, 84),
                     "departures":   labels.d2(40, 244)
                 }
@@ -54,7 +63,7 @@ class Dashboard:
                 xy=(616, 376), size=(568, 468), fill=Colors.PANEL_BG,
                 radius=24,
                 content={
-                    "title":        labels.h2(40, 40),
+                    "title":        labels.feels_like(40, 40),
                     "direction":    labels.d3(40, 84),
                     "departures":   labels.d2(40, 244)
                 }
