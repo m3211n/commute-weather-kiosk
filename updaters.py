@@ -67,8 +67,8 @@ async def weather() -> dict:
         sunrise = j["sys"]["sunrise"]
         sunset = j["sys"]["sunset"]
         return (
-            Local.f_epoch(sunrise, TIME_F_STR),
-            Local.f_epoch(sunset, TIME_F_STR)
+            Local.f_time(sunrise, TIME_F_STR),
+            Local.f_time(sunset, TIME_F_STR)
         )
 
     def _hourly(j):
@@ -77,7 +77,7 @@ async def weather() -> dict:
         icons = []
 
         for entry in j["list"]:
-            timestamps.append(Local.f_epoch(entry["dt"], TIME_F_STR))
+            timestamps.append(Local.f_time(entry["dt"], TIME_F_STR))
             temp = round(entry["main"]["temp"])
             wind = round(entry["wind"]["speed"], 1)
             icon = entry["weather"][0]["icon"]

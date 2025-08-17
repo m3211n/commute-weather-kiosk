@@ -39,24 +39,18 @@ async def fetch_json(url, params=None, headers=None, timeout=DEFAULT_TIMEOUT):
 class Local:
 
     @staticmethod
-    def f_time(format=None) -> str:
+    def f_time(epoch: float = None, format=None) -> str:
+        if epoch:
+            return datetime.fromtimestamp(epoch).strftime(format)
         return datetime.now().strftime(format)
-
-    @staticmethod
-    def f_epoch(epoch, format=None) -> str:
-        return datetime.fromtimestamp(epoch).strftime(format)
 
     @staticmethod
     def epoch() -> int:
         return int(datetime.now().timestamp())
 
     @staticmethod
-    def hours() -> int:
-        return datetime.now().hour
-
-    @staticmethod
     def daytime() -> str:
-        h = Local.hours()
+        h = datetime.now().hour
         if h in range(5, 11):
             return "morning"
         elif h in range(11, 17):
@@ -101,12 +95,14 @@ class Local:
         return ram
 
 
+# Departures
+
 class Commute:
-    def get_trains():
+    def fetch_departures(segment="train"):
         pass
 
-# Weather data
 
+# Weather data
 
 async def fetch_weather(segment="current"):
     params = {
