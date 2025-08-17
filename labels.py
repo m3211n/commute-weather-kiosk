@@ -23,7 +23,7 @@ def temp_now(x, y, anchor="lt", accent=False):
     fill = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.font("regular", 200),
+        font=Fonts.font("light", 200),
         fill=fill,
         anchor=anchor)
 
