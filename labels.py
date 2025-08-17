@@ -3,84 +3,76 @@ from shared.styles import Fonts, Colors
 # import logging
 
 
-def clock(x, y, anchor="lt"):
+def time(x, y, anchor="mt"):
     return Text(
         xy=(x, y),
-        font=Fonts.CLOCK,
+        font=Fonts.D1,
         fill=Colors.DEFAULT,
         anchor=anchor)
 
 
-def temp_now(x, y, anchor="lt"):
+def date(x, y, anchor="mt"):
     return Text(
         xy=(x, y),
-        font=Fonts.WEATHER_TODAY,
+        font=Fonts.D4,
         fill=Colors.DEFAULT,
         anchor=anchor)
 
 
-def small(x, y, anchor="rt", accent=False):
-    color = Colors.DEFAULT if accent else Colors.SECONDARY
+def h1(x, y, anchor="lt", accent=False):
+    fill = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.LABEL_SMALL,
-        fill=color,
+        font=Fonts.H1,
+        fill=fill,
         anchor=anchor)
 
 
-def small_b(x, y, anchor="rt", accent=False):
-    color = Colors.DEFAULT if accent else Colors.SECONDARY
+def h2(x, y, anchor="rt", accent=False):
+    fill = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.LABEL_BOLD,
-        fill=color,
+        font=Fonts.H2,
+        fill=fill,
         anchor=anchor)
 
 
-def x_small_block(x, y, accent=False, **kwargs):
+def h3_block(x, y, accent=False, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.LABEL_XSMALL,
+        font=Fonts.H3,
         fill=color,
         features=["tnum"],
         **kwargs)
 
 
-def x_small_block_icons(x, y, accent=False, **kwargs):
+def icons_block(x, y, accent=False, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
         font=Fonts.ICON_XSMALL,
         fill=color,
-        features=["tnum"],
         **kwargs)
 
 
-def x_small(x, y, anchor="rt", accent=False):
+def h3(x, y, anchor="rt", accent=False):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.LABEL_XSMALL,
+        font=Fonts.H3,
         fill=color,
         features=["tnum"],
         anchor=anchor)
 
 
-def title(x, y, anchor="lt"):
-    return Text(
-        xy=(x, y),
-        font=Fonts.LABEL_SMALL,
-        fill=Colors.TITLE,
-        anchor=anchor)
-
-
-def large(x, y, accent=False, anchor="lt"):
+def h4(x, y, anchor="rt", accent=False):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.LABEL_LARGE,
+        font=Fonts.H4,
         fill=color,
+        features=["tnum"],
         anchor=anchor)
 
 
@@ -92,17 +84,17 @@ def status(x, y, anchor="lm"):
         anchor=anchor)
 
 
-def destination(x, y, anchor="lt"):
+def d2(x, y, anchor="lt"):
     return Text(
         xy=(x, y),
-        font=Fonts.STATUS,
-        fill=Colors.SECONDARY,
+        font=Fonts.D2,
+        fill=Colors.DEPARTURES,
         anchor=anchor)
 
 
-def departutes(x, y, anchor="lt"):
+def d3(x, y, anchor="lt"):
     return Text(
         xy=(x, y),
-        font=Fonts.DEPARTURES,
-        fill=Colors.DEPARTURES,
+        font=Fonts.D3,
+        fill=Colors.SECONDARY,
         anchor=anchor)

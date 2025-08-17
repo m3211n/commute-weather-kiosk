@@ -48,7 +48,7 @@ class Local:
 
     @staticmethod
     def epoch() -> int:
-        return datetime.now()
+        return int(datetime.now().timestamp())
 
     @staticmethod
     def hours() -> int:

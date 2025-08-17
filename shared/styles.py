@@ -6,9 +6,9 @@ def get_font(path, size):
 
 
 FONT_PATHS = {
-    "black": "./shared/fonts/MuseoModerno-Black.ttf",
-    "bold": "./shared/fonts/MuseoModerno-Bold.ttf",
-    "regular": "./shared/fonts/MuseoModerno-Regular.ttf",
+    "bold": "./shared/fonts/Geist-Bold.ttf",
+    "regular": "./shared/fonts/Geist-Regular.ttf",
+    "light": "./shared/fonts/Geist-Light.ttf",
     "mono": "./shared/fonts/RobotoMono-Regular.ttf",
     "icon": "./shared/fonts/weathericons-regular-webfont.ttf"
 }
@@ -16,15 +16,19 @@ FONT_PATHS = {
 
 class Fonts:
     """Font presets for the UI."""
-    VALUE = get_font(FONT_PATHS["regular"], 86)
-    LABEL_BOLD = get_font(FONT_PATHS["bold"], 40)
-    LABEL_SMALL = get_font(FONT_PATHS["regular"], 40)
-    ICON_XSMALL = get_font(FONT_PATHS["icon"], 32)
-    LABEL_XSMALL = get_font(FONT_PATHS["regular"], 32)
-    LABEL_LARGE = get_font(FONT_PATHS["regular"], 63)
-    WEATHER_TODAY = get_font(FONT_PATHS["regular"], 137)
-    CLOCK = get_font(FONT_PATHS["bold"], 212)
-    DEPARTURES = get_font(FONT_PATHS["bold"], 40)
+
+    ICON_XSMALL = get_font(FONT_PATHS["icon"], 36)
+
+    H1 = get_font(FONT_PATHS["light"], 160)
+    H2 = get_font(FONT_PATHS["light"], 40)
+    H3 = get_font(FONT_PATHS["light"], 32)
+    H4 = get_font(FONT_PATHS["light"], 28)
+
+    D1 = get_font(FONT_PATHS["bold"], 240)
+    D2 = get_font(FONT_PATHS["bold"], 100)
+    D3 = get_font(FONT_PATHS["bold"], 63)
+    D4 = get_font(FONT_PATHS["bold"], 40)
+
     STATUS = get_font(FONT_PATHS["mono"], 20)
 
     @staticmethod
@@ -39,5 +43,5 @@ class Colors:
     TITLE = (255, 255, 255, 88)
     DEPARTURES = (216, 216, 0, 255)
     DEFAULT = (255, 255, 255, 255)
-    SECONDARY = (255, 255, 255, 150)
+    SECONDARY = (255, 255, 255, 180)
     NONE = (0, 0, 0, 0)

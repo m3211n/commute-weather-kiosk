@@ -21,45 +21,42 @@ class Dashboard:
                 xy=(24, 24), size=(1160, 328),
                 content={
                     "clock_image":  Img(),
-                    "time":         labels.clock(140, 90),
-                    "date_0":       labels.small_b(760, 90, "lt", accent=True),
-                    "date_1":       labels.small(760, 134, "lt", accent=True)
+                    "time":         labels.time(580, 94),
+                    "date":         labels.date(580, 42)
                 }
             ),
             "weather": Widget(
                 xy=(1208, 24), size=(688, 1112),
                 content={
                     "weather_image": Img(),
-                    "temp":         labels.temp_now(90, 90),
-                    "feels_like":   labels.small(90, 218, "lt", accent=True),
-                    "min_max_wind": labels.x_small(90, 270, "lt"),
-                    "icon":         Img(470, 74),
-                    "hours":        labels.x_small_block(
-                        90, 448, spacing=24),
-                    "icons":        labels.x_small_block_icons(
-                        270, 448, accent=True, spacing=25),
-                    "temps":        labels.x_small_block(
-                        336, 448, accent=True, spacing=24)
+                    "temp":         labels.h1(64, 64, accent=True),
+                    "feels_like":   labels.h2(64, 242, "lt", accent=True),
+                    "min_max_wind": labels.h4(64, 298, "lt", accent=True),
+                    "icon":         Img(498, 64),
+                    "hours":        labels.h3_block(
+                        70, 448, spacing=28),
+                    "icons":        labels.icons_block(
+                        196, 444, accent=True, spacing=21),
+                    "temps":        labels.h3_block(
+                        272, 448, accent=True, spacing=28)
                 }
             ),
             "trains": Widget(
                 xy=(24, 376), size=(568, 468), fill=Colors.PANEL_BG,
                 radius=24,
                 content={
-                    "title":        labels.title(40, 40),
-                    "direction":    labels.large(40, 84),
-                    "destinations": labels.destination(40, 244),
-                    "departures":   labels.departutes(40, 244)
+                    "title":        labels.h2(40, 40),
+                    "direction":    labels.d3(40, 84),
+                    "departures":   labels.d2(40, 244)
                 }
             ),
             "buses": Widget(
                 xy=(616, 376), size=(568, 468), fill=Colors.PANEL_BG,
                 radius=24,
                 content={
-                    "title":        labels.title(40, 40),
-                    "direction":    labels.large(40, 84),
-                    "destinations": labels.destination(40, 244),
-                    "departures":   labels.departutes(40, 244)
+                    "title":        labels.h2(40, 40),
+                    "direction":    labels.d3(40, 84),
+                    "departures":   labels.d2(40, 244)
                 }
             )
         }
