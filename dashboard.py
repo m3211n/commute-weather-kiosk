@@ -47,7 +47,7 @@ class Dashboard:
                     "icons":        labels.icons_block(
                         196, 476, spacing=35, align="center"),
                     "temps":        labels.h3_block(
-                        276, 480, spacing=42)
+                        280, 480, spacing=42)
                 }
             ),
             "trains": Widget(
