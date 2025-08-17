@@ -30,13 +30,13 @@ class Dashboard:
                 content={
                     "weather_image": Img(),
                     "icon_sr":      labels.static_icon(
-                        64, 342, value="\uf051"),
+                        64, 342, value="\uf051", accent=False),
                     "sunrise":      labels.h3(
-                        128, 350, accent=True, anchor="lt"),
+                        128, 350, anchor="lt"),
                     "icon_ss":      labels.static_icon(
-                        286, 342, value="\uf052"),
+                        286, 342, value="\uf052", accent=False),
                     "sunset":      labels.h3(
-                        350, 350, accent=True, anchor="lt"),
+                        350, 350, anchor="lt"),
                     "temp":         labels.temp_now(64, 64, accent=True),
                     "desc":         labels.feels_like(
                         64, 240, "lt", accent=True),
@@ -45,9 +45,9 @@ class Dashboard:
                     "hours":        labels.h3_block(
                         70, 480, spacing=42),
                     "icons":        labels.icons_block(
-                        196, 476, accent=True, spacing=35, align="center"),
+                        196, 476, spacing=35, align="center"),
                     "temps":        labels.h3_block(
-                        276, 480, accent=True, spacing=42)
+                        276, 480, spacing=42)
                 }
             ),
             "trains": Widget(
