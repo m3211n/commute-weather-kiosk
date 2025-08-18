@@ -18,11 +18,11 @@ class Dashboard:
                 }
             ),
             "clock": Widget(
-                xy=(24, 24), size=(1160, 328),
+                xy=(24, 24), size=(1160, 386),
                 content={
                     "clock_image":  Img(),
-                    "time":         labels.time(580, 64),
-                    "date":         labels.date(580, 236)
+                    "time":         labels.time(580, 90),
+                    "date":         labels.date(580, 268)
                 }
             ),
             "weather": Widget(
@@ -30,23 +30,23 @@ class Dashboard:
                 content={
                     "weather_image": Img(),
                     "icon_sr":      labels.static_icon(
-                        64, 342, value="\uf051"),
+                        64, 362, value="\uf051"),
                     "sunrise":      labels.h3(
-                        128, 350, anchor="lt"),
+                        128, 370, anchor="lt"),
                     "icon_ss":      labels.static_icon(
-                        286, 342, value="\uf052"),
+                        286, 362, value="\uf052"),
                     "sunset":      labels.h3(
-                        350, 350, anchor="lt"),
-                    "temp":         labels.temp_now(64, 64),
-                    "desc":         labels.feels_like(64, 240, "lt"),
-                    "more": labels.h4(64, 292, "lt"),
-                    "icon":         Img(498, 64),
+                        350, 370, anchor="lt"),
+                    "temp":         labels.temp_now(64, 90),
+                    "desc":         labels.feels_like(64, 268, "lt"),
+                    "more": labels.h4(64, 318, "lt"),
+                    "icon":         Img(498, 90),
                     "hours":        labels.h3_block(
-                        70, 480, spacing=42, accent=False),
+                        70, 504, spacing=38, accent=False),
                     "icons":        labels.icons_block(
-                        196, 476, spacing=35, align="center"),
+                        196, 500, spacing=31, align="center"),
                     "temps":        labels.h3_block(
-                        280, 480, spacing=42)
+                        280, 504, spacing=38)
                 }
             ),
             "trains": Widget(
