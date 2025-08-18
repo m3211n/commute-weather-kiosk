@@ -51,7 +51,7 @@ class Canvas:
         return self
 
     def fill(self, color=(0, 0, 0, 0), radius=0) -> "Canvas":
-        if radius != 0 and color != (0, 0, 0, 0):
+        if radius != 0:
             self.draw.rounded_rectangle(
                 [0, 0, *self._img.size],
                 radius=radius,
@@ -59,10 +59,14 @@ class Canvas:
             )
         else:
             self._img = Image.new(
-                mode=self._mode, size=self._img.size, color=(0, 0, 0, 0))
+                mode=self._mode, size=self._img.size, color=color)
         return self
 
     def paste(self, img: Image.Image, xy=(0, 0)):
+        # import datetime
+        # print("Pasting image. Mode is", img.mode)
+        # f = f"{datetime.datetime.now().timestamp() * 1000}"
+        # img.save(f"__preview/output{f}.png", format="png")
         mask = img.split()[3]
         self._img.paste(img, xy, mask=mask)
 
