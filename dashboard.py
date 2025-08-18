@@ -3,7 +3,7 @@ import updaters
 import asyncio
 
 from inspect import iscoroutinefunction as iscoro
-from core.ui import Widget, Img
+from core.ui import Widget, Img, Rect
 from shared.styles import Colors
 
 
@@ -58,6 +58,9 @@ class Dashboard:
                         anchor="lt"),
                     "dir_train":    labels.label_68(64, 124),
                     "dep_train":    labels.d2(64, 212),
+                    "rect":         Rect(
+                        (64, 350, 1096, 352), radius=1,
+                        fill=(255, 255, 255, 32)),
                     "title_bus":    labels.label_40(
                         64, 412, static_value="Buss mot", accent=False,
                         anchor="lt"),
