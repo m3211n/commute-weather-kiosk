@@ -40,7 +40,7 @@ def clear_bytes(block):
 class Canvas:
     def __init__(self, size, mode="RGBA"):
         self._mode = mode
-        self._img = Image.new(mode=self._mode, size=size)
+        self._img = Image.new(mode=self._mode, size=size, color=(0, 0, 0, 0))
 
     def __call__(self) -> Image.Image:
         return self._img
@@ -51,11 +51,15 @@ class Canvas:
         return self
 
     def fill(self, color=(0, 0, 0, 0), radius=0) -> "Canvas":
-        self.draw.rounded_rectangle(
-            [0, 0, *self._img.size],
-            radius=radius,
-            fill=color
-        )
+        if radius != 0 and color != (0, 0, 0, 0):
+            self.draw.rounded_rectangle(
+                [0, 0, *self._img.size],
+                radius=radius,
+                fill=color
+            )
+        else:
+            self._img = Image.new(
+                mode=self._mode, size=self._img.size, color=(0, 0, 0, 0))
         return self
 
     def paste(self, img: Image.Image, xy=(0, 0)):
