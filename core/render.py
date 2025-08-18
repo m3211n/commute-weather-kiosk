@@ -59,7 +59,7 @@ class Canvas:
         return self
 
     def paste(self, img: Image.Image, xy=(0, 0)):
-        mask = img.split()[3] if self._mode == "RGBA" else None
+        mask = img.split()[3]
         self._img.paste(img, xy, mask=mask)
 
     def copy(self) -> "Canvas":

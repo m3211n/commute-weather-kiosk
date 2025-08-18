@@ -30,17 +30,16 @@ class Dashboard:
                 content={
                     "weather_image": Img(),
                     "icon_sr":      labels.static_icon(
-                        64, 342, value="\uf051", accent=False),
+                        64, 342, value="\uf051"),
                     "sunrise":      labels.h3(
                         128, 350, anchor="lt"),
                     "icon_ss":      labels.static_icon(
-                        286, 342, value="\uf052", accent=False),
+                        286, 342, value="\uf052"),
                     "sunset":      labels.h3(
                         350, 350, anchor="lt"),
-                    "temp":         labels.temp_now(64, 64, accent=True),
-                    "desc":         labels.feels_like(
-                        64, 240, "lt", accent=True),
-                    "more": labels.h4(64, 292, "lt", accent=True),
+                    "temp":         labels.temp_now(64, 64),
+                    "desc":         labels.feels_like(64, 240, "lt"),
+                    "more": labels.h4(64, 292, "lt"),
                     "icon":         Img(498, 64),
                     "hours":        labels.h3_block(
                         70, 480, spacing=42),
