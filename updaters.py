@@ -1,4 +1,4 @@
-from core.data_sources import Local, fetch_weather
+from core.data_sources import Local, fetch_weather, fetch_departures
 
 TIME_F_STR = "%H:%M"
 DATE_F_STR = "%A, %B %d"
@@ -140,7 +140,46 @@ async def weather() -> dict:
 
 # Run every 1 min
 async def departures() -> dict:
+    import json
+
+    BUS_STOP_POINT = 51583
+
+    data_trains = await fetch_departures()
+    data_buses = [
+        d for d in await fetch_departures("bus")
+        if d.get("stop_point", {}).get("id") == BUS_STOP_POINT
+    ]
+
+    print(json.dumps(data_buses, indent=2, ensure_ascii=False))
+
+    def _extract_lists(data):
+        display = []
+        line = []
+        dest = []
+        count = 0
+        for departure in data:
+            if departure["state"] != "EXPECTED":
+                continue
+            display.append(departure["display"])
+            line.append(departure["line"]["designation"])
+            dest.append(departure["destination"])
+            count = count + 1
+            if count == 3:
+                break
+        return {
+            "display": "\n".join(display),
+            "line": "\n".join(line),
+            "dest": "\n".join(dest)
+        }
+
+    train_info = _extract_lists(data_trains)
+    bus_info = _extract_lists(data_buses)
+
     return {
-        "dir_train": "T-Centralen",
-        "dir_bus": "Jakobsberg Centrum"
+        "train_display": train_info["display"],
+        "train_line": train_info["line"],
+        "train_dest": train_info["dest"],
+        "bus_display": bus_info["display"],
+        "bus_line": bus_info["line"],
+        "bus_dest": bus_info["dest"],
     }

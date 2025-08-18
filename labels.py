@@ -68,7 +68,7 @@ def h3_block(x, y, accent=True, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.H3,
+        font=Fonts.font("regular", 32),
         fill=color,
         features=["tnum"],
         **kwargs)
@@ -83,14 +83,18 @@ def icons_block(x, y, accent=True, **kwargs):
         **kwargs)
 
 
-def h3(x, y, anchor="rt", accent=False):
+def h3(x, y, anchor="rt", accent=False, static_value=None):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
-    return Text(
-        xy=(x, y),
-        font=Fonts.H3,
-        fill=color,
-        features=["tnum"],
-        anchor=anchor)
+    params = {
+        "xy": (x, y),
+        "font": Fonts.font("regular", 32),
+        "fill": color,
+        "anchor": anchor,
+        "features": ["tnum"]
+    }
+    if static_value:
+        return StaticText(value=static_value, **params)
+    return Text(**params)
 
 
 def h4(x, y, anchor="rt", accent=False):
@@ -101,6 +105,36 @@ def h4(x, y, anchor="rt", accent=False):
         fill=color,
         features=["tnum"],
         anchor=anchor)
+
+
+def departure_block(x, y, **kwargs):
+    return Text(
+        xy=(x, y),
+        font=Fonts.font("bold", 48),
+        fill=Colors.DEPARTURES,
+        features=["tnum"],
+        **kwargs
+    )
+
+
+def line_block(x, y, **kwargs):
+    return Text(
+        xy=(x, y),
+        font=Fonts.font("regular", 48),
+        fill=Colors.DEFAULT,
+        features=["tnum"],
+        **kwargs
+    )
+
+
+def dest_block(x, y, **kwargs):
+    return Text(
+        xy=(x, y),
+        font=Fonts.font("regular", 48),
+        fill=Colors.SECONDARY,
+        features=["tnum"],
+        **kwargs
+    )
 
 
 def status(x, y, anchor="lm"):
@@ -116,12 +150,4 @@ def d2(x, y, anchor="lt"):
         xy=(x, y),
         font=Fonts.D2,
         fill=Colors.DEPARTURES,
-        anchor=anchor)
-
-
-def d3(x, y, anchor="lt"):
-    return Text(
-        xy=(x, y),
-        font=Fonts.D3,
-        fill=Colors.SECONDARY,
         anchor=anchor)

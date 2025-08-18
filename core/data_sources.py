@@ -97,9 +97,28 @@ class Local:
 
 # Departures
 
-class Commute:
-    def fetch_departures(segment="train"):
-        pass
+async def fetch_departures(s="train"):
+    site = {
+        "train": "9702",
+        "bus": "5875"
+    }
+    params = {
+        "train": {
+            "transport": "TRAIN",
+            "direction": 1,
+            "forecast": 1200
+        },
+        "bus": {
+            "transport": "BUS",
+            "forecast": 180
+        }
+    }
+    url = f"https://transport.integration.sl.se/v1/sites/{site[s]}/departures"
+    data = await fetch_json(
+        url=url,
+        params=params[s]
+    )
+    return data["departures"]
 
 
 # Weather data

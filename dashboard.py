@@ -53,19 +53,27 @@ class Dashboard:
                 xy=(24, 434), size=(1160, 702), fill=Colors.PANEL_BG,
                 radius=64,
                 content={
-                    "title_train":        labels.label_40(
-                        64, 80, static_value="Tåg mot", accent=False,
-                        anchor="lt"),
-                    "dir_train":    labels.label_68(64, 124),
-                    "dep_train":    labels.d2(64, 212),
+                    "title_train":      labels.h3(
+                        64, 64, static_value="Pendeltåg mot Nynäshamn",
+                        accent=False, anchor="lt"),
+                    "train_display":    labels.departure_block(
+                        64, 117, spacing=16),
+                    "train_line":       labels.line_block(
+                        284, 117, spacing=16),
+                    "train_dest":       labels.dest_block(
+                        420, 117, spacing=16),
                     "rect":         Rect(
                         (64, 350, 1096, 352), radius=1,
                         fill=(255, 255, 255, 32)),
-                    "title_bus":    labels.label_40(
-                        64, 412, static_value="Buss mot", accent=False,
-                        anchor="lt"),
-                    "dir_bus":    labels.label_68(64, 460),
-                    "dep_bus":    labels.d2(64, 548)
+                    "title_bus":      labels.h3(
+                        64, 394, static_value="Buss mot Jakobsberg C",
+                        accent=False, anchor="lt"),
+                    "bus_display":    labels.departure_block(
+                        64, 447, spacing=16),
+                    "bus_line":       labels.line_block(
+                        284, 447, spacing=16),
+                    "bus_dest":       labels.dest_block(
+                        420, 447, spacing=16),
                 }
             )
         }
