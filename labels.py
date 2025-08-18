@@ -19,7 +19,7 @@ def date(x, y, anchor="mt"):
         anchor=anchor)
 
 
-def temp_now(x, y, anchor="lt", accent=False):
+def temp_now(x, y, anchor="lt", accent=True):
     fill = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
@@ -28,7 +28,7 @@ def temp_now(x, y, anchor="lt", accent=False):
         anchor=anchor)
 
 
-def feels_like(x, y, anchor="rt", accent=False):
+def feels_like(x, y, anchor="rt", accent=True):
     fill = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
@@ -47,7 +47,7 @@ def static_icon(x, y, value, anchor="lt", accent=True):
         anchor=anchor)
 
 
-def h3_block(x, y, accent=False, **kwargs):
+def h3_block(x, y, accent=True, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
@@ -57,7 +57,7 @@ def h3_block(x, y, accent=False, **kwargs):
         **kwargs)
 
 
-def icons_block(x, y, accent=False, **kwargs):
+def icons_block(x, y, accent=True, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),

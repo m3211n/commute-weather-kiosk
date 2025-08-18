@@ -42,7 +42,7 @@ class Dashboard:
                     "more": labels.h4(64, 292, "lt"),
                     "icon":         Img(498, 64),
                     "hours":        labels.h3_block(
-                        70, 480, spacing=42),
+                        70, 480, spacing=42, accent=False),
                     "icons":        labels.icons_block(
                         196, 476, spacing=35, align="center"),
                     "temps":        labels.h3_block(
