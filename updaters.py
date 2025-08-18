@@ -140,7 +140,7 @@ async def weather() -> dict:
 
 # Run every 1 min
 async def departures() -> dict:
-    import json
+    # import json
 
     BUS_STOP_POINT = 51583
 
@@ -150,7 +150,7 @@ async def departures() -> dict:
         if d.get("stop_point", {}).get("id") == BUS_STOP_POINT
     ]
 
-    print(json.dumps(data_buses, indent=2, ensure_ascii=False))
+    # print(json.dumps(data_buses, indent=2, ensure_ascii=False))
 
     def _extract_lists(data):
         display = []
