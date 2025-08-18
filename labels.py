@@ -28,13 +28,30 @@ def temp_now(x, y, anchor="lt", accent=True):
         anchor=anchor)
 
 
-def feels_like(x, y, anchor="rt", accent=True):
+def label_40(x, y, anchor="rt", accent=True, static_value=None):
     fill = Colors.DEFAULT if accent else Colors.SECONDARY
-    return Text(
-        xy=(x, y),
-        font=Fonts.font("regular", 40),
-        fill=fill,
-        anchor=anchor)
+    params = {
+        "xy": (x, y),
+        "font": Fonts.font("regular", 40),
+        "fill": fill,
+        "anchor": anchor
+    }
+    if static_value:
+        return StaticText(value=static_value, **params)
+    return Text(**params)
+
+
+def label_68(x, y, anchor="lt", accent=True, static_value=None):
+    fill = Colors.DEFAULT if accent else Colors.SECONDARY
+    params = {
+        "xy": (x, y),
+        "font": Fonts.font("regular", 68),
+        "fill": fill,
+        "anchor": anchor
+    }
+    if static_value:
+        return StaticText(value=static_value, **params)
+    return Text(**params)
 
 
 def static_icon(x, y, value, anchor="lt", accent=True):

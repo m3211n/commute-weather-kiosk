@@ -38,7 +38,7 @@ class Dashboard:
                     "sunset":      labels.h3(
                         350, 370, anchor="lt"),
                     "temp":         labels.temp_now(64, 90),
-                    "desc":         labels.feels_like(64, 268, "lt"),
+                    "desc":         labels.label_40(64, 268, "lt"),
                     "more": labels.h4(64, 318, "lt"),
                     "icon":         Img(498, 90),
                     "hours":        labels.h3_block(
@@ -49,22 +49,20 @@ class Dashboard:
                         280, 504, spacing=38)
                 }
             ),
-            "trains": Widget(
-                xy=(24, 376), size=(568, 468), fill=Colors.PANEL_BG,
-                radius=24,
+            "departures": Widget(
+                xy=(24, 434), size=(1160, 702), fill=Colors.PANEL_BG,
+                radius=64,
                 content={
-                    "title":        labels.feels_like(40, 40),
-                    "direction":    labels.d3(40, 84),
-                    "departures":   labels.d2(40, 244)
-                }
-            ),
-            "buses": Widget(
-                xy=(616, 376), size=(568, 468), fill=Colors.PANEL_BG,
-                radius=24,
-                content={
-                    "title":        labels.feels_like(40, 40),
-                    "direction":    labels.d3(40, 84),
-                    "departures":   labels.d2(40, 244)
+                    "title_train":        labels.label_40(
+                        64, 80, static_value="Tåg mot", accent=False,
+                        anchor="lt"),
+                    "dir_train":    labels.label_68(64, 124),
+                    "dep_train":    labels.d2(64, 212),
+                    "title_bus":    labels.label_40(
+                        64, 412, static_value="Buss mot", accent=False,
+                        anchor="lt"),
+                    "dir_bus":    labels.label_68(64, 460),
+                    "dep_bus":    labels.d2(64, 548)
                 }
             )
         }
@@ -72,8 +70,7 @@ class Dashboard:
             self.get_loop("info", updaters.sys_info, 5),
             self.get_loop("clock", updaters.time_date, 1),
             self.get_loop("weather", updaters.weather, 900),
-            self.get_loop("trains", updaters.trains, 60),
-            self.get_loop("buses", updaters.buses, 60)
+            self.get_loop("departures", updaters.departures, 60)
         ]
 
     def get_loop(self, key: str, upd, int_s: int):

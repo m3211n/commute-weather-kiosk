@@ -139,9 +139,8 @@ async def weather() -> dict:
 
 
 # Run every 1 min
-async def trains() -> dict:
-    return {}
-
-
-async def buses() -> dict:
-    return {}
+async def departures() -> dict:
+    return {
+        "dir_train": "T-Centralen",
+        "dir_bus": "Jakobsberg Centrum"
+    }
