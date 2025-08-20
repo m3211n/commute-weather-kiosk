@@ -33,13 +33,9 @@ def sys_info() -> dict:
 
 # Run every 15 min
 async def weather() -> dict:
-    def _day_or_night(j):
-        now = Local.epoch()
-        if now in range(j["sys"]["sunrise"], j["sys"]["sunset"]):
-            return "day"
-        return "night"
 
-    def _weather_image(j):
+    def _weather_image(j) -> str:
+
         clouds = j["clouds"]["all"]
         if clouds in range(0, 33):
             c = "clear"
@@ -47,23 +43,26 @@ async def weather() -> dict:
             c = "cloudy"
         else:
             c = "rainy"
-        d = _day_or_night(j)
-        # icon = weather["icon"]
+
+        if Local.epoch() in range(j["sys"]["sunrise"], j["sys"]["sunset"]):
+            d = "day"
+        else:
+            d = "night"
         return f"./shared/images/weather/{c}-{d}.png"
 
-    def _temperature(j):
+    def _temperature(j) -> str:
         temp = round(j["main"]["temp"])
         return f"{temp}°"
 
-    def _current_icon(j):
+    def _current_icon(j) -> str:
         icon = j["weather"][0]["icon"]
         return f"./shared/icons/weather/{icon}.png"
 
-    def _desc(j):
+    def _desc(j) -> str:
         desc: str = j["weather"][0]["description"]
         return desc.capitalize()
 
-    def _sun(j):
+    def _sun(j) -> str:
         sunrise = j["sys"]["sunrise"]
         sunset = j["sys"]["sunset"]
         return (
@@ -89,7 +88,7 @@ async def weather() -> dict:
             )
         return ("\n".join(timestamps), "\n".join(temps), "\n".join(icons))
 
-    def _more(j):
+    def _more(j) -> str:
         min = round(j["main"]["temp_min"])
         max = round(j["main"]["temp_max"])
         temp = round(j["main"]["feels_like"])
@@ -121,8 +120,8 @@ async def weather() -> dict:
 
     data = await fetch_weather()
     hourly_data = await fetch_weather("hourly")
-
     hourly = _hourly(hourly_data)
+    sun = _sun(data)
 
     return {
         "weather_image": _weather_image(data),
@@ -130,8 +129,8 @@ async def weather() -> dict:
         "icon": _current_icon(data),
         "desc": _desc(data),
         "more": _more(data),
-        "sunrise": _sun(data)[0],
-        "sunset": _sun(data)[1],
+        "sunrise": sun[0],
+        "sunset": sun[1],
         "hours": hourly[0],
         "temps": hourly[1],
         "icons": hourly[2],

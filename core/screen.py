@@ -54,18 +54,17 @@ class Screen:
             self.output.write(buf[start:end])
         elapsed = time.perf_counter() - elapsed
 
-    async def refresh(self, only_dirty=True):
+    async def refresh(self):
         """Render and output all layers"""
         elapsed = time.perf_counter()
         dirty = False
         for widget in self.content.values():
             widget_is_dirty = await widget.update()
-            if (only_dirty and widget_is_dirty) or (not only_dirty):
+            if widget_is_dirty:
                 dirty = True
                 if self._using_fb:
                     await self._decode_and_write(widget)
                 else:
-                    print(widget.xy)
                     self.output.paste(
                         im=widget.image,
                         box=tuple(widget.xy),
@@ -78,3 +77,4 @@ class Screen:
 
         elapsed = time.perf_counter() - elapsed
         logging.info(f"Refresh routine complete in: {elapsed:.3f} s.")
+        return dirty

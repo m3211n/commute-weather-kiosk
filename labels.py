@@ -1,153 +1,72 @@
-from core.ui import Text, StaticText
-from shared.styles import Fonts, Colors
+from core.ui import Text
+from shared.styles import font, Colors
 # import logging
 
 
-def time(x, y, anchor="mt"):
+def time(x, y):
     return Text(
         xy=(x, y),
-        font=Fonts.font("bold", 216),
+        font=font("bold", 216),
         fill=Colors.DEFAULT,
-        anchor=anchor)
+        anchor="mt")
 
 
-def date(x, y, anchor="mt"):
+def date(x, y):
     return Text(
         xy=(x, y),
-        font=Fonts.font("bold", 40),
+        font=font("bold", 40),
         fill=Colors.DEFAULT,
-        anchor=anchor)
+        anchor="mt")
 
 
-def temp_now(x, y, anchor="lt", accent=True):
-    fill = Colors.DEFAULT if accent else Colors.SECONDARY
+def temp_now(x, y):
     return Text(
         xy=(x, y),
-        font=Fonts.font("light", 200),
-        fill=fill,
-        anchor=anchor)
+        font=font("light", 200),
+        anchor="lt",
+        fill=Colors.DEFAULT)
 
 
-def label_40(x, y, anchor="rt", accent=True, static_value=None):
-    fill = Colors.DEFAULT if accent else Colors.SECONDARY
-    params = {
-        "xy": (x, y),
-        "font": Fonts.font("regular", 40),
-        "fill": fill,
-        "anchor": anchor
-    }
-    if static_value:
-        return StaticText(value=static_value, **params)
-    return Text(**params)
-
-
-def label_68(x, y, anchor="lt", accent=True, static_value=None):
-    fill = Colors.DEFAULT if accent else Colors.SECONDARY
-    params = {
-        "xy": (x, y),
-        "font": Fonts.font("regular", 68),
-        "fill": fill,
-        "anchor": anchor
-    }
-    if static_value:
-        return StaticText(value=static_value, **params)
-    return Text(**params)
-
-
-def static_icon(x, y, value, anchor="lt", accent=True):
-    fill = Colors.DEFAULT if accent else Colors.SECONDARY
-    return StaticText(
-        value=value,
+def status(x, y, **kwargs):
+    return Text(
         xy=(x, y),
-        font=Fonts.font("icon", 36),
-        fill=fill,
-        anchor=anchor)
+        font=font("mono", 22),
+        fill=Colors.TETRIARY,
+        **kwargs)
 
 
-def h3_block(x, y, accent=True, **kwargs):
+def departures(x, y):
+    return Text(
+        xy=(x, y),
+        font=font("bold", 48),
+        fill=Colors.DEPARTURES,
+        spacing=16,
+        features=["tnum"]
+    )
+
+
+def lines(x, y):
+    return regular(x=x, y=y, size=48, spacing=16)
+
+
+def destinations(x, y):
+    return regular(x=x, y=y, size=48, accent=False, spacing=16)
+
+
+def regular(x, y, size: int, accent=True, **kwargs):
     color = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.font("regular", 32),
+        font=font("regular", size),
         fill=color,
         features=["tnum"],
         **kwargs)
 
 
-def icons_block(x, y, accent=True, **kwargs):
-    color = Colors.DEFAULT if accent else Colors.SECONDARY
+def icon(x, y, accent=True, **kwargs):
+    fill = Colors.DEFAULT if accent else Colors.SECONDARY
     return Text(
         xy=(x, y),
-        font=Fonts.font("icon", 36),
-        fill=color,
+        font=font("icon", 36),
+        fill=fill,
         **kwargs)
-
-
-def h3(x, y, anchor="rt", accent=False, static_value=None):
-    color = Colors.DEFAULT if accent else Colors.SECONDARY
-    params = {
-        "xy": (x, y),
-        "font": Fonts.font("regular", 32),
-        "fill": color,
-        "anchor": anchor,
-        "features": ["tnum"]
-    }
-    if static_value:
-        return StaticText(value=static_value, **params)
-    return Text(**params)
-
-
-def h4(x, y, anchor="rt", accent=False):
-    color = Colors.DEFAULT if accent else Colors.SECONDARY
-    return Text(
-        xy=(x, y),
-        font=Fonts.H4,
-        fill=color,
-        features=["tnum"],
-        anchor=anchor)
-
-
-def departure_block(x, y, **kwargs):
-    return Text(
-        xy=(x, y),
-        font=Fonts.font("bold", 48),
-        fill=Colors.DEPARTURES,
-        features=["tnum"],
-        **kwargs
-    )
-
-
-def line_block(x, y, **kwargs):
-    return Text(
-        xy=(x, y),
-        font=Fonts.font("regular", 48),
-        fill=Colors.DEFAULT,
-        features=["tnum"],
-        **kwargs
-    )
-
-
-def dest_block(x, y, **kwargs):
-    return Text(
-        xy=(x, y),
-        font=Fonts.font("regular", 48),
-        fill=Colors.SECONDARY,
-        features=["tnum"],
-        **kwargs
-    )
-
-
-def status(x, y, anchor="lm"):
-    return Text(
-        xy=(x, y),
-        font=Fonts.STATUS,
-        fill=Colors.TITLE,
-        anchor=anchor)
-
-
-def d2(x, y, anchor="lt"):
-    return Text(
-        xy=(x, y),
-        font=Fonts.D2,
-        fill=Colors.DEPARTURES,
-        anchor=anchor)

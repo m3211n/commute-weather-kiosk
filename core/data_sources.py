@@ -97,7 +97,7 @@ class Local:
 
 # Departures
 
-async def fetch_departures(s="train"):
+async def fetch_departures(s="train") -> dict:
     site = {
         "train": "9702",
         "bus": "5875"
@@ -123,7 +123,7 @@ async def fetch_departures(s="train"):
 
 # Weather data
 
-async def fetch_weather(segment="current"):
+async def fetch_weather(segment="current") -> dict:
     params = {
         "units": "metric",
         "lang": "sv",
@@ -140,4 +140,18 @@ async def fetch_weather(segment="current"):
         url=url[segment],
         params=params
     )
+    return data
+
+
+# Sunrise and sunset
+
+async def fetch_sun() -> dict:
+    url = "https://api.sunrise-sunset.org/json"
+    params = {
+        "lat": 59.421491,
+        "lng": 17.819238,
+        "tzid": "Europe/Stockholm",
+        "formatted": 0
+    }
+    data = await fetch_json(url, params)
     return data

@@ -8,24 +8,20 @@ DEFAULT_RADIUS = 24
 
 
 class Content:
-    def __init__(self, xy=(0, 0)):
+    def __init__(self, xy=(0, 0), value=None):
         self.xy = xy
-        self._canvas: Canvas = None
-        self._value = None
+        self.static = True if value else False
+        self.value = value
 
     def update_value(self, new_value) -> bool:
-        if new_value != self._value:
-            self._value = new_value
-            self._render()
+        if new_value != self.value:
+            self.value = new_value
             return True
         return False
 
-    def clone_canvas(self, canvas: Canvas):
-        self._canvas = Canvas(canvas._img.size)
-
-    def _render(self) -> Canvas:
+    def render(self, canvas: Canvas) -> Canvas:
         """Renders self at provided canvas (typically at parent's canvas)"""
-        return self._canvas
+        return canvas()
 
 
 class Container:
@@ -36,18 +32,13 @@ class Container:
         self.content: Dict[str, Content] = content
         self.size = size
         self._canvas: Canvas = Canvas(size)
-        for k, v in self.content.items():
-            if not isinstance(v, Content):
-                raise TypeError(
-                    "Unexpected type <%s> for child %s",
-                    type(v).__name__, k)
-            v.clone_canvas(self._canvas)
 
-    def _render(self):
+    def render(self):
         """Widget renders itself if it is changed"""
         self._canvas.fill(self.fill, self.radius)
         for child in self.content.values():
-            self._canvas.paste(child._canvas(), child.xy)
+            child_canvas: Canvas = self._canvas.copy()
+            self._canvas.paste(child.render(child_canvas), child.xy)
 
     @property
     def image(self):
@@ -55,33 +46,24 @@ class Container:
 
 
 class Text(Content):
-    def __init__(self, **kwargs):
-        super().__init__()
+    def __init__(self, value=None, **kwargs):
+        super().__init__(value=value)
         self._args = kwargs
 
-    def _render(self):
-        self._args["text"] = self._value
-        self._canvas.clear().draw.text(**self._args)
+    def render(self, canvas):
+        self._args["text"] = self.value
+        canvas.clear().draw.text(**self._args)
+        return canvas()
 
 
-class StaticText(Text):
-    def __init__(self, value="", **kwargs):
-        super().__init__(**kwargs)
-        self._value = value
-
-    def clone_canvas(self, canvas: Canvas):
-        """Renders to the cloned canvas immediately"""
-        self._canvas = Canvas(canvas._img.size)
-        self._render()
-
-
-class Img(Content):
-    def __init__(self, x=0, y=0):
-        super().__init__()
+class ImageView(Content):
+    def __init__(self, x=0, y=0, value=None):
+        super().__init__(value=value)
         self._position = (x, y)
 
-    def _render(self):
-        self._canvas.clear().load(self._value, self._position)
+    def render(self, canvas) -> Canvas:
+        canvas.clear().load(self.value, self._position)
+        return canvas()
 
 
 class Rect(Content):
@@ -94,10 +76,9 @@ class Rect(Content):
             "fill": fill
         }
 
-    def clone_canvas(self, canvas: Canvas):
-        """Renders rectangle immediately once it got canvas"""
-        self._canvas = canvas.copy()
-        self._canvas.clear().draw.rounded_rectangle(**self._args)
+    def render(self, canvas):
+        canvas.clear().draw.rounded_rectangle(**self._args)
+        return canvas()
 
 
 class Widget(Container):
@@ -110,7 +91,7 @@ class Widget(Container):
             content=content,
             xy=xy, size=size, fill=fill, radius=radius)
         self._state = {
-            f"{key}": "" for key in self.content.keys()
+            key: "" for key in self.content.keys()
         }
         self._name = ""
         self._dirty = False
@@ -139,10 +120,10 @@ class Widget(Container):
         itself with new content."""
         if self._dirty:
             for key, item in self.content.items():
-                if isinstance(item, StaticText):
+                if item.static:
                     continue
                 item.update_value(self._state[key])
-            self._render()
+            self.render()
             self._dirty = False
             return True
         return False
@@ -155,7 +136,7 @@ class WeekProgress(Content):
         self.y = y
         self._value = "0"
 
-    def _render(self):
+    def render(self):
         numb = int(self._value)
         self._canvas.clear()
         for i in range(7):

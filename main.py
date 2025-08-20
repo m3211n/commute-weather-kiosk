@@ -10,15 +10,20 @@ async def main(using_fb=True):
     logging.basicConfig(level=logging.INFO)
 
     dashboard = Dashboard()
+
+    # Make sure dashboard state is updated before first refresh
+    await dashboard.run_once()
     asyncio.create_task(dashboard.run_forever())
 
     with Screen(using_fb) as s:
         s.content = dashboard.widgets
-        await s.refresh(only_dirty=False)
         while True:
             # on = time.time()
-            await s.refresh()
-            await asyncio.sleep(5)
+            was_updated = await s.refresh()
+            if was_updated:
+                await asyncio.sleep(5)
+            else:
+                await asyncio.sleep(1)
 
 if __name__ == "__main__":
 
