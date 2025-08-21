@@ -42,7 +42,7 @@ class Dashboard:
                     "desc":         labels.regular(
                         64, 268, size=40, anchor="lt"),
                     "more":         labels.regular(
-                        64, 318, size=32, anchor="lt", accent=False),
+                        64, 318, size=32, anchor="lt"),
                     "icon":         ImageView(498, 90),
                     "hours":        labels.regular(
                         70, 504, size=32, spacing=38, accent=False),
