@@ -2,7 +2,7 @@ from PIL import Image, ImageDraw
 import numpy as np
 
 
-def convert(image: Image.Image):
+async def convert(image: Image.Image):
     """Convert image from RGB888 to RGB565
     for /dev/fb0 on Pi Zero 2W"""
     # Flatten RGBA image
