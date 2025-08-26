@@ -11,48 +11,40 @@ class Dashboard:
     def __init__(self):
 
         self.widgets = {
-            "info": Widget(
+            "info":         Widget(
                 xy=(0, 1136), size=(1920, 64), fill=(0, 0, 0, 255),
                 content={
                     "host_info":    labels.status(16, 32, anchor="lm"),
                     "sys_info":     labels.status(1888, 32, anchor="rm")
                 }
             ),
-            "clock": Widget(
+            "clock":        Widget(
                 xy=(24, 24), size=(1160, 386),
                 content={
                     "clock_image":  ImageView(),
-                    "time":         labels.time(580, 90),
-                    "date":         labels.date(580, 268)
+                    "time":         labels.time(64, 94),
+                    "date":         labels.date(64, 268)
                 }
             ),
-            "weather": Widget(
+            "weather":      Widget(
                 xy=(1208, 24), size=(688, 1112),
                 content={
                     "weather_image": ImageView(),
-                    "icon_sr":      labels.icon(
-                        64, 362, value="\uf051"),
-                    "sunrise":      labels.regular(
-                        128, 370, size=32, anchor="lt"),
-                    "icon_ss":      labels.icon(
-                        286, 362, value="\uf052"),
-                    "sunset":       labels.regular(
-                        350, 370, size=32, anchor="lt"),
-                    "temp":         labels.temp_now(64, 90),
-                    "desc":         labels.regular(
-                        64, 268, size=40, anchor="lt"),
-                    "more":         labels.regular(
-                        64, 318, size=32, anchor="lt"),
-                    "icon":         ImageView(498, 90),
-                    "hours":        labels.regular(
-                        70, 504, size=32, spacing=38, accent=False),
-                    "icons":        labels.icon(
-                        196, 500, spacing=31, align="center"),
-                    "temps":        labels.regular(
-                        280, 504, size=32, spacing=38)
+                    "icon_sr": labels.icon(64, 362, value="\uf051"),
+                    "sunrise": labels.regular(128, 370, size=32, anchor="lt"),
+                    "icon_ss": labels.icon(286, 362, value="\uf052"),
+                    "sunset": labels.regular(350, 370, size=32, anchor="lt"),
+                    "temp": labels.temp_now(64, 90),
+                    "desc": labels.regular(64, 268, size=40, anchor="lt"),
+                    "more": labels.regular(64, 318, size=32, anchor="lt"),
+                    "icon": ImageView(498, 90),
+                    "hours": labels.regular(70, 504, size=32, spacing=38,
+                                            accent=False),
+                    "icons": labels.icon(196, 500, spacing=31, align="center"),
+                    "temps": labels.regular(280, 504, size=32, spacing=38)
                 }
             ),
-            "departures": Widget(
+            "departures":   Widget(
                 xy=(24, 434), size=(1160, 702), fill=Colors.PANEL_BG,
                 radius=64,
                 content={
@@ -75,10 +67,10 @@ class Dashboard:
             )
         }
         self.updaters = {
-            "info": updaters.sys_info,
-            "clock": updaters.time_date,
-            "weather": updaters.weather,
-            "departures": updaters.departures
+            "info":         updaters.sys_info,
+            "clock":        updaters.time_date,
+            "weather":      updaters.weather,
+            "departures":   updaters.departures
         }
         self.tasks = [
             self.get_loop("info", 5),

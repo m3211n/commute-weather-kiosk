@@ -95,63 +95,65 @@ class Local:
         return ram
 
 
-# Departures
+class Remote:
 
-async def fetch_departures(s="train") -> dict:
-    site = {
-        "train": "9702",
-        "bus": "5875"
-    }
-    params = {
-        "train": {
-            "transport": "TRAIN",
-            "direction": 1,
-            "forecast": 1200
-        },
-        "bus": {
-            "transport": "BUS",
-            "forecast": 180
+    @staticmethod
+    async def departures(train=True) -> dict:
+        site = {
+            "train": "9702",
+            "bus": "5875"
         }
-    }
-    url = f"https://transport.integration.sl.se/v1/sites/{site[s]}/departures"
-    data = await fetch_json(
-        url=url,
-        params=params[s]
-    )
-    return data["departures"]
-
-
-# Weather data
-
-async def fetch_weather(segment="current") -> dict:
-    params = {
-        "units": "metric",
-        "lang": "sv",
-        "cnt": 8,
-        "lat": 59.421491,
-        "lon": 17.819238,
-        "appid": OWM_API_KEY
-    }
-    url = {
-        "current": "https://api.openweathermap.org/data/2.5/weather",
-        "hourly":  "https://api.openweathermap.org/data/2.5/forecast"
+        params = {
+            "train": {
+                "transport": "TRAIN",
+                "direction": 1,
+                "forecast": 1200
+            },
+            "bus": {
+                "transport": "BUS",
+                "forecast": 180
+            }
         }
-    data = await fetch_json(
-        url=url[segment],
-        params=params
-    )
-    return data
+        segment = "train" if train else "bus"
+        url = "".join([
+            "https://transport.integration.sl.se/v1/sites/",
+            f"{site[segment]}/departures"]
+        )
+        data = await fetch_json(
+            url=url,
+            params=params[segment]
+        )
+        return data["departures"]
 
+    @staticmethod
+    async def weather(current=True) -> dict:
+        params = {
+            "units": "metric",
+            "lang": "sv",
+            "cnt": 8,
+            "lat": 59.421491,
+            "lon": 17.819238,
+            "appid": OWM_API_KEY
+        }
+        url = {
+            "current": "https://api.openweathermap.org/data/2.5/weather",
+            "hourly":  "https://api.openweathermap.org/data/2.5/forecast"
+            }
+        segment = "current" if current else "hourly"
+        data = await fetch_json(
+            url=url[segment],
+            params=params
+        )
+        return data
 
-# Sunrise and sunset
-
-async def fetch_sun() -> dict:
-    url = "https://api.sunrise-sunset.org/json"
-    params = {
-        "lat": 59.421491,
-        "lng": 17.819238,
-        "tzid": "Europe/Stockholm",
-        "formatted": 0
-    }
-    data = await fetch_json(url, params)
-    return data
+    @staticmethod
+    async def sun() -> dict:
+        url = "https://api.sunrise-sunset.org/json"
+        params = {
+            "lat": 59.421491,
+            "lng": 17.819238,
+            "tzid": "Europe/Stockholm",
+            "formatted": 0
+        }
+        data = await fetch_json(url, params)
+        return data["results"]

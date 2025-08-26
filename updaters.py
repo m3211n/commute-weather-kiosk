@@ -1,4 +1,4 @@
-from core.data_sources import Local, fetch_weather, fetch_departures
+from core.data_sources import Local, Remote
 
 TIME_F_STR = "%H:%M"
 DATE_F_STR = "%A, %B %d"
@@ -118,8 +118,8 @@ async def weather() -> dict:
         }
         return icon_font[icon]
 
-    data = await fetch_weather()
-    hourly_data = await fetch_weather("hourly")
+    data = await Remote.weather()
+    hourly_data = await Remote.weather(False)
     hourly = _hourly(hourly_data)
     sun = _sun(data)
 
@@ -143,9 +143,9 @@ async def departures() -> dict:
 
     BUS_STOP_POINT = 51583
 
-    data_trains = await fetch_departures()
+    data_trains = await Remote.departures()
     data_buses = [
-        d for d in await fetch_departures("bus")
+        d for d in await Remote.departures(False)
         if d.get("stop_point", {}).get("id") == BUS_STOP_POINT
     ]
 
@@ -182,3 +182,26 @@ async def departures() -> dict:
         "bus_line": bus_info["line"],
         "bus_dest": bus_info["dest"],
     }
+
+
+# Sunset and sunrise
+
+async def sunset_sunrise():
+    from datetime import datetime
+
+    def get_epoch(s: str):
+        return int(datetime.fromisoformat(s).timestamp())
+
+    j = await Remote.sun()
+
+    epoch_sunrise = get_epoch(j["sunrise"])
+    epoch_noon = get_epoch(j["solar_noon"])
+    epoch_sunset = get_epoch(j["sunset"])
+    epoch_twilight_end = get_epoch(j["civil_twilight_end"])
+
+    return (
+        epoch_sunrise,
+        epoch_noon,
+        epoch_sunset,
+        epoch_twilight_end
+    )

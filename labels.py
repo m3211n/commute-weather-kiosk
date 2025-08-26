@@ -6,17 +6,17 @@ from shared.styles import font, Colors
 def time(x, y):
     return Text(
         xy=(x, y),
-        font=font("bold", 216),
+        font=font("bold", 200),
         fill=Colors.DEFAULT,
-        anchor="mt")
+        anchor="lt")
 
 
 def date(x, y):
     return Text(
         xy=(x, y),
-        font=font("bold", 40),
+        font=font("regular", 40),
         fill=Colors.DEFAULT,
-        anchor="mt")
+        anchor="lt")
 
 
 def temp_now(x, y):
