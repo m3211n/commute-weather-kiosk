@@ -1,5 +1,5 @@
 from core.render import Canvas
-from shared.styles import Colors
+from core.styles import Colors
 from typing import Dict
 
 DEFAULT_CONTAINER = (100, 100)

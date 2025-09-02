@@ -30,11 +30,11 @@ class TextStyle(dict):
 
 @dataclass(frozen=True)
 class Fonts:
-    bold: str = "./shared/fonts/Geist-Bold.ttf"
-    regular: str = "./shared/fonts/Geist-Regular.ttf"
-    light: str = "./shared/fonts/Geist-Light.ttf"
-    mono: str = "./shared/fonts/RobotoMono-Regular.ttf"
-    icon: str = "./shared/fonts/weathericons-regular-webfont.ttf"
+    bold: str = "./assets/fonts/Geist-Bold.ttf"
+    regular: str = "./assets/fonts/Geist-Regular.ttf"
+    light: str = "./assets/fonts/Geist-Light.ttf"
+    mono: str = "./assets/fonts/RobotoMono-Regular.ttf"
+    icon: str = "./assets/fonts/weathericons-regular-webfont.ttf"
 
 
 @dataclass(frozen=True)

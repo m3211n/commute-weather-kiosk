@@ -7,7 +7,7 @@ DATE_F_STR = "%A, %B %-d"
 # Run every 1 sec
 def time_date() -> dict:
     return {
-        "bg": f"./shared/images/clock/{Local.daytime()}.png",
+        "bg": f"./assets/images/clock/{Local.daytime()}.png",
         "time": Local.f_time(format=TIME_F_STR),
         "date": Local.f_time(format=DATE_F_STR).title()
     }
@@ -48,7 +48,7 @@ async def weather() -> dict:
             d = "day"
         else:
             d = "night"
-        return f"./shared/images/weather/{c}-{d}.png"
+        return f"./assets/images/weather/{c}-{d}.png"
 
     def _temperature(j) -> str:
         temp = round(j["main"]["temp"])
@@ -56,7 +56,7 @@ async def weather() -> dict:
 
     def _current_icon(j) -> str:
         icon = j["weather"][0]["icon"]
-        return f"./shared/icons/weather/{icon}.png"
+        return f"./assets/icons/weather/{icon}.png"
 
     def _desc(j) -> str:
         desc: str = j["weather"][0]["description"]

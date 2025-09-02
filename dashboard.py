@@ -3,7 +3,7 @@ import asyncio
 
 from inspect import isawaitable
 from core.ui import Widget, ImageView, Rect, Text
-from shared.styles import Colors, TextStyles
+from core.styles import Colors, TextStyles
 from typing import Any, Awaitable, Callable, Dict, Union
 
 
