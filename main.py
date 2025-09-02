@@ -12,18 +12,13 @@ async def main(using_fb=True):
     dashboard = Dashboard()
 
     # Make sure dashboard state is updated before first refresh
-    await dashboard.run_once()
-    asyncio.create_task(dashboard.run_forever())
+    asyncio.create_task(dashboard.run())
 
     with Screen(using_fb) as s:
         s.content = dashboard.widgets
         while True:
-            # on = time.time()
-            was_updated = await s.refresh()
-            if was_updated:
-                await asyncio.sleep(5)
-            else:
-                await asyncio.sleep(1)
+            await s.refresh()
+            await asyncio.sleep(0.2)
 
 if __name__ == "__main__":
 

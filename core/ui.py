@@ -52,7 +52,7 @@ class Text(Content):
 
     def render(self, canvas):
         self._args["text"] = self.value
-        canvas.clear().draw.text(**self._args)
+        canvas.clear().draw.multiline_text(**self._args)
         return canvas()
 
 
@@ -68,7 +68,7 @@ class ImageView(Content):
 
 class Rect(Content):
     def __init__(self, xy=(0, 0, 0, 0),
-                 fill=Colors.PANEL_BG, radius=DEFAULT_RADIUS):
+                 fill=Colors.panel_bg, radius=DEFAULT_RADIUS):
         super().__init__()
         self._args = {
             "xy": xy,
@@ -94,7 +94,7 @@ class Widget(Container):
             key: "" for key in self.content.keys()
         }
         self._name = ""
-        self._dirty = False
+        self.dirty = False
 
     @property
     def state(self):
@@ -113,18 +113,23 @@ class Widget(Container):
                 )
             if self._state[k] != new_state[k]:
                 self._state[k] = v
-                self._dirty = True
+                self.dirty = True
+        if self.dirty:
+            for key, item in self.content.items():
+                if not item.static:
+                    item.update_value(self._state[key])
+            self.render()
 
     async def update(self) -> bool:
         """Polls all children. If any child has outdated content, it renders
         itself with new content."""
-        if self._dirty:
+        if self.dirty:
             for key, item in self.content.items():
                 if item.static:
                     continue
                 item.update_value(self._state[key])
             self.render()
-            self._dirty = False
+            self.dirty = False
             return True
         return False
 

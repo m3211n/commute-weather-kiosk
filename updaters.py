@@ -1,13 +1,13 @@
 from core.data_sources import Local, Remote
 
 TIME_F_STR = "%H:%M"
-DATE_F_STR = "%A, %B %d"
+DATE_F_STR = "%A, %B %-d"
 
 
 # Run every 1 sec
 def time_date() -> dict:
     return {
-        "clock_image": f"./shared/images/clock/{Local.daytime()}.png",
+        "bg": f"./shared/images/clock/{Local.daytime()}.png",
         "time": Local.f_time(format=TIME_F_STR),
         "date": Local.f_time(format=DATE_F_STR).title()
     }
@@ -124,7 +124,7 @@ async def weather() -> dict:
     sun = _sun(data)
 
     return {
-        "weather_image": _weather_image(data),
+        "bg": _weather_image(data),
         "temp": _temperature(data),
         "icon": _current_icon(data),
         "desc": _desc(data),
