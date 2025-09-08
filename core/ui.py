@@ -1,13 +1,75 @@
-from core.render import Canvas
+from PIL import Image, ImageDraw
 from core.styles import Colors
-from typing import Dict
+from typing import Dict, Tuple
+from abc import ABC, abstractmethod
 
 DEFAULT_CONTAINER = (100, 100)
-DEFAULT_SCREEN_SIZE = (1920, 1200)
 DEFAULT_RADIUS = 24
 
 
-class Content:
+class Canvas:
+    def __init__(self, size, mode="RGBA"):
+        self._mode = mode
+        self._img = Image.new(mode=self._mode, size=size, color=(0, 0, 0, 0))
+
+    def __call__(self) -> Image.Image:
+        return self._img
+
+    def clear(self) -> "Canvas":
+        size = self._img.size
+        self._img = Image.new(mode=self._mode, size=size)
+        return self
+
+    def fill(self, color=(0, 0, 0, 0), radius=0) -> "Canvas":
+        if radius != 0:
+            self.draw.rounded_rectangle(
+                [0, 0, *self._img.size],
+                radius=radius,
+                fill=color
+            )
+        else:
+            self._img = Image.new(
+                mode=self._mode, size=self._img.size, color=color)
+        return self
+
+    def paste(self, img: Image.Image, xy=(0, 0)):
+        # import datetime
+        # print("Pasting image. Mode is", img.mode)
+        # f = f"{datetime.datetime.now().timestamp() * 1000}"
+        # img.save(f"__preview/output{f}.png", format="png")
+        mask = img.split()[3]
+        self._img.paste(img, xy, mask=mask)
+
+    def copy(self) -> "Canvas":
+        copy = Canvas(self._img.size, self._mode)
+        copy._img = self._img.copy()
+        return copy
+
+    def paste_from_url(self, url, xy=(0, 0)) -> "Canvas":
+        img = Image.open(url)
+        self._img.paste(img, xy)
+        return self
+
+    async def asRGB565(self):
+        from numpy import asarray, uint16
+        """Convert image from RGB888 to RGB565
+        for /dev/fb0 on Pi Zero 2W"""
+        # Flatten RGBA image
+        arr = asarray(self._img)
+        arr16 = arr.astype(uint16)
+        r = (arr16[:, :, 0] & 0xF8) << 8         # 5 bits
+        g = (arr16[:, :, 1] & 0xFC) << 3         # 6 bits
+        b = (arr16[:, :, 2] & 0xF8) >> 3         # 5 bits
+        rgb565 = r | g | b
+        # little-endian for /dev/fb0
+        return rgb565.astype('<u2').tobytes()
+
+    @property
+    def draw(self):
+        return ImageDraw.Draw(self._img)
+
+
+class Content(ABC):
     def __init__(self, xy=(0, 0), value=None):
         self.xy = xy
         self.static = True if value else False
@@ -19,12 +81,14 @@ class Content:
             return True
         return False
 
-    def render(self, canvas: Canvas) -> Canvas:
+    @abstractmethod
+    def paint_at_box(self, box: Tuple[int, int] = DEFAULT_CONTAINER) -> Canvas:
         """Renders self at provided canvas (typically at parent's canvas)"""
-        return canvas()
+        canvas = Canvas(box)
+        return canvas
 
 
-class Container:
+class Container(ABC):
     def __init__(self, xy, size, fill, radius, content={}):
         self.xy = xy
         self.fill = fill
@@ -33,12 +97,11 @@ class Container:
         self.size = size
         self._canvas: Canvas = Canvas(size)
 
-    def render(self):
+    def paint_content(self):
         """Widget renders itself if it is changed"""
         self._canvas.fill(self.fill, self.radius)
         for child in self.content.values():
-            child_canvas: Canvas = self._canvas.copy()
-            self._canvas.paste(child.render(child_canvas), child.xy)
+            self._canvas.paste(child.paint_at_box(self.size), child.xy)
 
     @property
     def image(self):
@@ -50,9 +113,10 @@ class Text(Content):
         super().__init__(value=value)
         self._args = kwargs
 
-    def render(self, canvas):
+    def paint_at_box(self, box=DEFAULT_CONTAINER):
+        canvas = super().paint_at_box(box)
         self._args["text"] = self.value
-        canvas.clear().draw.multiline_text(**self._args)
+        canvas.draw.multiline_text(**self._args)
         return canvas()
 
 
@@ -61,8 +125,9 @@ class ImageView(Content):
         super().__init__(value=value)
         self._position = (x, y)
 
-    def render(self, canvas) -> Canvas:
-        canvas.clear().load(self.value, self._position)
+    def paint_at_box(self, box=DEFAULT_CONTAINER) -> Canvas:
+        canvas = super().paint_at_box(box)
+        canvas.paste_from_url(self.value, self._position)
         return canvas()
 
 
@@ -76,8 +141,9 @@ class Rect(Content):
             "fill": fill
         }
 
-    def render(self, canvas):
-        canvas.clear().draw.rounded_rectangle(**self._args)
+    def paint_at_box(self, box=DEFAULT_CONTAINER):
+        canvas = super().paint_at_box(box)
+        canvas.draw.rounded_rectangle(**self._args)
         return canvas()
 
 
@@ -114,26 +180,15 @@ class Widget(Container):
             if self._state[k] != new_state[k]:
                 self._state[k] = v
                 self.dirty = True
-        if self.dirty:
-            for key, item in self.content.items():
-                if not item.static:
-                    item.update_value(self._state[key])
-            self.render()
 
-    async def update(self) -> bool:
-        """Polls all children. If any child has outdated content, it renders
-        itself with new content."""
-        if self.dirty:
-            for key, item in self.content.items():
-                if item.static:
-                    continue
+    def update(self):
+        for key, item in self.content.items():
+            if not item.static:
                 item.update_value(self._state[key])
-            self.render()
-            self.dirty = False
-            return True
-        return False
+        self.paint_content()
 
 
+"""
 class WeekProgress(Content):
     def __init__(self, x=0, y=0):
         super().__init__()
@@ -155,3 +210,4 @@ class WeekProgress(Content):
                 fill=fill,
                 outline=Colors.DEFAULT,
                 width=2)
+"""
