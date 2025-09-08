@@ -30,7 +30,8 @@ async def main(using_fb=True):
                     fb.write_at(buf, xy, size)
                     logging.info("<%s> updated", name)
                 elapsed = perf_counter() - elapsed
-                logging.info(f"Refresh routine complete in: {elapsed:.3f} s.")
+                if elapsed > 0:
+                    logging.info(f"Render time: {elapsed:.3f} s.")
                 if elapsed < 1:
                     await asyncio.sleep(1 - elapsed)
 
@@ -39,7 +40,7 @@ async def main(using_fb=True):
             elapsed = perf_counter()
             dashboard.debug()
             elapsed = perf_counter() - elapsed
-            logging.info(f"Refresh routine complete in: {elapsed:.3f} s.")
+            logging.info(f"Render time: {elapsed:.3f} s.")
             if elapsed < 1:
                 await asyncio.sleep(1 - elapsed)
 
