@@ -60,9 +60,9 @@ class Dashboard:
                 widget.dirty = False
                 yield (name, widget)
 
-    def debug(self, path="__preview/output.png", format="PNG"):
+    def debug(self, format="PNG"):
         from core.ui import Image
-        from defaults import SCREEN_WIDTH, SCREEN_HEIGHT
+        from defaults import SCREEN_WIDTH, SCREEN_HEIGHT, DEBUG_IMG_PATH
 
         image = Image.new("RGB", (SCREEN_WIDTH, SCREEN_HEIGHT))
         for widget in self.widgets.values():
@@ -71,4 +71,4 @@ class Dashboard:
                 box=tuple(widget.xy),
                 mask=widget._canvas().split()[3]
             )
-        image.save(fp=path, format=format)
+        image.save(fp=DEBUG_IMG_PATH, format=format)

@@ -5,3 +5,5 @@ SCREEN_HEIGHT = 1200
 BYTES_PER_PIXEL = 2
 FB_PATH = "/dev/fb0"
 BG_COLOR = (0, 0, 0)
+UPDATE_RATE_SEC = 1
+DEBUG_IMG_PATH = "__preview/output.png"

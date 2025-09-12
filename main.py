@@ -6,6 +6,8 @@ from time import perf_counter
 from core.framebuffer import FrameBuffer
 from dashboard import Dashboard
 
+from defaults import UPDATE_RATE_SEC
+
 
 async def main(using_fb=True):
     from layout import WIDGETS
@@ -30,10 +32,11 @@ async def main(using_fb=True):
                     fb.write_at(buf, xy, size)
                     logging.info("<%s> updated", name)
                 elapsed = perf_counter() - elapsed
-                if round(elapsed, 3) > 0:
-                    logging.info(f"Render time: {elapsed:.3f} s.")
-                if elapsed < 1:
-                    await asyncio.sleep(1 - elapsed)
+                elapsed_3f = round(elapsed, 3)
+                if elapsed_3f > 0:
+                    logging.info(f"Render time: {elapsed_3f} s.")
+                if elapsed < UPDATE_RATE_SEC:
+                    await asyncio.sleep(UPDATE_RATE_SEC - elapsed)
 
     else:
         while True:
@@ -41,8 +44,8 @@ async def main(using_fb=True):
             dashboard.debug()
             elapsed = perf_counter() - elapsed
             logging.info(f"Render time: {elapsed:.3f} s.")
-            if elapsed < 1:
-                await asyncio.sleep(1 - elapsed)
+            if elapsed < UPDATE_RATE_SEC:
+                await asyncio.sleep(UPDATE_RATE_SEC - elapsed)
 
 
 if __name__ == "__main__":
