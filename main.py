@@ -6,7 +6,7 @@ from time import perf_counter
 from core.framebuffer import FrameBuffer
 from dashboard import Dashboard
 
-from defaults import UPDATE_RATE_SEC
+from settings import UPDATE_RATE_SEC
 
 
 async def main(using_fb=True):

@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from defaults import (
+from settings import (
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
     BG_COLOR,

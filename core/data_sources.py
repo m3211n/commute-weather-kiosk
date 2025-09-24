@@ -14,6 +14,17 @@ try:
 except ImportError:
     pass
 
+from settings import (
+    WEATHER_CURRENT_API,
+    WEATHER_HOURLY_API,
+    WEATHER_LATITUDE,
+    WEATHER_LONGITUDE,
+    SL_SITE_ID_BUS,
+    SL_SITE_ID_TRAIN,
+    SL_API,
+    SUNSET_API
+)
+
 OWM_API_KEY = os.environ.get("OWM_API_KEY")
 SL_API_KEY = os.environ.get("SL_API_KEY")
 
@@ -100,13 +111,13 @@ class Remote:
     @staticmethod
     async def departures(train=True) -> dict:
         site = {
-            "train": "9702",
-            "bus": "5875"
+            "train": SL_SITE_ID_TRAIN,
+            "bus": SL_SITE_ID_BUS
         }
         params = {
             "train": {
                 "transport": "TRAIN",
-                "direction": 1,
+                "direction": 2,
                 "forecast": 1200
             },
             "bus": {
@@ -116,7 +127,7 @@ class Remote:
         }
         segment = "train" if train else "bus"
         url = "".join([
-            "https://transport.integration.sl.se/v1/sites/",
+            SL_API,
             f"{site[segment]}/departures"]
         )
         data = await fetch_json(
@@ -131,13 +142,13 @@ class Remote:
             "units": "metric",
             "lang": "sv",
             "cnt": 8,
-            "lat": 59.421491,
-            "lon": 17.819238,
+            "lat": WEATHER_LATITUDE,
+            "lon": WEATHER_LONGITUDE,
             "appid": OWM_API_KEY
         }
         url = {
-            "current": "https://api.openweathermap.org/data/2.5/weather",
-            "hourly":  "https://api.openweathermap.org/data/2.5/forecast"
+            "current": WEATHER_CURRENT_API,
+            "hourly":  WEATHER_HOURLY_API
             }
         segment = "current" if current else "hourly"
         data = await fetch_json(
@@ -148,7 +159,7 @@ class Remote:
 
     @staticmethod
     async def sun() -> dict:
-        url = "https://api.sunrise-sunset.org/json"
+        url = SUNSET_API
         params = {
             "lat": 59.421491,
             "lng": 17.819238,

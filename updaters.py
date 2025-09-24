@@ -1,4 +1,7 @@
 from core.data_sources import Local, Remote
+from settings import (
+    SL_BUS_STOP_POINT_ID
+)
 
 TIME_F_STR = "%H:%M"
 DATE_F_STR = "%A, %B %-d"
@@ -58,9 +61,8 @@ async def weather() -> dict:
         icon = j["weather"][0]["icon"]
         return f"./assets/icons/weather/{icon}.png"
 
-    def _desc(j) -> str:
-        desc: str = j["weather"][0]["description"]
-        return desc.capitalize()
+    def _location(j) -> str:
+        return j["name"]
 
     def _sun(j) -> str:
         sunrise = j["sys"]["sunrise"]
@@ -127,7 +129,7 @@ async def weather() -> dict:
         "bg": _weather_image(data),
         "temp": _temperature(data),
         "icon": _current_icon(data),
-        "desc": _desc(data),
+        "desc": _location(data),
         "more": _more(data),
         "sunrise": sun[0],
         "sunset": sun[1],
@@ -141,12 +143,15 @@ async def weather() -> dict:
 async def departures() -> dict:
     # import json
 
-    BUS_STOP_POINT = 51583
-
     data_trains = await Remote.departures()
     data_buses = [
         d for d in await Remote.departures(False)
-        if d.get("stop_point", {}).get("id") == BUS_STOP_POINT
+        if (
+            d["stop_point"]["id"] == SL_BUS_STOP_POINT_ID and
+            d["line"]["designation"] in (
+                "809", "892", "809C", "807"
+            )
+        )
     ]
 
     # print(json.dumps(data_buses, indent=2, ensure_ascii=False))

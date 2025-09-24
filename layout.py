@@ -60,7 +60,7 @@ WIDGETS = [
             content={
                 "title_train":   Text(
                     xy=(64, 58),   **TextStyles.transport_title,
-                    value="Pendeltåg mot Nynäshamn"),
+                    value="Pendeltåg mot Bålsta"),
                 "train_line":    Text(
                     xy=(64, 117), **TextStyles.line_codes),
                 "train_dest":    Text(
@@ -72,7 +72,7 @@ WIDGETS = [
                     fill=(255, 255, 255, 32)),
                 "title_bus":     Text(
                     xy=(64, 386),  **TextStyles.transport_title,
-                    value="Buss mot Jakobsberg C"),
+                    value="Buss mot Stockholm C och Gullmarsplan"),
                 "bus_line":      Text(
                     xy=(64, 447), **TextStyles.line_codes),
                 "bus_dest":      Text(

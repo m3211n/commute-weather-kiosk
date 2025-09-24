@@ -62,7 +62,7 @@ class Dashboard:
 
     def debug(self, format="PNG"):
         from core.ui import Image
-        from defaults import SCREEN_WIDTH, SCREEN_HEIGHT, DEBUG_IMG_PATH
+        from settings import SCREEN_WIDTH, SCREEN_HEIGHT, DEBUG_IMG_PATH
 
         image = Image.new("RGB", (SCREEN_WIDTH, SCREEN_HEIGHT))
         for widget in self.widgets.values():
