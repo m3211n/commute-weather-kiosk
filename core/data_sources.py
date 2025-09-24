@@ -122,7 +122,8 @@ class Remote:
             },
             "bus": {
                 "transport": "BUS",
-                "forecast": 180
+                "direction": 2,
+                "forecast": 1200
             }
         }
         segment = "train" if train else "bus"

@@ -1,7 +1,4 @@
 from core.data_sources import Local, Remote
-from settings import (
-    SL_BUS_STOP_POINT_ID
-)
 
 TIME_F_STR = "%H:%M"
 DATE_F_STR = "%A, %B %-d"
@@ -146,11 +143,8 @@ async def departures() -> dict:
     data_trains = await Remote.departures()
     data_buses = [
         d for d in await Remote.departures(False)
-        if (
-            d["stop_point"]["id"] == SL_BUS_STOP_POINT_ID and
-            d["line"]["designation"] in (
+        if d["line"]["designation"] in (
                 "809", "892", "809C", "807"
-            )
         )
     ]
 
