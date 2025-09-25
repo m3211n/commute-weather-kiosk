@@ -140,7 +140,7 @@ async def weather() -> dict:
 async def departures() -> dict:
     # import json
 
-    data_trains = await Remote.departures()
+    # data_trains = await Remote.departures()
     data_buses = [
         d for d in await Remote.departures(False)
         if d["line"]["designation"] in (
@@ -162,7 +162,7 @@ async def departures() -> dict:
             line.append(departure["line"]["designation"])
             dest.append(departure["destination"])
             count = count + 1
-            if count == 3:
+            if count == 8:
                 break
         return {
             "display": "\n".join(display),
@@ -170,13 +170,13 @@ async def departures() -> dict:
             "dest": "\n".join(dest)
         }
 
-    train_info = _extract_lists(data_trains)
+    # train_info = _extract_lists(data_trains)
     bus_info = _extract_lists(data_buses)
 
     return {
-        "train_display": train_info["display"],
-        "train_line": train_info["line"],
-        "train_dest": train_info["dest"],
+        # "train_display": train_info["display"],
+        # "train_line": train_info["line"],
+        # "train_dest": train_info["dest"],
         "bus_display": bus_info["display"],
         "bus_line": bus_info["line"],
         "bus_dest": bus_info["dest"],

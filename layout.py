@@ -1,5 +1,8 @@
 import updaters
-from core.ui import Widget, ImageView, Rect, Text
+from core.ui import (
+    Widget, ImageView, Text,
+    # Rect
+)
 from core.styles import Colors, TextStyles
 
 WIDGETS = [
@@ -58,27 +61,27 @@ WIDGETS = [
             xy=(24, 434), size=(1160, 702), fill=Colors.panel_bg,
             radius=32,
             content={
-                "title_train":   Text(
+                "title_bus":   Text(
                     xy=(64, 58),   **TextStyles.transport_title,
-                    value="Pendeltåg mot Bålsta"),
-                "train_line":    Text(
-                    xy=(64, 117), **TextStyles.line_codes),
-                "train_dest":    Text(
-                    xy=(208, 117), **TextStyles.destinations),
-                "train_display": Text(
-                    xy=(1096, 117),  **TextStyles.departures),
-                "rect":          Rect(
-                    (64, 350, 1096, 352), radius=1,
-                    fill=(255, 255, 255, 32)),
-                "title_bus":     Text(
-                    xy=(64, 386),  **TextStyles.transport_title,
                     value="Buss mot Stockholm C och Gullmarsplan"),
-                "bus_line":      Text(
-                    xy=(64, 447), **TextStyles.line_codes),
-                "bus_dest":      Text(
-                    xy=(208, 447), **TextStyles.destinations),
-                "bus_display":   Text(
-                    xy=(1096, 447),  **TextStyles.departures)
+                "bus_line":    Text(
+                    xy=(64, 117), **TextStyles.line_codes),
+                "bus_dest":    Text(
+                    xy=(208, 117), **TextStyles.destinations),
+                "bus_display": Text(
+                    xy=(1096, 117),  **TextStyles.departures),
+                # "rect":          Rect(
+                #     (64, 350, 1096, 352), radius=1,
+                #     fill=(255, 255, 255, 32)),
+                # "title_bus":     Text(
+                #     xy=(64, 386),  **TextStyles.transport_title,
+                #     value="Buss mot Stockholm C och Gullmarsplan"),
+                # "bus_line":      Text(
+                #     xy=(64, 447), **TextStyles.line_codes),
+                # "bus_dest":      Text(
+                #     xy=(208, 447), **TextStyles.destinations),
+                # "bus_display":   Text(
+                #     xy=(1096, 447),  **TextStyles.departures)
             }
         ),
         "updater": updaters.departures,

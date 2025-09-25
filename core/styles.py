@@ -67,21 +67,21 @@ class TextStyles:
     line_codes = TextStyle(
         font_path=Fonts.regular,
         size=48,
-        spacing=16,
+        spacing=18,
         anchor=None
     )
     destinations = TextStyle(
         font_path=Fonts.regular,
         size=48,
         fill=Colors.secondary,
-        spacing=16,
+        spacing=18,
         anchor=None
     )
     departures = TextStyle(
         font_path=Fonts.bold,
         size=48,
         fill=Colors.highlight,
-        spacing=16,
+        spacing=18,
         features=["tnum"],
         align="right",
         anchor="ra"
