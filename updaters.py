@@ -144,7 +144,7 @@ async def departures() -> dict:
     data_buses = [
         d for d in await Remote.departures(False)
         if d["line"]["designation"] in (
-                "809", "892", "809C", "807"
+                "809", "809C"
         )
     ]
 
