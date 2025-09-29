@@ -1,4 +1,5 @@
 from typing import Tuple
+from numpy import zeros
 
 from settings import (
     SCREEN_WIDTH,
@@ -30,7 +31,6 @@ class FrameBuffer:
             self.output.close()
 
     def clear(self):
-        from numpy import zeros
         self.output.write(zeros(self.size, dtype="<u2"))
 
     def write_at(
