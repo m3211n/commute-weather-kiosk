@@ -1,6 +1,7 @@
 deploy.log
 __*
 venv/
+venv-wsl/
 __pycache__/
 *.pyc
 *.code-workspace
