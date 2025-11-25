@@ -23,7 +23,7 @@ WIDGETS = [
         "widget": Widget(
             xy=(24, 24), size=(1160, 386),
             content={
-                "bg":   ImageView(),
+                # "bg":   ImageView(),
                 "time": Text(xy=(580, 34),  **TextStyles.time),
                 "date": Text(xy=(580, 262), **TextStyles.date)
             }
@@ -36,7 +36,7 @@ WIDGETS = [
         "widget": Widget(
             xy=(1208, 24), size=(688, 1112),
             content={
-                # "bg":      ImageView(),
+                "bg":      ImageView(),
                 "temp":    Text(xy=(64, 34),   **TextStyles.temperature),
                 "icon":    ImageView(498, 90),
                 "desc":    Text(xy=(64, 262),  **TextStyles.weather_cond),
