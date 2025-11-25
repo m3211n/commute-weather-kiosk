@@ -21,7 +21,7 @@ WIDGETS = [
     {
         "name": "Clock",
         "widget": Widget(
-            xy=(24, 24), size=(1160, 386), fill=Colors.panel_bg
+            xy=(24, 24), size=(1160, 386), fill=Colors.panel_bg,
             content={
                 # "bg":   ImageView(),
                 "time": Text(xy=(580, 34),  **TextStyles.time),
