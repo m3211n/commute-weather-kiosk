@@ -7,7 +7,7 @@ DATE_F_STR = "%A, %B %-d"
 # Run every 1 sec
 def time_date() -> dict:
     return {
-        "bg": f"./assets/images/clock/{Local.daytime()}.png",
+        # "bg": f"./assets/images/clock/{Local.daytime()}.png",
         "time": Local.f_time(format=TIME_F_STR),
         "date": Local.f_time(format=DATE_F_STR).title()
     }

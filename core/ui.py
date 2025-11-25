@@ -171,7 +171,7 @@ class Widget(Container):
         for k, v in new_state.items():
             if not (k in self._state.keys()):
                 raise ValueError(
-                    f"Widget <{self._name}> got unknown key <{k}>",
+                    f"Unknown key <{k}>",
                 )
             if not isinstance(v, str):
                 raise TypeError(
