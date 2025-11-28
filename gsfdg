@@ -1,0 +1,325 @@
+[33m823276d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31mpi-zero-2w/main[m[33m, [m[1;31mpi-zero-2w/HEAD[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: pull origin main --allow-unrelated-histories (finish): returning to refs/heads/main
+[33m823276d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31mpi-zero-2w/main[m[33m, [m[1;31mpi-zero-2w/HEAD[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{1}: pull origin main --allow-unrelated-histories (start): checkout 823276dcf854bd5610e913793571ab78a7979015
+[33mccf6711[m HEAD@{2}: checkout: moving from master to main
+[33m07c8bce[m[33m ([m[1;31mpi-zero-2w/master[m[33m, [m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{3}: checkout: moving from main to master
+[33mccf6711[m HEAD@{4}: commit: testing commit
+[33m4cf58dc[m HEAD@{5}: commit: added radius
+[33mb938938[m HEAD@{6}: commit: removed bg from clock
+[33mbe6a1eb[m HEAD@{7}: commit: fixed syntax
+[33mee76722[m HEAD@{8}: commit: removed bg from clock
+[33md0f10b8[m HEAD@{9}: commit: removed bg from clock
+[33m2ced92a[m HEAD@{10}: commit: removed clock bg
+[33mcb41692[m HEAD@{11}: pull --tags pi-zero-2w main (finish): returning to refs/heads/main
+[33mcb41692[m HEAD@{12}: pull --tags pi-zero-2w main (pick): added 838, 832
+[33ma652932[m HEAD@{13}: pull --tags pi-zero-2w main (start): checkout a6529322d9c0427f9b84945992a6791a39f1683f
+[33m7d80a60[m HEAD@{14}: commit: added 838, 832
+[33maba02ec[m HEAD@{15}: commit: narrow down filter for buses
+[33m4b66165[m HEAD@{16}: commit: updated requirements
+[33mb839f8c[m HEAD@{17}: commit: removed import from method and added to the whole module
+[33me3d5dfd[m HEAD@{18}: commit: only buses
+[33mf28cc0e[m HEAD@{19}: commit: fixed bus bug
+[33m8c41426[m HEAD@{20}: commit: updated to new locations
+[33m5bff6be[m HEAD@{21}: commit: small refactoring
+[33me9c44d6[m HEAD@{22}: commit: reduce logging
+[33m0695810[m HEAD@{23}: commit: reduce logging
+[33me68d362[m HEAD@{24}: commit: testing new approach
+[33m4eae04d[m HEAD@{25}: commit: refactor dashboard
+[33mf2a02da[m HEAD@{26}: commit: restructure files
+[33m2bc018e[m HEAD@{27}: commit: redesign
+[33m255f31e[m HEAD@{28}: commit: updated images
+[33ma4d5241[m HEAD@{29}: commit: white font for weather additional info
+[33mecc2cd9[m HEAD@{30}: commit: fix?
+[33m9f48932[m HEAD@{31}: commit: refactoring
+[33m97c983f[m HEAD@{32}: commit: remove json print
+[33m7436438[m HEAD@{33}: commit: test deploy with SL
+[33m4cb06a4[m HEAD@{34}: commit: test
+[33ma245ca0[m HEAD@{35}: commit: test
+[33m4d4c7b4[m HEAD@{36}: commit: new images
+[33me201537[m HEAD@{37}: commit: new day images
+[33mfcaf5d2[m HEAD@{38}: commit: test
+[33m47c5299[m HEAD@{39}: commit: test
+[33m164e808[m HEAD@{40}: commit: test
+[33mdc61e77[m HEAD@{41}: commit: test
+[33m01583ba[m HEAD@{42}: commit: test
+[33m9e757b7[m HEAD@{43}: commit: test
+[33ma35318a[m HEAD@{44}: commit: test
+[33ma292658[m HEAD@{45}: commit: simplified data sources
+[33mc790d8f[m HEAD@{46}: commit: minor text position
+[33m841d6e2[m HEAD@{47}: commit: light font
+[33m8ab69cc[m HEAD@{48}: commit: font color
+[33m41f1166[m HEAD@{49}: commit: updated widgets
+[33m80a818a[m HEAD@{50}: commit: test new weather widget
+[33mae59926[m HEAD@{51}: commit: test
+[33m61f1003[m HEAD@{52}: commit: test
+[33ma828bb4[m HEAD@{53}: commit: test
+[33m04899ed[m HEAD@{54}: commit: test
+[33mb28f63b[m HEAD@{55}: commit: test time
+[33m1615eb0[m HEAD@{56}: commit: test clock
+[33mf9be5f1[m HEAD@{57}: commit: remove week progress
+[33mb12e43a[m HEAD@{58}: commit: test
+[33m9a89842[m HEAD@{59}: commit: icons2
+[33mfe36d31[m HEAD@{60}: commit: test
+[33m3e400d5[m HEAD@{61}: commit: test
+[33m1cbceec[m HEAD@{62}: commit: test
+[33m56e9ca9[m HEAD@{63}: commit: test
+[33m7866f65[m HEAD@{64}: commit: week progress
+[33m56d3bdc[m HEAD@{65}: commit: test
+[33medaa4a0[m HEAD@{66}: commit: fix
+[33m2ed85ab[m HEAD@{67}: commit: test
+[33m1ecf1a2[m HEAD@{68}: commit: test
+[33mabb5d4b[m HEAD@{69}: commit: ee
+[33mdfc0bf9[m HEAD@{70}: commit: test
+[33mce1437e[m HEAD@{71}: commit: finalllll
+[33mf7213f9[m HEAD@{72}: commit: test new design
+[33mbe6f66d[m HEAD@{73}: commit: weather final final
+[33m145fd2d[m HEAD@{74}: commit: weather redesign final
+[33m212bb38[m HEAD@{75}: commit: new weather
+[33m6b4bf18[m HEAD@{76}: commit: new images
+[33mb4ae15a[m HEAD@{77}: commit: test
+[33m884bbde[m HEAD@{78}: commit: test
+[33mc26265c[m HEAD@{79}: commit: test
+[33m97f1d47[m HEAD@{80}: commit: test
+[33mafc2c67[m HEAD@{81}: commit: test
+[33m5701cf6[m HEAD@{82}: commit: test
+[33me376c11[m HEAD@{83}: commit: test
+[33mf75c3d4[m HEAD@{84}: commit: test
+[33m7ab08ab[m HEAD@{85}: commit: fix
+[33mdccbc1b[m HEAD@{86}: commit: test
+[33m5573ad7[m HEAD@{87}: commit: optional anchor
+[33mbe2763c[m HEAD@{88}: commit: test
+[33m1e464ae[m HEAD@{89}: commit: test more weather
+[33mf983e77[m HEAD@{90}: commit: test
+[33m24d2589[m HEAD@{91}: commit: weather widget
+[33m29aad91[m HEAD@{92}: commit: test text opacity
+[33mceb746a[m HEAD@{93}: commit: test opacity
+[33m9f63834[m HEAD@{94}: commit: transparent text test
+[33m17054e8[m HEAD@{95}: commit: wind
+[33m1b4f376[m HEAD@{96}: commit: text not transparent
+[33ma1b44c1[m HEAD@{97}: commit: min maX
+[33mfba84c7[m HEAD@{98}: commit: min max
+[33m4e92c06[m HEAD@{99}: commit: missed await
+[33m8ee2fb8[m HEAD@{100}: commit: weather widget update (day_time) relies on weather data
+[33mf122025[m HEAD@{101}: commit: updated weather widget
+[33m6ef28aa[m HEAD@{102}: commit: weather list opacity
+[33m8f3819f[m HEAD@{103}: commit: refactorioooo
+[33mfd1dee1[m HEAD@{104}: commit: hope it will work...
+[33mf511370[m HEAD@{105}: commit: new images
+[33m46e018d[m HEAD@{106}: commit: test deploy
+[33m57a43ed[m HEAD@{107}: commit: test
+[33me7e3431[m HEAD@{108}: commit: final deploy async arch
+[33m8735524[m HEAD@{109}: commit: test deploy new arch
+[33m8149306[m HEAD@{110}: commit: test
+[33m5c131cf[m HEAD@{111}: commit: test
+[33m402cd50[m HEAD@{112}: commit: test merge
+[33mdb5df04[m HEAD@{113}: commit: test convert
+[33m48799f1[m HEAD@{114}: commit: test convert
+[33m1bcd763[m HEAD@{115}: commit: test color fill
+[33m1f7fee9[m HEAD@{116}: commit: test panel bg
+[33m3baa9dc[m HEAD@{117}: commit: test
+[33mbfd1eba[m HEAD@{118}: commit: test palette
+[33m4e50960[m HEAD@{119}: commit: test convert
+[33mce22870[m HEAD@{120}: commit: test convert
+[33m0c65bff[m HEAD@{121}: commit: new arch
+[33m8b3be9c[m HEAD@{122}: commit: test
+[33m3aec74d[m HEAD@{123}: commit: test
+[33me039f30[m HEAD@{124}: commit: test
+[33m27d6010[m HEAD@{125}: commit: test
+[33m7d780f6[m HEAD@{126}: commit: test deploy
+[33m5d20fb9[m HEAD@{127}: commit: fix
+[33m3c5c75d[m HEAD@{128}: commit: fix
+[33m31e5066[m HEAD@{129}: commit: test
+[33md425679[m HEAD@{130}: commit: fixed broken label draw
+[33m23c430e[m HEAD@{131}: commit: fix
+[33m42da3d8[m HEAD@{132}: commit: fix???
+[33m21cb76a[m HEAD@{133}: commit: fix?
+[33mad1a5da[m HEAD@{134}: commit: fix
+[33m7c56fc5[m HEAD@{135}: commit: test
+[33mb3311ae[m HEAD@{136}: commit: fix
+[33m2467d4e[m HEAD@{137}: commit: fix
+[33m7db595b[m HEAD@{138}: commit: simplified widgets and render lib
+[33mf2358fb[m HEAD@{139}: commit: fixed icon alpha channel
+[33m618be9a[m HEAD@{140}: commit: fix relative position
+[33m973f155[m HEAD@{141}: commit: removed _clear from text
+[33mb0b08ce[m HEAD@{142}: commit: add content type, which renders to parent canvas
+[33m3945a6c[m HEAD@{143}: commit: testing relative position
+[33mc4e830e[m HEAD@{144}: commit: trying hourly weather widget
+[33mbc36f34[m HEAD@{145}: commit: trying hourly weather widget
+[33m395ff9f[m HEAD@{146}: commit: new colors and changed location for styles
+[33m8d9c203[m HEAD@{147}: commit: changed secondary label in weather
+[33m5be60d9[m HEAD@{148}: commit: testing weather widget
+[33mf3ae8be[m HEAD@{149}: commit: testing weather data
+[33m46794c4[m HEAD@{150}: commit: fixed images filenames
+[33mcb7a5bf[m HEAD@{151}: commit: new clouds images
+[33m487926f[m HEAD@{152}: commit: temp rounded
+[33mdc1eee3[m HEAD@{153}: commit: deploy new font for weather
+[33m687b3db[m HEAD@{154}: commit: test
+[33m0f52b53[m HEAD@{155}: commit: debug deploy
+[33mb45d960[m HEAD@{156}: commit: test
+[33mb15d3ad[m HEAD@{157}: commit: test
+[33m9e9a65a[m HEAD@{158}: commit: test
+[33mff5cf30[m HEAD@{159}: commit: test
+[33m44173e3[m HEAD@{160}: commit: test
+[33m58f8a48[m HEAD@{161}: commit: test
+[33m01a6394[m HEAD@{162}: checkout: moving from d9335d2f2261d818548a16d5f537f5ed069c9526 to main
+[33md9335d2[m HEAD@{163}: checkout: moving from bf02c88d744fba6762f591303486c9662f31bde0 to d9335d2f2261d818548a16d5f537f5ed069c9526
+[33mbf02c88[m HEAD@{164}: checkout: moving from main to bf02c88d744fba6762f591303486c9662f31bde0
+[33m01a6394[m HEAD@{165}: checkout: moving from 58b61e677c2f80b0eab6d2ce0187b8f751b6274f to main
+[33m58b61e6[m HEAD@{166}: checkout: moving from main to 58b61e677c2f80b0eab6d2ce0187b8f751b6274f
+[33m01a6394[m HEAD@{167}: checkout: moving from 5305fafddf48d0027fa8946412f1d9027df08aa4 to main
+[33m5305faf[m HEAD@{168}: checkout: moving from main to 5305fafddf48d0027fa8946412f1d9027df08aa4
+[33m01a6394[m HEAD@{169}: commit: test deploy
+[33m638b541[m HEAD@{170}: commit: test deploy
+[33m3548dae[m HEAD@{171}: commit: test deploy
+[33m58b61e6[m HEAD@{172}: commit: test deploy
+[33mbf02c88[m HEAD@{173}: commit: test deploy
+[33md9335d2[m HEAD@{174}: commit: test deploy
+[33mef100a0[m HEAD@{175}: commit: test deploy
+[33m1a853ba[m HEAD@{176}: commit: test deploy
+[33m5305faf[m HEAD@{177}: commit: sleep 5 sec instead of 1
+[33mfb83cca[m HEAD@{178}: commit: test deploy
+[33mc92181f[m HEAD@{179}: commit: test deploy
+[33m84dc11b[m HEAD@{180}: commit: test deploy
+[33m3013a2c[m HEAD@{181}: commit: debug deploy
+[33mc03424a[m HEAD@{182}: commit: test deploy
+[33mbd12ba8[m HEAD@{183}: commit: test deploy
+[33m3a0ee4f[m HEAD@{184}: commit: gack to old code
+[33m5f6855d[m HEAD@{185}: commit: test
+[33m77d7af7[m HEAD@{186}: commit: test
+[33ma0e00aa[m HEAD@{187}: commit: test
+[33me505a52[m HEAD@{188}: commit: new images
+[33m71440bc[m HEAD@{189}: commit: fix image
+[33me1e21a0[m HEAD@{190}: commit: new images
+[33m8a1e2ed[m HEAD@{191}: commit: new icons
+[33me2e16a9[m HEAD@{192}: commit: clear
+[33m6c5bc37[m HEAD@{193}: commit: test
+[33m9b80c7c[m HEAD@{194}: commit: test
+[33mc74e59a[m HEAD@{195}: commit: test
+[33m3495c41[m HEAD@{196}: commit: test
+[33m45e62d0[m HEAD@{197}: commit: test
+[33m5a6c9af[m HEAD@{198}: commit: test
+[33m250ecb4[m HEAD@{199}: commit: test
+[33mc220468[m HEAD@{200}: commit: test
+[33mb46d19b[m HEAD@{201}: commit: test
+[33m4ab6411[m HEAD@{202}: commit: test
+[33m00f3d97[m HEAD@{203}: commit: test
+[33m3960c6f[m HEAD@{204}: commit: test
+[33m52dbdb8[m HEAD@{205}: commit: changing for images
+[33mc3830e0[m HEAD@{206}: commit: test
+[33maaab39d[m HEAD@{207}: commit: test
+[33m65f4c31[m HEAD@{208}: commit: tesat
+[33m8fb4bbf[m HEAD@{209}: commit: test
+[33mcafc8cc[m HEAD@{210}: commit: aDFAF
+[33mfcdab96[m HEAD@{211}: commit: test
+[33m6bc167d[m HEAD@{212}: commit: test
+[33m36b05e5[m HEAD@{213}: commit: optimized
+[33m04ee21e[m HEAD@{214}: commit: no debug
+[33mbb015be[m HEAD@{215}: commit: test
+[33ma0e95d0[m HEAD@{216}: commit: Change render method in ColorFill class to async
+[33mcb148de[m HEAD@{217}: commit: asdfaf
+[33m1fa9e7e[m HEAD@{218}: commit: aölskvhaölskdöalskdkf
+[33m4c91023[m HEAD@{219}: commit: esadfbhsdbsdfbn
+[33m25c37ba[m HEAD@{220}: commit: tes
+[33m6c52ef2[m HEAD@{221}: commit: test
+[33m9cf8798[m HEAD@{222}: commit: test
+[33m82ee5ff[m HEAD@{223}: commit: test
+[33m6f35e85[m HEAD@{224}: commit: test
+[33m5a3f0e3[m HEAD@{225}: commit: test
+[33m18c783e[m HEAD@{226}: commit: test
+[33m9ff80ae[m HEAD@{227}: commit: yoooo
+[33m27b050f[m HEAD@{228}: commit: test
+[33mb29034e[m HEAD@{229}: commit: test
+[33m1bc482f[m HEAD@{230}: commit: test
+[33ma9df675[m HEAD@{231}: commit: yooo
+[33m28c7d2d[m HEAD@{232}: commit: yoo
+[33m79deaeb[m HEAD@{233}: commit: yoooo
+[33me16f7ff[m HEAD@{234}: commit: yoo
+[33mbef5044[m HEAD@{235}: commit: yoooo
+[33md3d2065[m HEAD@{236}: commit: yooo
+[33m54404a5[m HEAD@{237}: commit: yooo
+[33m23b5839[m HEAD@{238}: commit: yoooo
+[33me7464a1[m HEAD@{239}: commit: blind fix yooooo
+[33m31bf4df[m HEAD@{240}: commit: ok let's tyy
+[33m1639a6a[m HEAD@{241}: commit: test
+[33m2c135e1[m HEAD@{242}: commit: test
+[33m09714e4[m HEAD@{243}: commit: test
+[33medf855d[m HEAD@{244}: commit: test
+[33m9a0f7c7[m HEAD@{245}: commit: test
+[33m361110f[m HEAD@{246}: commit: test
+[33m4c77abe[m HEAD@{247}: commit: test
+[33m63992fd[m HEAD@{248}: commit: test
+[33m09c6f18[m HEAD@{249}: commit: test
+[33m2971976[m HEAD@{250}: commit: test
+[33m67ac37c[m HEAD@{251}: commit: test
+[33m6f04ad2[m HEAD@{252}: commit: test
+[33m1dbac73[m HEAD@{253}: commit: test
+[33m8de8108[m HEAD@{254}: commit: test
+[33m1cc73c0[m HEAD@{255}: commit: test
+[33m8a783ad[m HEAD@{256}: commit: test
+[33mc443739[m HEAD@{257}: commit: test
+[33m4bac315[m HEAD@{258}: commit: test
+[33mff93032[m HEAD@{259}: commit: test
+[33m8ae80ea[m HEAD@{260}: commit: test
+[33m006d530[m HEAD@{261}: commit: test
+[33m480b461[m HEAD@{262}: commit: test
+[33ma1a8b2e[m HEAD@{263}: reset: moving to HEAD
+[33ma1a8b2e[m HEAD@{264}: commit: test
+[33mf61c54d[m HEAD@{265}: commit: test image
+[33md3e7893[m HEAD@{266}: commit: deploy
+[33mb70d1fd[m HEAD@{267}: commit: yooooo
+[33me57058b[m HEAD@{268}: commit: test
+[33m6fb315b[m HEAD@{269}: commit: test
+[33m42796c0[m HEAD@{270}: commit: test
+[33m2e945a4[m HEAD@{271}: commit: test
+[33m15d2fd2[m HEAD@{272}: commit: test
+[33m05f2d7c[m HEAD@{273}: commit: test
+[33m7381e3f[m HEAD@{274}: commit: test
+[33mef917cb[m HEAD@{275}: commit: test
+[33m07a7d61[m HEAD@{276}: commit: test
+[33m1f23606[m HEAD@{277}: commit: mono font for status
+[33m8631bc1[m HEAD@{278}: commit: test
+[33m3b0f42d[m HEAD@{279}: commit: test
+[33m5014680[m HEAD@{280}: commit: test deploy
+[33m2f5fe60[m HEAD@{281}: commit: test deploy
+[33m2b6ea2a[m HEAD@{282}: commit: new fonts
+[33m3bd7f61[m HEAD@{283}: commit: changed design
+[33m826fe06[m HEAD@{284}: commit: uploading fonts
+[33ma9693b9[m HEAD@{285}: commit: updated file structure
+[33mc3db5f5[m HEAD@{286}: commit: test deploy
+[33ma537843[m HEAD@{287}: commit: test deploy
+[33m125267a[m HEAD@{288}: commit: test deploy
+[33m94a32ef[m HEAD@{289}: commit: test deploy
+[33mc63aa16[m HEAD@{290}: commit: testing service unit deploy
+[33m3ffde4f[m HEAD@{291}: commit: adding service unit file
+[33m64ab6c2[m HEAD@{292}: commit: fix
+[33m248c58b[m HEAD@{293}: commit: updated system info, output logic
+[33mb5b65dc[m HEAD@{294}: commit: test
+[33m6c788e7[m HEAD@{295}: commit: test
+[33m0ff4479[m HEAD@{296}: commit: test
+[33mb4fa5e5[m HEAD@{297}: commit: test
+[33mfca6c78[m HEAD@{298}: commit: test
+[33mf73202d[m HEAD@{299}: commit: test
+[33m80b1f6e[m HEAD@{300}: commit: test
+[33mfce4e68[m HEAD@{301}: commit: test
+[33md1b549f[m HEAD@{302}: commit: test
+[33m6ee392e[m HEAD@{303}: commit: fix
+[33mc32428f[m HEAD@{304}: commit: test
+[33m636cea8[m HEAD@{305}: commit: test
+[33mb1f1729[m HEAD@{306}: commit: test
+[33me0ba2e2[m HEAD@{307}: commit: test
+[33mb6b51f8[m HEAD@{308}: commit: test
+[33m1af36e9[m HEAD@{309}: commit: fix
+[33m1268f03[m HEAD@{310}: commit: test
+[33m10ba7b3[m HEAD@{311}: commit: test
+[33m192efbc[m HEAD@{312}: commit: test
+[33m4770f82[m HEAD@{313}: commit: test
+[33m74a6ca1[m HEAD@{314}: commit: test
+[33m032e4ac[m HEAD@{315}: commit: test
+[33m70362d2[m HEAD@{316}: commit: test
+[33m6e6cf7e[m HEAD@{317}: commit: weather added
+[33mda5a144[m HEAD@{318}: commit: test
+[33m48188e5[m HEAD@{319}: commit: wokring again!!!
+[33maafa2b7[m HEAD@{320}: commit: fix
+[33m4910cba[m HEAD@{321}: commit: test
+[33mf9ec24f[m HEAD@{322}: commit: ok it's show time
+[33m9c042b0[m HEAD@{323}: checkout: moving from trying-out-callbacks to main
+[33mcb569af[m[33m ([m[1;31mpi-zero-2w/trying-out-callbacks[m[33
