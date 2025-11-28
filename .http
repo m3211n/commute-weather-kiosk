@@ -1,0 +1,19 @@
+### Get buses
+GET https://transport.integration.sl.se/v1/sites/8202/departures?transport=BUS&forecast=1200&direction=2
+Accept: application/json
+
+### Get Trains
+GET https://transport.integration.sl.se/v1/sites/9730/departures?transport=TRAIN&direction=2&forecast=1200
+Accept: application/json
+
+### Current Weather
+GET https://api.openweathermap.org/data/2.5/weather?lat=59.172888&lon=18.1770795&lang=se&appid=9f78596ef59cfd46e61ae28093783e40&units=metric
+Accept: application/json
+
+### Weather Forecast (8 x 3h)
+GET https://api.openweathermap.org/data/2.5/forecast?lat=59.421491&lon=17.819238&lang=se&appid=9f78596ef59cfd46e61ae28093783e40&units=metric&cnt=8
+Accept: application/json
+
+### Sunrise sunset
+GET https://api.sunrise-sunset.org/json?lat=59.421491&lng=17.819238&tzid=Europe%2FStockholm&formatted=0
+Accept: application/json
