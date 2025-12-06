@@ -5,6 +5,3 @@ venv-wsl/
 __pycache__/
 *.pyc
 *.code-workspace
-.http
-.env
-kiosk.service
