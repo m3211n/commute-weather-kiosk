@@ -109,10 +109,11 @@ class Local:
 class Remote:
 
     @staticmethod
-    async def departures(train=True) -> dict:
+    async def departures(segment="train") -> dict:
         site = {
             "train": SL_SITE_ID_TRAIN,
-            "bus": SL_SITE_ID_BUS
+            "bus1": SL_SITE_ID_BUS,
+            "bus2": SL_SITE_ID_BUS
         }
         params = {
             "train": {
@@ -120,13 +121,17 @@ class Remote:
                 "direction": 2,
                 "forecast": 1200
             },
-            "bus": {
+            "bus1": {
+                "transport": "BUS",
+                "direction": 1,
+                "forecast": 1200
+            },
+            "bus2": {
                 "transport": "BUS",
                 "direction": 2,
                 "forecast": 1200
             }
         }
-        segment = "train" if train else "bus"
         url = "".join([
             SL_API,
             f"{site[segment]}/departures"]

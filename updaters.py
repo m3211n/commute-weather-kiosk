@@ -142,7 +142,12 @@ async def departures() -> dict:
 
     # data_trains = await Remote.departures()
     data_buses = [
-        d for d in await Remote.departures(False)
+        d for d in await Remote.departures("bus1")
+        if d["line"]["designation"] in (
+                "809", "809C", "838", "832"
+        )
+    ] + [
+        d for d in await Remote.departures("bus2")
         if d["line"]["designation"] in (
                 "809", "809C", "838", "832"
         )

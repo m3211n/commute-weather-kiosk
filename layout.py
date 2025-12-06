@@ -63,7 +63,7 @@ WIDGETS = [
             content={
                 "title_bus":   Text(
                     xy=(64, 58),   **TextStyles.transport_title,
-                    value="Buss mot Stockholm C och Gullmarsplan"),
+                    value="Buss från Skyttens gata"),
                 "bus_line":    Text(
                     xy=(64, 117), **TextStyles.line_codes),
                 "bus_dest":    Text(
