@@ -48,16 +48,13 @@ async def fetch_json(url, params=None, headers=None, timeout=DEFAULT_TIMEOUT):
 
 
 class Local:
-
-    @staticmethod
-    def f_time(epoch: float = None, format=None) -> str:
-        if epoch:
-            return datetime.fromtimestamp(epoch).strftime(format)
-        return datetime.now().strftime(format)
-
     @staticmethod
     def epoch() -> int:
         return int(datetime.now().timestamp())
+
+    @staticmethod
+    def f_time(epoch: float = epoch(), format="%H:%M") -> str:
+        return datetime.fromtimestamp(epoch).strftime(format)
 
     @staticmethod
     def daytime() -> str:
@@ -86,7 +83,7 @@ class Local:
         ).strip()
 
     @staticmethod
-    def cpu() -> str:
+    def cpu():
         """Returns Temp, Load 1m, Load 5m, Load 15m"""
         with open("/sys/class/thermal/thermal_zone0/temp") as f:
             cpu_t = float(f.read())/1000
@@ -95,7 +92,8 @@ class Local:
         return cpu_t, load1, load5, load15
 
     @staticmethod
-    def ram() -> str:
+    def ram() -> int:
+        ram = 0
         with open("/proc/meminfo") as f:
             for line in f:
                 if line.startswith("MemAvailable:"):
@@ -140,7 +138,11 @@ class Remote:
             url=url,
             params=params[segment]
         )
-        return data["departures"]
+        if data:
+            departures = data.get("departures", {})
+            return departures
+        else:
+            return {}
 
     @staticmethod
     async def weather(current=True) -> dict:
@@ -161,7 +163,10 @@ class Remote:
             url=url[segment],
             params=params
         )
-        return data
+        if data:
+            return data
+        else:
+            return {}
 
     @staticmethod
     async def sun() -> dict:
@@ -173,4 +178,8 @@ class Remote:
             "formatted": 0
         }
         data = await fetch_json(url, params)
-        return data["results"]
+        if data:
+            results = data.get("results", {})
+            return results
+        else:
+            return {}

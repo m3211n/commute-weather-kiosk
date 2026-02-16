@@ -1,6 +1,5 @@
 from core.data_sources import Local, Remote
 
-TIME_F_STR = "%H:%M"
 DATE_F_STR = "%A, %B %-d"
 
 
@@ -8,7 +7,7 @@ DATE_F_STR = "%A, %B %-d"
 def time_date() -> dict:
     return {
         # "bg": f"./assets/images/clock/{Local.daytime()}.png",
-        "time": Local.f_time(format=TIME_F_STR),
+        "time": Local.f_time(),
         "date": Local.f_time(format=DATE_F_STR).title()
     }
 
@@ -61,12 +60,12 @@ async def weather() -> dict:
     def _location(j) -> str:
         return j["name"]
 
-    def _sun(j) -> str:
+    def _sun(j):
         sunrise = j["sys"]["sunrise"]
         sunset = j["sys"]["sunset"]
         return (
-            Local.f_time(sunrise, TIME_F_STR),
-            Local.f_time(sunset, TIME_F_STR)
+            Local.f_time(sunrise),
+            Local.f_time(sunset)
         )
 
     def _hourly(j):
@@ -75,7 +74,7 @@ async def weather() -> dict:
         icons = []
 
         for entry in j["list"]:
-            timestamps.append(Local.f_time(entry["dt"], TIME_F_STR))
+            timestamps.append(Local.f_time(entry["dt"]))
             temp = round(entry["main"]["temp"])
             wind = round(entry["wind"]["speed"], 1)
             icon = entry["weather"][0]["icon"]
