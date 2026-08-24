@@ -5,5 +5,5 @@ venv-wsl/
 __pycache__/
 *.pyc
 *.code-workspace
-*.env
-*.http
+.env
+.mpy-workbench
