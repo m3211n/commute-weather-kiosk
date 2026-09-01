@@ -6,6 +6,7 @@ import logging
 import os
 from datetime import datetime, timezone
 from typing import Any, Dict, Iterable, List, Optional
+from zoneinfo import ZoneInfo
 
 import aiohttp
 import paho.mqtt.client as mqtt
@@ -190,7 +191,9 @@ def leg_time(leg: Dict[str, Any], key: str) -> str:
     )
     if not value:
         return "--:--"
-    return datetime.fromisoformat(value.replace("Z", "+00:00")).strftime("%H:%M")
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(
+        ZoneInfo(os.environ.get("TIMEZONE", "Europe/Stockholm"))
+    ).strftime("%H:%M")
 
 
 def transfer_minutes(bus: Dict[str, Any], train: Dict[str, Any]) -> Optional[int]:
