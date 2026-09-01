@@ -19,25 +19,13 @@ WIDGETS = [
         "int_s": 5
     },
     {
-        "name": "Clock",
-        "widget": Widget(
-            xy=(24, 24), size=(1872, 112), fill=Colors.panel_bg, radius=32,
-            content={
-                "time": Text(xy=(185, 18), **TextStyles.header_time),
-                "date": Text(xy=(450, 56), **TextStyles.header_date)
-            }
-        ),
-        "updater": updaters.time_date,
-        "int_s": 1
-    },
-    {
         "name": "Weather",
         "widget": Widget(
-            xy=(1208, 160), size=(688, 952), fill=Colors.panel_bg, radius=32,
+            xy=(1296, 24), size=(600, 1088), fill=Colors.panel_bg, radius=32,
             content={
                 "bg":      ImageView(),
                 "temp":    Text(xy=(48, 24), **TextStyles.temperature),
-                "icon":    ImageView(470, 62),
+                "icon":    ImageView(398, 62),
                 "desc":    Text(xy=(48, 224), **TextStyles.weather_cond),
                 "more":    Text(xy=(48, 274), **TextStyles.details),
                 "icon_sr": Text(xy=(48, 318), **TextStyles.icon,
@@ -46,9 +34,9 @@ WIDGETS = [
                 "icon_ss": Text(xy=(284, 318), **TextStyles.icon,
                                 value="\uf052"),
                 "sunset":  Text(xy=(348, 328), **TextStyles.details),
-                "hours":   Text(xy=(48, 420), **TextStyles.hours_compact),
-                "icons":   Text(xy=(172, 416), **TextStyles.weather_icons_compact),
-                "temps":   Text(xy=(250, 420), **TextStyles.temps_compact),
+                "hours":   Text(xy=(40, 420), **TextStyles.hours_compact),
+                "icons":   Text(xy=(150, 416), **TextStyles.weather_icons_compact),
+                "temps":   Text(xy=(226, 420), **TextStyles.temps_compact),
                 "station": Text(xy=(48, 852), **TextStyles.station)
             }
         ),
@@ -58,20 +46,22 @@ WIDGETS = [
     {
         "name": "Departures",
         "widget": Widget(
-            xy=(24, 160), size=(1160, 952), fill=Colors.panel_bg,
+            xy=(24, 24), size=(1248, 1088), fill=Colors.panel_bg,
             radius=32,
             content={
-                "city_title": Text(xy=(48, 42), **TextStyles.transport_title, value="TILL CITY"),
-                "city_buses": Text(xy=(48, 86), **TextStyles.transport_rows),
-                "city_divider": Rect((48, 224, 1112, 226), fill=Colors.tetriary, radius=1),
-                "journey_title": Text(xy=(48, 254), **TextStyles.transport_title, value="TILL T-CENTRALEN"),
-                "journeys": Text(xy=(48, 302), **TextStyles.journey_rows),
-                "journey_divider": Rect((48, 632, 1112, 634), fill=Colors.tetriary, radius=1),
-                "other_title": Text(xy=(48, 664), **TextStyles.transport_title, value="ÖVRIGA AVGÅNGAR"),
-                "other_buses": Text(xy=(48, 710), **TextStyles.transport_rows),
+                "time": Text(xy=(132, 24), **TextStyles.header_time),
+                "date": Text(xy=(292, 66), **TextStyles.header_date),
+                "city_title": Text(xy=(48, 158), **TextStyles.transport_title, value="TILL CITY"),
+                "city_buses": Text(xy=(48, 202), **TextStyles.transport_rows),
+                "city_divider": Rect((48, 340, 1200, 342), fill=Colors.tetriary, radius=1),
+                "journey_title": Text(xy=(48, 370), **TextStyles.transport_title, value="TILL T-CENTRALEN"),
+                "journeys": Text(xy=(48, 418), **TextStyles.journey_rows),
+                "journey_divider": Rect((48, 748, 1200, 750), fill=Colors.tetriary, radius=1),
+                "other_title": Text(xy=(48, 780), **TextStyles.transport_title, value="ÖVRIGA AVGÅNGAR"),
+                "other_buses": Text(xy=(48, 826), **TextStyles.transport_rows),
             }
         ),
         "updater": updaters.departures,
-        "int_s": 60
+        "int_s": 1
     }
 ]

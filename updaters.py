@@ -129,6 +129,8 @@ def departures() -> dict:
         return "\n\n".join(rows) or "Väntar på MQTT"
 
     return {
+        "time": Local.f_time(),
+        "date": Local.f_time(format=DATE_F_STR).title(),
         "city_buses": render_buses(mqtt_data.snapshot("transit/city-buses", [])),
         "journeys": render_journeys(mqtt_data.snapshot("transit/journeys", [])),
         "other_buses": render_buses(mqtt_data.snapshot("transit/other-buses", [])),
