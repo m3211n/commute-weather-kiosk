@@ -27,10 +27,19 @@ def sys_info() -> dict:
         f"CPU Temp: {Local.cpu()[0]:.1f}°C",
         f"CPU Load: {round(Local.cpu()[1] * 100, 1)}%"
     ]
+    weather_updated = mqtt_data.updated_at("weather/current")
+    transit_updated = mqtt_data.updated_at("transit/city-buses")
+
+    def freshness(name, timestamp):
+        return f"{name}: {timestamp[11:16]}" if timestamp else f"{name}: waiting"
+
     return {
         "host_info": " | ".join(host_values),
         "sys_info": " | ".join(sys_values),
-        "freshness": "MQTT data is retained until refreshed"
+        "freshness": "  ".join((
+            freshness("Weather", weather_updated),
+            freshness("Transit", transit_updated),
+        )),
     }
 
 
@@ -86,6 +95,9 @@ def weather() -> dict:
 
 
 def departures() -> dict:
+    def short(value, length=32):
+        return value if len(value) <= length else f"{value[:length - 1]}…"
+
     def render_buses(items):
         return "\n".join(
             f"{item['line']:>4}  {item['destination']:<24} {item['departure']:>8}"
@@ -96,16 +108,16 @@ def departures() -> dict:
         rows = []
         for item in items:
             rows.append(
-                "{bus_departure_time}  {bus_line_number} {bus_line_destination}"
-                "\n    transfer ({transfer_minutes} min)"
-                "\n{train_departure_time}  {train_line_number} {train_destination}".format(
+                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}"
+                "\n      transfer {transfer_minutes} min"
+                "\n{train_departure_time}  {train_line_number}  {train_destination}".format(
                     bus_departure_time=item.get("bus_departure_time", "--:--"),
                     bus_line_number=item.get("bus_line_number", "?"),
-                    bus_line_destination=item.get("bus_line_destination", ""),
-                    transfer_minutes=item.get("transfer_minutes", "?"),
+                    bus_line_destination=short(item.get("bus_line_destination", "")),
+                    transfer_minutes=item.get("transfer_minutes") or "?",
                     train_departure_time=item.get("train_departure_time", "--:--"),
                     train_line_number=item.get("train_line_number", "?"),
-                    train_destination=item.get("train_destination", ""),
+                    train_destination=short(item.get("train_destination", "")),
                 )
             )
         return "\n\n".join(rows) or "Väntar på MQTT"

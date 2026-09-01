@@ -42,5 +42,9 @@ class MqttData:
         value = self.get(f"{self.prefix}/{topic}", None)
         return value.get("data", default) if isinstance(value, dict) else default
 
+    def updated_at(self, topic: str) -> str:
+        value = self.get(f"{self.prefix}/{topic}", {})
+        return value.get("updated_at", "") if isinstance(value, dict) else ""
+
 
 data = MqttData()

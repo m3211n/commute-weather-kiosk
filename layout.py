@@ -1,7 +1,6 @@
 import updaters
 from core.ui import (
-    Widget, ImageView, Text,
-    # Rect
+    Widget, ImageView, Rect, Text,
 )
 from core.styles import Colors, TextStyles
 
@@ -24,8 +23,8 @@ WIDGETS = [
         "widget": Widget(
             xy=(24, 24), size=(1872, 112), fill=Colors.panel_bg, radius=32,
             content={
-                "time": Text(xy=(60, 18), **TextStyles.header_time),
-                "date": Text(xy=(360, 56), **TextStyles.header_date)
+                "time": Text(xy=(185, 18), **TextStyles.header_time),
+                "date": Text(xy=(450, 56), **TextStyles.header_date)
             }
         ),
         "updater": updaters.time_date,
@@ -50,7 +49,7 @@ WIDGETS = [
                 "hours":   Text(xy=(48, 420), **TextStyles.hours_compact),
                 "icons":   Text(xy=(172, 416), **TextStyles.weather_icons_compact),
                 "temps":   Text(xy=(250, 420), **TextStyles.temps_compact),
-                "station": Text(xy=(48, 838), **TextStyles.details)
+                "station": Text(xy=(48, 852), **TextStyles.station)
             }
         ),
         "updater": updaters.weather,
@@ -64,10 +63,12 @@ WIDGETS = [
             content={
                 "city_title": Text(xy=(48, 42), **TextStyles.transport_title, value="TILL CITY"),
                 "city_buses": Text(xy=(48, 86), **TextStyles.transport_rows),
-                "journey_title": Text(xy=(48, 252), **TextStyles.transport_title, value="TILL T-CENTRALEN"),
-                "journeys": Text(xy=(48, 296), **TextStyles.journey_rows),
-                "other_title": Text(xy=(48, 700), **TextStyles.transport_title, value="ÖVRIGA AVGÅNGAR"),
-                "other_buses": Text(xy=(48, 744), **TextStyles.transport_rows),
+                "city_divider": Rect((48, 224, 1112, 226), fill=Colors.tetriary, radius=1),
+                "journey_title": Text(xy=(48, 254), **TextStyles.transport_title, value="TILL T-CENTRALEN"),
+                "journeys": Text(xy=(48, 302), **TextStyles.journey_rows),
+                "journey_divider": Rect((48, 750, 1112, 752), fill=Colors.tetriary, radius=1),
+                "other_title": Text(xy=(48, 780), **TextStyles.transport_title, value="ÖVRIGA AVGÅNGAR"),
+                "other_buses": Text(xy=(48, 822), **TextStyles.transport_rows),
             }
         ),
         "updater": updaters.departures,
