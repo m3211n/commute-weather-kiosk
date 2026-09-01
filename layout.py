@@ -50,7 +50,7 @@ WIDGETS = [
             radius=32,
             content={
                 "time": Text(xy=(132, 24), **TextStyles.header_time),
-                "date": Text(xy=(292, 66), **TextStyles.header_date),
+                "date": Text(xy=(500, 66), **TextStyles.header_date),
                 "city_title": Text(xy=(48, 158), **TextStyles.transport_title, value="TILL CITY"),
                 "city_buses": Text(xy=(48, 202), **TextStyles.transport_rows),
                 "city_divider": Rect((48, 340, 1200, 342), fill=Colors.tetriary, radius=1),
