@@ -34,10 +34,10 @@ WIDGETS = [
                 "icon_ss": Text(xy=(286, 362), **TextStyles.icon,
                                 value="\uf052"),
                 "sunset":  Text(xy=(350, 372), **TextStyles.details),
-                "hours":   Text(xy=(70, 504), **TextStyles.hours_compact),
-                "icons":   Text(xy=(196, 500), **TextStyles.weather_icons_compact),
-                "temps":   Text(xy=(280, 504), **TextStyles.temps_compact),
-                "station": Text(xy=(64, 1012), **TextStyles.station)
+                "hours":   Text(xy=(70, 504), **TextStyles.hours),
+                "icons":   Text(xy=(196, 500), **TextStyles.weather_icons),
+                "temps":   Text(xy=(280, 504), **TextStyles.temps),
+                "station": Text(xy=(64, 850), **TextStyles.station)
             }
         ),
         "updater": updaters.weather,
