@@ -53,8 +53,9 @@ class Local:
         return int(datetime.now().timestamp())
 
     @staticmethod
-    def f_time(epoch: float = epoch(), format="%H:%M") -> str:
-        return datetime.fromtimestamp(epoch).strftime(format)
+    def f_time(epoch: float = None, format="%H:%M") -> str:
+        timestamp = datetime.now().timestamp() if epoch is None else epoch
+        return datetime.fromtimestamp(timestamp).strftime(format)
 
     @staticmethod
     def daytime() -> str:
