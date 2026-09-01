@@ -114,7 +114,7 @@ def departures() -> dict:
 
     def render_buses(items):
         return "\n".join(
-            f"{item['line']:>4}  {short(item['destination'], 34):<34} {item['departure']:>8}"
+            f"{item['line']:<4} {short(item['destination'], 34):<34} {item['departure']:>8}"
             for item in items
         ) or "Väntar på MQTT"
 
@@ -123,7 +123,7 @@ def departures() -> dict:
         for item in items:
             rows.append(
                 "{bus_departure_time} {bus_line_number} {bus_line_destination} > {transfer_stop} ({transfer_minutes} min) >"
-                "\n{train_departure_time}  {train_line_number}  {train_destination}".format(
+                "\n{train_departure_time} {train_line_number} {train_destination}".format(
                     bus_departure_time=item.get("bus_departure_time", "--:--"),
                     bus_line_number=item.get("bus_line_number", "?"),
                     bus_line_destination=short(item.get("bus_line_destination", "")),
