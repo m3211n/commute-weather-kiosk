@@ -109,4 +109,4 @@ class TextStyles:
     )
     temps_compact = TextStyle(Fonts.regular, 24, spacing=20, anchor=None)
     transport_rows = TextStyle(Fonts.mono, 32, spacing=18, anchor=None)
-    journey_rows = TextStyle(Fonts.mono, 24, spacing=6, anchor=None)
+    journey_rows = TextStyle(Fonts.mono, 30, spacing=6, anchor=None)

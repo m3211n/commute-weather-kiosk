@@ -109,7 +109,7 @@ def weather() -> dict:
 
 
 def departures() -> dict:
-    def short(value, length=32):
+    def short(value, length=30):
         return value if len(value) <= length else f"{value[:length - 1]}…"
 
     def render_buses(items):
@@ -122,7 +122,7 @@ def departures() -> dict:
         rows = []
         for item in items:
             rows.append(
-                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}  > Change at {transfer_stop} ({transfer_minutes} min) >"
+                "{bus_departure_time} {bus_line_number} {bus_line_destination} > {transfer_stop} ({transfer_minutes} min) >"
                 "\n{train_departure_time}  {train_line_number}  {train_destination}".format(
                     bus_departure_time=item.get("bus_departure_time", "--:--"),
                     bus_line_number=item.get("bus_line_number", "?"),
@@ -134,7 +134,7 @@ def departures() -> dict:
                     train_destination=short(item.get("train_destination", "")),
                 )
             )
-        return "\n".join(rows) or "Väntar på MQTT"
+        return "\n\n".join(rows) or "Väntar på MQTT"
 
     return {
         "time": Local.f_time(),
