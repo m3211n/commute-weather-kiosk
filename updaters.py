@@ -139,7 +139,7 @@ def departures() -> dict:
                     train_destination=short(item.get("train_destination", "")),
                 )
             )
-        return "\n\n".join(rows) or "Väntar på MQTT"
+        return "\n".join(rows) or "Väntar på MQTT"
 
     return {
         "time": Local.f_time(),
