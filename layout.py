@@ -36,8 +36,7 @@ WIDGETS = [
                 "sunset":  Text(xy=(350, 372), **TextStyles.details),
                 "hours":   Text(xy=(70, 504), **TextStyles.hours),
                 "icons":   Text(xy=(196, 500), **TextStyles.weather_icons),
-                "temps":   Text(xy=(280, 504), **TextStyles.temps),
-                "station": Text(xy=(64, 850), **TextStyles.station)
+                "temps":   Text(xy=(280, 504), **TextStyles.temps)
             }
         ),
         "updater": updaters.weather,

@@ -60,7 +60,7 @@ def weather() -> dict:
             "bg": "./assets/images/weather/cloudy-day.png", "temp": "--°",
             "icon": "./assets/icons/weather/03d.png", "desc": "Väntar på MQTT",
             "more": "", "sunrise": "--:--", "sunset": "--:--",
-            "hours": "", "temps": "", "icons": "", "station": "",
+            "hours": "", "temps": "", "icons": "",
         }
     icon_font = {
         "01d": "\uf00d", "01n": "\uf02e", "02d": "\uf002", "02n": "\uf086",
@@ -79,11 +79,6 @@ def weather() -> dict:
         if sun_data.get("sunrise") else "--:--",
         Local.f_time(datetime.fromisoformat(sun_data["sunset"]).timestamp())
         if sun_data.get("sunset") else "--:--",
-    )
-    station = "Weather station: {} C  {}%  {} hPa".format(
-        mqtt_data.get("weather/outdoor/temperature", "--"),
-        mqtt_data.get("weather/outdoor/humidity", "--"),
-        mqtt_data.get("weather/outdoor/pressure", "--"),
     )
     icon = data["icon"]
     if icon.startswith("01"):
@@ -110,7 +105,6 @@ def weather() -> dict:
         "hours": hourly[0],
         "temps": hourly[1],
         "icons": hourly[2],
-        "station": station,
     }
 
 
