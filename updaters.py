@@ -1,4 +1,7 @@
-from core.data_sources import Local, Remote
+from datetime import datetime
+
+from core.data_sources import Local
+from core.mqtt_data import data as mqtt_data
 
 DATE_F_STR = "%A, %B %-d"
 
@@ -26,185 +29,89 @@ def sys_info() -> dict:
     ]
     return {
         "host_info": " | ".join(host_values),
-        "sys_info": " | ".join(sys_values)
+        "sys_info": " | ".join(sys_values),
+        "freshness": "MQTT data is retained until refreshed"
     }
 
 
 # Run every 15 min
-async def weather() -> dict:
-
-    def _weather_image(j) -> str:
-
-        clouds = j["clouds"]["all"]
-        if clouds in range(0, 33):
-            c = "clear"
-        elif clouds in range(33, 66):
-            c = "cloudy"
-        else:
-            c = "rainy"
-
-        if Local.epoch() in range(j["sys"]["sunrise"], j["sys"]["sunset"]):
-            d = "day"
-        else:
-            d = "night"
-        return f"./assets/images/weather/{c}-{d}.png"
-
-    def _temperature(j) -> str:
-        temp = round(j["main"]["temp"])
-        return f"{temp}°"
-
-    def _current_icon(j) -> str:
-        icon = j["weather"][0]["icon"]
-        return f"./assets/icons/weather/{icon}.png"
-
-    def _location(j) -> str:
-        return j["name"]
-
-    def _sun(j):
-        sunrise = j["sys"]["sunrise"]
-        sunset = j["sys"]["sunset"]
-        return (
-            Local.f_time(sunrise),
-            Local.f_time(sunset)
-        )
-
-    def _hourly(j):
-        timestamps = []
-        temps = []
-        icons = []
-
-        for entry in j["list"]:
-            timestamps.append(Local.f_time(entry["dt"]))
-            temp = round(entry["main"]["temp"])
-            wind = round(entry["wind"]["speed"], 1)
-            icon = entry["weather"][0]["icon"]
-            temps.append(
-                f'{temp}°C   {wind} m/s'
-            )
-            icons.append(
-                f"{_weather_icon_font(icon)}"
-            )
-        return ("\n".join(timestamps), "\n".join(temps), "\n".join(icons))
-
-    def _more(j) -> str:
-        min = round(j["main"]["temp_min"])
-        max = round(j["main"]["temp_max"])
-        temp = round(j["main"]["feels_like"])
-        wind = round(j["wind"]["speed"], 1)
-        return f"Känns som {temp}° (H:{max}° L:{min}°) {wind} m/s"
-
-    def _weather_icon_font(icon):
-        icon_font = {
-            "01d": "\uf00d",
-            "01n": "\uf02e",
-            "02d": "\uf002",
-            "02n": "\uf086",
-            "03d": "\uf041",
-            "03n": "\uf041",
-            "04d": "\uf013",
-            "04n": "\uf013",
-            "09d": "\uf01a",
-            "09n": "\uf01a",
-            "10d": "\uf019",
-            "10n": "\uf019",
-            "11d": "\uf01d",
-            "11n": "\uf01d",
-            "13d": "\uf01b",
-            "13n": "\uf01b",
-            "50d": "\uf014",
-            "50n": "\uf014"
+def weather() -> dict:
+    data = mqtt_data.snapshot("weather/current", {})
+    hourly_data = mqtt_data.snapshot("weather/forecast", [])
+    sun_data = mqtt_data.snapshot("weather/solar", {})
+    if not data:
+        return {
+            "bg": "./assets/images/weather/cloudy-day.png", "temp": "--°",
+            "icon": "./assets/icons/weather/03d.png", "desc": "Väntar på MQTT",
+            "more": "", "sunrise": "--:--", "sunset": "--:--",
+            "hours": "", "temps": "", "icons": "", "station": "",
         }
-        return icon_font[icon]
-
-    data = await Remote.weather()
-    hourly_data = await Remote.weather(False)
-    hourly = _hourly(hourly_data)
-    sun = _sun(data)
+    icon_font = {
+        "01d": "\uf00d", "01n": "\uf02e", "02d": "\uf002", "02n": "\uf086",
+        "03d": "\uf041", "03n": "\uf041", "04d": "\uf013", "04n": "\uf013",
+        "09d": "\uf01a", "09n": "\uf01a", "10d": "\uf019", "10n": "\uf019",
+        "11d": "\uf01d", "11n": "\uf01d", "13d": "\uf01b", "13n": "\uf01b",
+        "50d": "\uf014", "50n": "\uf014",
+    }
+    hourly = (
+        "\n".join(Local.f_time(entry["time"]) for entry in hourly_data),
+        "\n".join(f"{entry['temperature_c']}°C  {entry['wind_mps']} m/s" for entry in hourly_data),
+        "\n".join(icon_font.get(entry["icon"], "\uf041") for entry in hourly_data),
+    )
+    sun = (
+        Local.f_time(datetime.fromisoformat(sun_data["sunrise"]).timestamp())
+        if sun_data.get("sunrise") else "--:--",
+        Local.f_time(datetime.fromisoformat(sun_data["sunset"]).timestamp())
+        if sun_data.get("sunset") else "--:--",
+    )
+    station = "Weather station: {} C  {}%  {} hPa".format(
+        mqtt_data.get("weather/outdoor/temperature", "--"),
+        mqtt_data.get("weather/outdoor/humidity", "--"),
+        mqtt_data.get("weather/outdoor/pressure", "--"),
+    )
 
     return {
-        "bg": _weather_image(data),
-        "temp": _temperature(data),
-        "icon": _current_icon(data),
-        "desc": _location(data),
-        "more": _more(data),
+        "bg": f"./assets/images/weather/cloudy-{Local.daytime() if Local.daytime() in ('day', 'night') else 'day'}.png",
+        "temp": f"{data['temperature_c']}°",
+        "icon": f"./assets/icons/weather/{data['icon']}.png",
+        "desc": data["location"],
+        "more": "Känns som {feels_like_c}° (H:{maximum_c}° L:{minimum_c}°) {wind_mps} m/s".format(**data),
         "sunrise": sun[0],
         "sunset": sun[1],
         "hours": hourly[0],
         "temps": hourly[1],
         "icons": hourly[2],
+        "station": station,
     }
 
 
-# Run every 1 min
-async def departures() -> dict:
-    # import json
+def departures() -> dict:
+    def render_buses(items):
+        return "\n".join(
+            f"{item['line']:>4}  {item['destination']:<24} {item['departure']:>8}"
+            for item in items
+        ) or "Väntar på MQTT"
 
-    # data_trains = await Remote.departures()
-    data_buses = [
-        d for d in await Remote.departures("bus1")
-        if d["line"]["designation"] in (
-                "838", "832"
-        )
-    ] + [
-        d for d in await Remote.departures("bus2")
-        if d["line"]["designation"] in (
-                "809", "809C", "807"
-        )
-    ]
-
-    # print(json.dumps(data_buses, indent=2, ensure_ascii=False))
-
-    def _extract_lists(data):
-        display = []
-        line = []
-        dest = []
-        count = 0
-        for departure in data:
-            if departure["state"] != "EXPECTED":
-                continue
-            display.append(departure["display"])
-            line.append(departure["line"]["designation"])
-            dest.append(departure["destination"])
-            count = count + 1
-            if count == 8:
-                break
-        return {
-            "display": "\n".join(display),
-            "line": "\n".join(line),
-            "dest": "\n".join(dest)
-        }
-
-    # train_info = _extract_lists(data_trains)
-    bus_info = _extract_lists(data_buses)
+    def render_journeys(items):
+        rows = []
+        for item in items:
+            rows.append(
+                "{bus_departure_time}  {bus_line_number} {bus_line_destination}"
+                "\n    transfer ({transfer_minutes} min)"
+                "\n{train_departure_time}  {train_line_number} {train_destination}".format(
+                    bus_departure_time=item.get("bus_departure_time", "--:--"),
+                    bus_line_number=item.get("bus_line_number", "?"),
+                    bus_line_destination=item.get("bus_line_destination", ""),
+                    transfer_minutes=item.get("transfer_minutes", "?"),
+                    train_departure_time=item.get("train_departure_time", "--:--"),
+                    train_line_number=item.get("train_line_number", "?"),
+                    train_destination=item.get("train_destination", ""),
+                )
+            )
+        return "\n\n".join(rows) or "Väntar på MQTT"
 
     return {
-        # "train_display": train_info["display"],
-        # "train_line": train_info["line"],
-        # "train_dest": train_info["dest"],
-        "bus_display": bus_info["display"],
-        "bus_line": bus_info["line"],
-        "bus_dest": bus_info["dest"],
+        "city_buses": render_buses(mqtt_data.snapshot("transit/city-buses", [])),
+        "journeys": render_journeys(mqtt_data.snapshot("transit/journeys", [])),
+        "other_buses": render_buses(mqtt_data.snapshot("transit/other-buses", [])),
     }
-
-
-# Sunset and sunrise
-
-async def sunset_sunrise():
-    from datetime import datetime
-
-    def get_epoch(s: str):
-        return int(datetime.fromisoformat(s).timestamp())
-
-    j = await Remote.sun()
-
-    epoch_sunrise = get_epoch(j["sunrise"])
-    epoch_noon = get_epoch(j["solar_noon"])
-    epoch_sunset = get_epoch(j["sunset"])
-    epoch_twilight_end = get_epoch(j["civil_twilight_end"])
-
-    return (
-        epoch_sunrise,
-        epoch_noon,
-        epoch_sunset,
-        epoch_twilight_end
-    )

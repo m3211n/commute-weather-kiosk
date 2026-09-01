@@ -1,0 +1,43 @@
+#!/bin/bash
+set -euo pipefail
+
+LOGFILE="/home/m3211n/kiosk/deploy.log"
+WORK_DIR="/home/m3211n/kiosk"
+GIT_DIR="/home/m3211n/kiosk.git"
+TARGET_FILE="/home/m3211n/kiosk.git/deploy-target.conf"
+SERVICE_FILE="$WORK_DIR/kiosk.service"
+SERVICE_TARGET="/etc/systemd/system/kiosk.service"
+
+target="main"
+if [ -f "$TARGET_FILE" ]; then
+  configured_target=$(sed -n 's/^target=//p' "$TARGET_FILE" | head -n 1)
+  if [ -n "$configured_target" ] &&
+    git --git-dir="$GIT_DIR" show-ref --verify --quiet "refs/heads/$configured_target"; then
+    target="$configured_target"
+  fi
+fi
+
+{
+  echo "===== Deploying $target: $(date) ====="
+  git --work-tree="$WORK_DIR" --git-dir="$GIT_DIR" checkout -f "$target"
+
+  if [ ! -d "$WORK_DIR/venv" ]; then
+    python3 -m venv "$WORK_DIR/venv"
+    "$WORK_DIR/venv/bin/pip" install --upgrade pip
+  fi
+
+  requirements="$WORK_DIR/requirements.txt"
+  requirements_hash="$WORK_DIR/venv/.requirements.hash"
+  current_hash=$(sha256sum "$requirements" | cut -d ' ' -f 1)
+  if [ ! -f "$requirements_hash" ] || ! grep -qx "$current_hash" "$requirements_hash"; then
+    "$WORK_DIR/venv/bin/pip" install -r "$requirements"
+    printf '%s\n' "$current_hash" > "$requirements_hash"
+  fi
+
+  if [ -f "$SERVICE_FILE" ]; then
+    sudo install -o root -g root -m 644 "$SERVICE_FILE" "$SERVICE_TARGET"
+    sudo systemctl daemon-reload
+  fi
+  sudo systemctl restart kiosk.service
+  echo "Deploy complete"
+} >> "$LOGFILE" 2>&1

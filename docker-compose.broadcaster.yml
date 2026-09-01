@@ -1,0 +1,6 @@
+services:
+  broadcaster:
+    image: ghcr.io/m3211n/commute-weather-kiosk-broadcaster:latest
+    container_name: commute-mqtt-broadcaster
+    env_file: .env
+    restart: unless-stopped

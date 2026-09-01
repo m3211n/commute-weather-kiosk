@@ -5,6 +5,7 @@ from time import perf_counter
 
 from core.framebuffer import FrameBuffer
 from dashboard import Dashboard
+from core.mqtt_data import data as mqtt_data
 
 from settings import UPDATE_RATE_SEC
 
@@ -13,6 +14,7 @@ async def main(using_fb=True):
     from layout import WIDGETS
 
     logging.basicConfig(level=logging.INFO)
+    mqtt_data.start()
 
     dashboard = Dashboard()
     for w in WIDGETS:

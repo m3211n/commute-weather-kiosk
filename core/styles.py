@@ -57,6 +57,9 @@ class TextStyles:
     status_rt = status.copy(anchor="rm")
     time = TextStyle(Fonts.bold, 200, anchor="ma")
     date = TextStyle(Fonts.bold, 40, anchor="ma")
+    status_small = status.copy(size=16)
+    header_time = time.copy(size=72)
+    header_date = date.copy(size=28)
     temperature = TextStyle(Fonts.regular, 200)
     weather_cond = TextStyle(Fonts.regular, 40)
     icon = TextStyle(Fonts.icon, 36)
@@ -97,3 +100,8 @@ class TextStyles:
         anchor=None,
         features=["tnum"]
     )
+    hours_compact = hours.copy(size=26, spacing=20)
+    weather_icons_compact = weather_icons.copy(size=26, spacing=13)
+    temps_compact = temps.copy(size=24, spacing=20)
+    transport_rows = TextStyle(Fonts.mono, 32, spacing=18, anchor=None)
+    journey_rows = TextStyle(Fonts.regular, 27, spacing=8, anchor=None)
