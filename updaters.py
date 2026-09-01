@@ -31,7 +31,14 @@ def sys_info() -> dict:
     transit_updated = mqtt_data.updated_at("transit/city-buses")
 
     def freshness(name, timestamp):
-        return f"{name}: {timestamp[11:16]}" if timestamp else f"{name}: waiting"
+        if not timestamp:
+            return f"{name}: waiting"
+        return "{}: {}".format(
+            name,
+            datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+            .astimezone()
+            .strftime("%H:%M %Z"),
+        )
 
     return {
         "host_info": " | ".join(host_values),
@@ -95,7 +102,7 @@ def weather() -> dict:
 
 
 def departures() -> dict:
-    def short(value, length=32):
+    def short(value, length=28):
         return value if len(value) <= length else f"{value[:length - 1]}…"
 
     def render_buses(items):
@@ -108,8 +115,7 @@ def departures() -> dict:
         rows = []
         for item in items:
             rows.append(
-                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}"
-                "\n      transfer {transfer_minutes} min"
+                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}  (Transfer {transfer_minutes} min)"
                 "\n{train_departure_time}  {train_line_number}  {train_destination}".format(
                     bus_departure_time=item.get("bus_departure_time", "--:--"),
                     bus_line_number=item.get("bus_line_number", "?"),
@@ -123,6 +129,8 @@ def departures() -> dict:
         return "\n\n".join(rows) or "Väntar på MQTT"
 
     return {
+        "time": Local.f_time(),
+        "date": Local.f_time(format=DATE_F_STR).title(),
         "city_buses": render_buses(mqtt_data.snapshot("transit/city-buses", [])),
         "journeys": render_journeys(mqtt_data.snapshot("transit/journeys", [])),
         "other_buses": render_buses(mqtt_data.snapshot("transit/other-buses", [])),
