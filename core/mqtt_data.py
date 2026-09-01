@@ -24,7 +24,6 @@ class MqttData:
     def _on_connect(self, client, userdata, flags, reason_code, properties) -> None:
         if not reason_code.is_failure:
             client.subscribe(f"{self.prefix}/#", qos=1)
-            client.subscribe("weather/outdoor/#", qos=1)
 
     def _on_message(self, client, userdata, message) -> None:
         try:

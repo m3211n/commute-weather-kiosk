@@ -60,7 +60,7 @@ def weather() -> dict:
             "bg": "./assets/images/weather/cloudy-day.png", "temp": "--°",
             "icon": "./assets/icons/weather/03d.png", "desc": "Väntar på MQTT",
             "more": "", "sunrise": "--:--", "sunset": "--:--",
-            "hours": "", "temps": "", "icons": "", "station": "",
+            "hours": "", "temps": "", "icons": "",
         }
     icon_font = {
         "01d": "\uf00d", "01n": "\uf02e", "02d": "\uf002", "02n": "\uf086",
@@ -80,16 +80,24 @@ def weather() -> dict:
         Local.f_time(datetime.fromisoformat(sun_data["sunset"]).timestamp())
         if sun_data.get("sunset") else "--:--",
     )
-    station = "Weather station: {} C  {}%  {} hPa".format(
-        mqtt_data.get("weather/outdoor/temperature", "--"),
-        mqtt_data.get("weather/outdoor/humidity", "--"),
-        mqtt_data.get("weather/outdoor/pressure", "--"),
-    )
+    icon = data["icon"]
+    if icon.startswith("01"):
+        condition = "clear"
+    elif icon.startswith(("09", "10", "11", "13")):
+        condition = "rainy"
+    else:
+        condition = "cloudy"
+    is_daytime = icon.endswith("d")
+    if sun_data.get("sunrise") and sun_data.get("sunset"):
+        current = datetime.now().astimezone()
+        sunrise = datetime.fromisoformat(sun_data["sunrise"]).astimezone()
+        sunset = datetime.fromisoformat(sun_data["sunset"]).astimezone()
+        is_daytime = sunrise <= current < sunset
 
     return {
-        "bg": f"./assets/images/weather/cloudy-{Local.daytime() if Local.daytime() in ('day', 'night') else 'day'}.png",
+        "bg": f"./assets/images/weather/{condition}-{'day' if is_daytime else 'night'}.png",
         "temp": f"{data['temperature_c']}°",
-        "icon": f"./assets/icons/weather/{data['icon']}.png",
+        "icon": f"./assets/icons/weather/{icon}.png",
         "desc": data["location"],
         "more": "Känns som {feels_like_c}° (H:{maximum_c}° L:{minimum_c}°) {wind_mps} m/s".format(**data),
         "sunrise": sun[0],
@@ -97,17 +105,16 @@ def weather() -> dict:
         "hours": hourly[0],
         "temps": hourly[1],
         "icons": hourly[2],
-        "station": station,
     }
 
 
 def departures() -> dict:
-    def short(value, length=28):
+    def short(value, length=42):
         return value if len(value) <= length else f"{value[:length - 1]}…"
 
     def render_buses(items):
         return "\n".join(
-            f"{item['line']:>4}  {item['destination']:<24} {item['departure']:>8}"
+            f"{item['line']:>4}  {short(item['destination'], 34):<34} {item['departure']:>8}"
             for item in items
         ) or "Väntar på MQTT"
 
@@ -115,18 +122,20 @@ def departures() -> dict:
         rows = []
         for item in items:
             rows.append(
-                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}  (Transfer {transfer_minutes} min)"
+                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}"
+                "\nChange at {transfer_stop} ({transfer_minutes} min)"
                 "\n{train_departure_time}  {train_line_number}  {train_destination}".format(
                     bus_departure_time=item.get("bus_departure_time", "--:--"),
                     bus_line_number=item.get("bus_line_number", "?"),
                     bus_line_destination=short(item.get("bus_line_destination", "")),
                     transfer_minutes=item.get("transfer_minutes") or "?",
+                    transfer_stop=short(item.get("transfer_stop", "transfer stop"), 30),
                     train_departure_time=item.get("train_departure_time", "--:--"),
                     train_line_number=item.get("train_line_number", "?"),
                     train_destination=short(item.get("train_destination", "")),
                 )
             )
-        return "\n\n".join(rows) or "Väntar på MQTT"
+        return "\n".join(rows) or "Väntar på MQTT"
 
     return {
         "time": Local.f_time(),
