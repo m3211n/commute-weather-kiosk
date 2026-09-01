@@ -122,7 +122,7 @@ def departures() -> dict:
         rows = []
         for item in items:
             rows.append(
-                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}  (Transfer {transfer_minutes} min)"
+                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}  -> {transfer_minutes} min ->"
                 "\n{train_departure_time}  {train_line_number}  {train_destination}".format(
                     bus_departure_time=item.get("bus_departure_time", "--:--"),
                     bus_line_number=item.get("bus_line_number", "?"),
