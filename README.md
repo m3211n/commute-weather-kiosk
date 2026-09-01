@@ -70,7 +70,8 @@ docker compose -f docker-compose.broadcaster.yml up -d
 ```
 
 The broadcaster `.env` must define `MQTT_HOST`, `OWM_API_KEY`, API URLs,
-coordinates, SL stop/origin/destination identifiers, and any SL API key. See
+coordinates, and SL stop/origin/destination identifiers. The public SL Journey
+Planner v2 endpoint does not require an API key. See
 `.env.broadcaster.example` for the complete variable list; no credentials are
 included in the image.
 

@@ -142,10 +142,23 @@ class Collector:
         city, other, journeys = await asyncio.gather(
             self.departures(session, os.environ["SL_CITY_BUS_SITE_ID"], os.environ.get("SL_CITY_BUS_DIRECTION", "2")),
             self.departures(session, os.environ["SL_OTHER_BUS_SITE_ID"], os.environ.get("SL_OTHER_BUS_DIRECTION", "1")),
-            self.get(session, os.environ["SL_TRIPS_API"], {
-                "origin": os.environ["SL_ORIGIN"], "destination": os.environ["SL_DESTINATION"],
-                "transport": "BUS,TRAIN", "limit": 3,
-            }, self.sl_headers),
+            self.get(session, os.environ.get(
+                "SL_JOURNEY_API", "https://journeyplanner.integration.sl.se/v2/trips"
+            ), {
+                "type_origin": os.environ.get("SL_ORIGIN_TYPE", "any"),
+                "name_origin": os.environ["SL_ORIGIN"],
+                "type_destination": os.environ.get("SL_DESTINATION_TYPE", "any"),
+                "name_destination": os.environ["SL_DESTINATION"],
+                "calc_number_of_trips": 3,
+                "incl_mot_0": "true",
+                "incl_mot_2": "false",
+                "incl_mot_4": "false",
+                "incl_mot_5": "true",
+                "incl_mot_9": "false",
+                "incl_mot_10": "false",
+                "incl_mot_14": "false",
+                "incl_mot_19": "false",
+            }),
         )
         city_lines = set(os.environ.get("CITY_BUS_LINES", "809,809C,807").split(","))
         self.publisher.publish("transit/city-buses", [
@@ -157,24 +170,55 @@ class Collector:
         self.publisher.publish("transit/journeys", normalize_journeys(journeys)[:3])
 
 
+def leg_mode(leg: Dict[str, Any]) -> Optional[str]:
+    product = leg.get("transportation", {}).get("product", {})
+    product_name = product.get("name", "").lower()
+    if product.get("class") == 5 or "buss" in product_name:
+        return "bus"
+    if product.get("class") == 0 or any(
+        name in product_name for name in ("pendeltåg", "tåg", "train")
+    ):
+        return "train"
+    return None
+
+
+def leg_time(leg: Dict[str, Any], key: str) -> str:
+    value = leg.get(f"{key}TimeEstimated") or leg.get(f"{key}TimePlanned")
+    if not value:
+        return "--:--"
+    return datetime.fromisoformat(value.replace("Z", "+00:00")).strftime("%H:%M")
+
+
+def transfer_minutes(bus: Dict[str, Any], train: Dict[str, Any]) -> Optional[int]:
+    bus_arrival = bus.get("arrivalTimeEstimated") or bus.get("arrivalTimePlanned")
+    train_departure = train.get("departureTimeEstimated") or train.get("departureTimePlanned")
+    if not bus_arrival or not train_departure:
+        return None
+    arrival = datetime.fromisoformat(bus_arrival.replace("Z", "+00:00"))
+    departure = datetime.fromisoformat(train_departure.replace("Z", "+00:00"))
+    return max(0, round((departure - arrival).total_seconds() / 60))
+
+
 def normalize_journeys(payload: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Extract the bus -> transfer -> train presentation model from SL responses."""
-    trips = payload.get("trips", payload.get("Trip", []))
+    trips = payload.get("journeys", [])
     normalized = []
     for trip in trips:
-        legs = trip.get("legs", trip.get("LegList", {}).get("Leg", []))
-        bus = next((leg for leg in legs if leg.get("mode") == "BUS"), None)
-        train = next((leg for leg in legs if leg.get("mode") == "TRAIN"), None)
+        legs = trip.get("legs", [])
+        bus = next((leg for leg in legs if leg_mode(leg) == "bus"), None)
+        train = next((leg for leg in legs if leg_mode(leg) == "train"), None)
         if not bus or not train:
             continue
+        bus_transport = bus["transportation"]
+        train_transport = train["transportation"]
         normalized.append({
-            "bus_departure_time": bus.get("departureTime", bus.get("Origin", {}).get("time")),
-            "bus_line_number": bus.get("line", bus.get("Product", {}).get("line")),
-            "bus_line_destination": bus.get("destination", bus.get("Destination", {}).get("name")),
-            "transfer_minutes": bus.get("transferMinutes", trip.get("transferMinutes")),
-            "train_departure_time": train.get("departureTime", train.get("Origin", {}).get("time")),
-            "train_line_number": train.get("line", train.get("Product", {}).get("line")),
-            "train_destination": train.get("destination", train.get("Destination", {}).get("name")),
+            "bus_departure_time": leg_time(bus, "departure"),
+            "bus_line_number": bus.get("disassembledName", bus_transport.get("number", "?")),
+            "bus_line_destination": bus_transport.get("destination", {}).get("name", ""),
+            "transfer_minutes": transfer_minutes(bus, train),
+            "train_departure_time": leg_time(train, "departure"),
+            "train_line_number": train.get("disassembledName", train_transport.get("number", "?")),
+            "train_destination": train_transport.get("destination", {}).get("name", ""),
         })
     return normalized
 
