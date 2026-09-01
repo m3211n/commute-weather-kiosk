@@ -109,12 +109,12 @@ def weather() -> dict:
 
 
 def departures() -> dict:
-    def short(value, length=42):
+    def short(value, length=30):
         return value if len(value) <= length else f"{value[:length - 1]}…"
 
     def render_buses(items):
         return "\n".join(
-            f"{item['line']:>4}  {short(item['destination'], 34):<34} {item['departure']:>8}"
+            f"{item['line']:<4} {short(item['destination'], 34):<34} {item['departure']:>8}"
             for item in items
         ) or "Väntar på MQTT"
 
@@ -122,20 +122,19 @@ def departures() -> dict:
         rows = []
         for item in items:
             rows.append(
-                "{bus_departure_time}  {bus_line_number}  {bus_line_destination}"
-                "\nChange at {transfer_stop} ({transfer_minutes} min)"
-                "\n{train_departure_time}  {train_line_number}  {train_destination}".format(
+                "{bus_departure_time} {bus_line_number} {bus_line_destination} > {transfer_stop} ({transfer_minutes} min) >"
+                "\n{train_departure_time} {train_line_number} {train_destination}".format(
                     bus_departure_time=item.get("bus_departure_time", "--:--"),
                     bus_line_number=item.get("bus_line_number", "?"),
                     bus_line_destination=short(item.get("bus_line_destination", "")),
                     transfer_minutes=item.get("transfer_minutes") or "?",
-                    transfer_stop=short(item.get("transfer_stop", "transfer stop"), 30),
+                    transfer_stop=short(item.get("transfer_stop", "transfer stop"), 20),
                     train_departure_time=item.get("train_departure_time", "--:--"),
                     train_line_number=item.get("train_line_number", "?"),
                     train_destination=short(item.get("train_destination", "")),
                 )
             )
-        return "\n".join(rows) or "Väntar på MQTT"
+        return "\n\n".join(rows) or "Väntar på MQTT"
 
     return {
         "time": Local.f_time(),
