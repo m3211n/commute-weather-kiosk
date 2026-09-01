@@ -21,23 +21,23 @@ WIDGETS = [
     {
         "name": "Weather",
         "widget": Widget(
-            xy=(1296, 24), size=(600, 1088), fill=Colors.panel_bg, radius=32,
+            xy=(1208, 24), size=(688, 1112), fill=Colors.panel_bg, radius=32,
             content={
                 "bg":      ImageView(),
-                "temp":    Text(xy=(48, 24), **TextStyles.temperature),
-                "icon":    ImageView(398, 62),
-                "desc":    Text(xy=(48, 224), **TextStyles.weather_cond),
-                "more":    Text(xy=(48, 274), **TextStyles.details),
-                "icon_sr": Text(xy=(48, 318), **TextStyles.icon,
+                "temp":    Text(xy=(64, 34), **TextStyles.temperature),
+                "icon":    ImageView(498, 90),
+                "desc":    Text(xy=(64, 262), **TextStyles.weather_cond),
+                "more":    Text(xy=(64, 318), **TextStyles.details),
+                "icon_sr": Text(xy=(64, 362), **TextStyles.icon,
                                 value="\uf051"),
-                "sunrise": Text(xy=(112, 328), **TextStyles.details),
-                "icon_ss": Text(xy=(284, 318), **TextStyles.icon,
+                "sunrise": Text(xy=(128, 372), **TextStyles.details),
+                "icon_ss": Text(xy=(286, 362), **TextStyles.icon,
                                 value="\uf052"),
-                "sunset":  Text(xy=(348, 328), **TextStyles.details),
-                "hours":   Text(xy=(40, 420), **TextStyles.hours_compact),
-                "icons":   Text(xy=(150, 416), **TextStyles.weather_icons_compact),
-                "temps":   Text(xy=(226, 420), **TextStyles.temps_compact),
-                "station": Text(xy=(48, 852), **TextStyles.station)
+                "sunset":  Text(xy=(350, 372), **TextStyles.details),
+                "hours":   Text(xy=(70, 504), **TextStyles.hours_compact),
+                "icons":   Text(xy=(196, 500), **TextStyles.weather_icons_compact),
+                "temps":   Text(xy=(280, 504), **TextStyles.temps_compact),
+                "station": Text(xy=(64, 1012), **TextStyles.station)
             }
         ),
         "updater": updaters.weather,
@@ -46,7 +46,7 @@ WIDGETS = [
     {
         "name": "Departures",
         "widget": Widget(
-            xy=(24, 24), size=(1248, 1088), fill=Colors.panel_bg,
+            xy=(24, 24), size=(1160, 1112), fill=Colors.panel_bg,
             radius=32,
             content={
                 "time": Text(xy=(132, 24), **TextStyles.header_time),

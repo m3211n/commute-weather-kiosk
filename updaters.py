@@ -85,11 +85,24 @@ def weather() -> dict:
         mqtt_data.get("weather/outdoor/humidity", "--"),
         mqtt_data.get("weather/outdoor/pressure", "--"),
     )
+    icon = data["icon"]
+    if icon.startswith("01"):
+        condition = "clear"
+    elif icon.startswith(("09", "10", "11", "13")):
+        condition = "rainy"
+    else:
+        condition = "cloudy"
+    is_daytime = icon.endswith("d")
+    if sun_data.get("sunrise") and sun_data.get("sunset"):
+        current = datetime.now().astimezone()
+        sunrise = datetime.fromisoformat(sun_data["sunrise"]).astimezone()
+        sunset = datetime.fromisoformat(sun_data["sunset"]).astimezone()
+        is_daytime = sunrise <= current < sunset
 
     return {
-        "bg": f"./assets/images/weather/cloudy-{Local.daytime() if Local.daytime() in ('day', 'night') else 'day'}.png",
+        "bg": f"./assets/images/weather/{condition}-{'day' if is_daytime else 'night'}.png",
         "temp": f"{data['temperature_c']}°",
-        "icon": f"./assets/icons/weather/{data['icon']}.png",
+        "icon": f"./assets/icons/weather/{icon}.png",
         "desc": data["location"],
         "more": "Känns som {feels_like_c}° (H:{maximum_c}° L:{minimum_c}°) {wind_mps} m/s".format(**data),
         "sunrise": sun[0],
