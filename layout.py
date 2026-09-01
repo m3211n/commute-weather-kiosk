@@ -66,9 +66,9 @@ WIDGETS = [
                 "city_divider": Rect((48, 224, 1112, 226), fill=Colors.tetriary, radius=1),
                 "journey_title": Text(xy=(48, 254), **TextStyles.transport_title, value="TILL T-CENTRALEN"),
                 "journeys": Text(xy=(48, 302), **TextStyles.journey_rows),
-                "journey_divider": Rect((48, 676, 1112, 678), fill=Colors.tetriary, radius=1),
-                "other_title": Text(xy=(48, 710), **TextStyles.transport_title, value="ÖVRIGA AVGÅNGAR"),
-                "other_buses": Text(xy=(48, 754), **TextStyles.transport_rows),
+                "journey_divider": Rect((48, 750, 1112, 752), fill=Colors.tetriary, radius=1),
+                "other_title": Text(xy=(48, 780), **TextStyles.transport_title, value="ÖVRIGA AVGÅNGAR"),
+                "other_buses": Text(xy=(48, 822), **TextStyles.transport_rows),
             }
         ),
         "updater": updaters.departures,
