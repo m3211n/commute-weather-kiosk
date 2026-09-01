@@ -183,15 +183,25 @@ def leg_mode(leg: Dict[str, Any]) -> Optional[str]:
 
 
 def leg_time(leg: Dict[str, Any], key: str) -> str:
-    value = leg.get(f"{key}TimeEstimated") or leg.get(f"{key}TimePlanned")
+    location = leg.get("origin" if key == "departure" else "destination", {})
+    value = (
+        location.get(f"{key}TimeEstimated")
+        or location.get(f"{key}TimePlanned")
+    )
     if not value:
         return "--:--"
     return datetime.fromisoformat(value.replace("Z", "+00:00")).strftime("%H:%M")
 
 
 def transfer_minutes(bus: Dict[str, Any], train: Dict[str, Any]) -> Optional[int]:
-    bus_arrival = bus.get("arrivalTimeEstimated") or bus.get("arrivalTimePlanned")
-    train_departure = train.get("departureTimeEstimated") or train.get("departureTimePlanned")
+    bus_arrival = (
+        bus.get("destination", {}).get("arrivalTimeEstimated")
+        or bus.get("destination", {}).get("arrivalTimePlanned")
+    )
+    train_departure = (
+        train.get("origin", {}).get("departureTimeEstimated")
+        or train.get("origin", {}).get("departureTimePlanned")
+    )
     if not bus_arrival or not train_departure:
         return None
     arrival = datetime.fromisoformat(bus_arrival.replace("Z", "+00:00"))
@@ -213,11 +223,11 @@ def normalize_journeys(payload: Dict[str, Any]) -> List[Dict[str, Any]]:
         train_transport = train["transportation"]
         normalized.append({
             "bus_departure_time": leg_time(bus, "departure"),
-            "bus_line_number": bus.get("disassembledName", bus_transport.get("number", "?")),
+            "bus_line_number": bus_transport.get("disassembledName", "?"),
             "bus_line_destination": bus_transport.get("destination", {}).get("name", ""),
             "transfer_minutes": transfer_minutes(bus, train),
             "train_departure_time": leg_time(train, "departure"),
-            "train_line_number": train.get("disassembledName", train_transport.get("number", "?")),
+            "train_line_number": train_transport.get("disassembledName", "?"),
             "train_destination": train_transport.get("destination", {}).get("name", ""),
         })
     return normalized
