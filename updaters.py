@@ -102,12 +102,12 @@ def weather() -> dict:
 
 
 def departures() -> dict:
-    def short(value, length=28):
+    def short(value, length=42):
         return value if len(value) <= length else f"{value[:length - 1]}…"
 
     def render_buses(items):
         return "\n".join(
-            f"{item['line']:>4}  {item['destination']:<24} {item['departure']:>8}"
+            f"{item['line']:>4}  {short(item['destination'], 34):<34} {item['departure']:>8}"
             for item in items
         ) or "Väntar på MQTT"
 
