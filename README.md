@@ -51,6 +51,41 @@ python main.py
 ```
 Output will be saved to `__preview/output.png`
 
+### MQTT-only dashboard
+
+The redesigned dashboard reads retained snapshots from `MQTT_HOST` (default
+`localhost`) under `MQTT_TOPIC_PREFIX` (default `commute/dashboard`) and reads
+outdoor station values from `weather/outdoor/#`. It does not make weather or
+transit HTTP requests.
+
+### MQTT broadcaster container
+
+The private image is published to
+`ghcr.io/m3211n/commute-weather-kiosk-broadcaster:latest` from `main`. On the
+broker host, authenticate Docker to GHCR with a token that can read packages,
+copy `docker-compose.broadcaster.yml` and a host-local `.env`, then run:
+
+```bash
+docker compose -f docker-compose.broadcaster.yml up -d
+```
+
+The broadcaster `.env` must define `MQTT_HOST`, `OWM_API_KEY`, API URLs,
+coordinates, SL stop/origin/destination identifiers, and any SL API key. See
+`.env.broadcaster.example` for the complete variable list; no credentials are
+included in the image.
+
+### Selecting the kiosk branch
+
+Install `deploy/kiosk-post-receive` as the `post-receive` hook of the kiosk bare
+repository. Its host-local `deploy-target.conf` selects the deployed branch:
+
+```ini
+target=main
+```
+
+Set `target=dashboard-redesign` to deploy the redesigned dashboard on the next
+push. A missing file or nonexistent branch safely falls back to `main`.
+
 ## Configuration
 
 ### `settings.py`

@@ -17,6 +17,7 @@ mccabe==0.7.0
 multidict==6.6.3
 numpy==2.3.2
 pillow==11.3.0
+paho-mqtt==2.1.0
 platformdirs==4.3.8
 propcache==0.3.2
 pylint==3.3.7
