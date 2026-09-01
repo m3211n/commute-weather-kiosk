@@ -229,6 +229,9 @@ def normalize_journeys(payload: Dict[str, Any]) -> List[Dict[str, Any]]:
             "bus_line_number": bus_transport.get("disassembledName", "?"),
             "bus_line_destination": bus_transport.get("destination", {}).get("name", ""),
             "transfer_minutes": transfer_minutes(bus, train),
+            "transfer_stop": train.get("origin", {}).get(
+                "parent", {}
+            ).get("disassembledName", train.get("origin", {}).get("name", "")),
             "train_departure_time": leg_time(train, "departure"),
             "train_line_number": train_transport.get("disassembledName", "?"),
             "train_destination": train_transport.get("destination", {}).get("name", ""),
