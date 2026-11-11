@@ -50,11 +50,11 @@ class Publisher:
         base = f"{self.prefix}/transit"
         entities = {
             "next_city_bus": ("Next city bus", f"{base}/city-buses",
-                              "{{ value_json.data[0].departure | default('unknown') }}"),
+                              "{{ value_json.data[0].departure if value_json.data else 'unknown' }}"),
             "next_journey": ("Next T-Centralen journey", f"{base}/journeys",
-                             "{{ value_json.data[0].train_departure_time | default('unknown') }}"),
+                             "{{ value_json.data[0].train_departure_time if value_json.data else 'unknown' }}"),
             "next_other_bus": ("Next other bus", f"{base}/other-buses",
-                               "{{ value_json.data[0].departure | default('unknown') }}"),
+                               "{{ value_json.data[0].departure if value_json.data else 'unknown' }}"),
         }
         for object_id, (name, state_topic, value_template) in entities.items():
             config = {
@@ -82,9 +82,23 @@ class Collector:
         self, session: aiohttp.ClientSession, url: str, params: Dict[str, Any],
         headers: Optional[Dict[str, str]] = None,
     ) -> Dict[str, Any]:
-        async with session.get(url, params=params, headers=headers) as response:
-            response.raise_for_status()
-            return await response.json()
+        # SL's API returns 429 under global load regardless of this client's
+        # request rate (Trafiklab incident), so retry transient errors with
+        # linear backoff instead of failing the whole cycle.
+        retries = env_int("HTTP_RETRIES", 2)
+        for attempt in range(retries + 1):
+            async with session.get(url, params=params, headers=headers) as response:
+                if response.status in (429, 500, 502, 503, 504) and attempt < retries:
+                    delay = 5 * (attempt + 1)
+                    LOGGER.warning(
+                        "HTTP %s from %s (attempt %d/%d), retrying in %ss",
+                        response.status, url, attempt + 1, retries + 1, delay,
+                    )
+                    await asyncio.sleep(delay)
+                    continue
+                response.raise_for_status()
+                return await response.json()
+        raise RuntimeError(f"retries exhausted for {url}")
 
     async def weather(self, session: aiohttp.ClientSession) -> None:
         params = {
